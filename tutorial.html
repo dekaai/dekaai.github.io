@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial Lengkap - Cloudflare Domain</title>
+    <title>Tutorial Membuat Domain dengan Cloudflare</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Variabel Warna */
+        /* ===== VARIABEL & RESET ===== */
         :root {
             --primary: #4a6fa5;
+            --primary-dark: #3a5a80;
             --secondary: #ff6f00;
             --light: #f8f9fa;
             --dark: #212529;
@@ -16,9 +17,12 @@
             --light-gray: #e9ecef;
             --white: #ffffff;
             --black: #000000;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
         }
 
-        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -26,16 +30,21 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
             color: var(--dark);
             background-color: var(--light);
             overflow-x: hidden;
         }
 
-        /* Header & Navigation */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ===== HEADER & NAVIGASI ===== */
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: var(--white);
             padding: 1rem 0;
             position: fixed;
@@ -60,11 +69,9 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--white);
-            text-decoration: none;
         }
 
-        /* Hamburger Menu */
+        /* Tombol Hamburger */
         .hamburger {
             display: none;
             cursor: pointer;
@@ -73,9 +80,10 @@
             color: var(--white);
             font-size: 1.5rem;
             z-index: 1001;
+            transition: transform 0.3s ease;
         }
 
-        /* Navigation */
+        /* Navigasi */
         nav {
             display: flex;
             transition: all 0.3s ease;
@@ -88,25 +96,19 @@
         }
 
         .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 0;
+            transition: opacity 0.3s;
+            font-weight: 500;
         }
 
         .nav-links a:hover {
             opacity: 0.8;
         }
 
-        .nav-links i {
-            font-size: 0.9rem;
-        }
-
-        /* Main Content */
+        /* ===== KONTEN UTAMA ===== */
         main {
             margin-top: 80px;
             padding: 2rem 1.5rem;
@@ -135,7 +137,7 @@
             margin: 0 auto;
         }
 
-        /* Tutorial Sections */
+        /* Bagian Tutorial */
         .section {
             margin-bottom: 3rem;
         }
@@ -151,7 +153,7 @@
             border-bottom: 2px solid var(--light-gray);
         }
 
-        /* Step Cards */
+        /* Kartu Langkah */
         .step-card {
             background: var(--white);
             border-radius: 10px;
@@ -197,7 +199,11 @@
             padding-left: 52px;
         }
 
-        /* Code Blocks */
+        .step-content p {
+            margin-bottom: 1rem;
+        }
+
+        /* Blok Kode */
         pre {
             background: #282c34;
             color: #abb2bf;
@@ -249,10 +255,10 @@
             font-size: inherit;
         }
 
-        /* Notes and Alerts */
+        /* Catatan Penting */
         .note {
             background: #fff8e6;
-            border-left: 4px solid var(--secondary);
+            border-left: 4px solid var(--warning);
             padding: 1.2rem;
             margin: 1.5rem 0;
             border-radius: 0 4px 4px 0;
@@ -267,7 +273,7 @@
             transform: translateY(-50%);
             width: 24px;
             height: 24px;
-            background: var(--secondary);
+            background: var(--warning);
             color: var(--white);
             border-radius: 50%;
             display: flex;
@@ -278,36 +284,47 @@
 
         .note-title {
             font-weight: 600;
-            color: var(--secondary);
+            color: var(--warning);
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Buttons */
+        /* Tombol */
         .btn {
             display: inline-block;
             padding: 0.7rem 1.5rem;
             background: var(--primary);
             color: var(--white);
             border-radius: 6px;
-            text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             font-size: 0.95rem;
             margin: 0.5rem 0;
+            text-align: center;
         }
 
         .btn:hover {
-            background: #3a5a80;
+            background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Footer */
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* ===== FOOTER ===== */
         footer {
             background: var(--dark);
             color: var(--white);
@@ -332,7 +349,6 @@
             color: var(--white);
             opacity: 0.8;
             transition: opacity 0.3s;
-            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -348,12 +364,14 @@
             margin-top: 1rem;
         }
 
-        /* Mobile Styles */
+        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 992px) {
+            /* Tampilkan tombol hamburger */
             .hamburger {
                 display: block;
             }
 
+            /* Sembunyikan navigasi default */
             nav {
                 position: fixed;
                 top: 0;
@@ -369,10 +387,12 @@
                 z-index: 999;
             }
 
+            /* Tampilkan navigasi saat aktif */
             nav.active {
                 left: 0;
             }
 
+            /* Atur ulang tampilan menu */
             .nav-links {
                 flex-direction: column;
                 width: 100%;
@@ -385,6 +405,7 @@
                 border-bottom: 1px solid var(--light-gray);
             }
 
+            /* Penyesuaian konten */
             .step-content {
                 padding-left: 0;
             }
@@ -427,7 +448,7 @@
             }
         }
 
-        /* Animations */
+        /* ===== ANIMASI ===== */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -443,21 +464,14 @@
             animation: fadeIn 0.5s ease forwards;
         }
 
-        .step-card:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-        .step-card:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .step-card:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-        .step-card:nth-child(4) {
-            animation-delay: 0.4s;
-        }
+        .step-card:nth-child(1) { animation-delay: 0.1s; }
+        .step-card:nth-child(2) { animation-delay: 0.2s; }
+        .step-card:nth-child(3) { animation-delay: 0.3s; }
+        .step-card:nth-child(4) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
+    <!-- Header dengan Logo dan Navigasi -->
     <header>
         <div class="header-container">
             <a href="#" class="logo">
@@ -465,165 +479,174 @@
                 <span>Cloudflare Guide</span>
             </a>
             
+            <!-- Tombol Hamburger untuk Mobile -->
             <button class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
             </button>
             
+            <!-- Navigasi Utama -->
             <nav id="nav">
                 <ul class="nav-links">
                     <li><a href="#persiapan"><i class="fas fa-tools"></i> Persiapan</a></li>
                     <li><a href="#beli-domain"><i class="fas fa-shopping-cart"></i> Beli Domain</a></li>
-                    <li><a href="#github"><i class="fab fa-github"></i> GitHub</a></li>
-                    <li><a href="#cloudflare"><i class="fas fa-cloud"></i> Cloudflare</a></li>
-                    <li><a href="#troubleshooting"><i class="fas fa-question-circle"></i> Bantuan</a></li>
+                    <li><a href="#github-setup"><i class="fab fa-github"></i> GitHub Setup</a></li>
+                    <li><a href="#cloudflare-setup"><i class="fas fa-cloud"></i> Cloudflare Setup</a></li>
+                    <li><a href="#troubleshooting"><i class="fas fa-question-circle"></i> Troubleshooting</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
+    <!-- Konten Utama -->
     <main>
+        <!-- Hero Section -->
         <section class="hero">
             <h1>Tutorial Lengkap Membuat Domain dengan Cloudflare</h1>
             <p>Panduan step-by-step dari pembelian domain hingga deployment website dengan GitHub Pages dan Cloudflare</p>
         </section>
         
+        <!-- Bagian Persiapan -->
         <section id="persiapan" class="section">
             <h2 class="section-title"><i class="fas fa-tools"></i> Persiapan Awal</h2>
             
             <div class="step-card">
                 <div class="step-header">
                     <div class="step-number">1</div>
-                    <h3 class="step-title">Membuat Kode HTML</h3>
+                    <h3 class="step-title">Membuat Kode HTML untuk Website</h3>
                 </div>
                 <div class="step-content">
-                    <p>Siapkan file HTML untuk website Anda. Contoh kode dasar:</p>
+                    <p>Sebelum memulai, Anda perlu menyiapkan kode HTML untuk website Anda. Anda bisa menggunakan editor teks seperti Visual Studio Code, Sublime Text, atau bahkan Notepad.</p>
+                    
+                    <p>Berikut contoh kode HTML dasar untuk website sederhana:</p>
+                    
                     <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="id"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;Website Saya&lt;/title&gt;
+    &lt;title&gt;Website Pertamaku&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        header {
+            background: #4a6fa5;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-    &lt;h1&gt;Selamat Datang&lt;/h1&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Selamat Datang di Website Saya&lt;/h1&gt;
+    &lt;/header&gt;
+    
+    &lt;main&gt;
+        &lt;p&gt;Ini adalah website pertama saya menggunakan domain sendiri.&lt;/p&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;&copy; 2023 Website Saya&lt;/p&gt;
+    &lt;/footer&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                    <p>Simpan sebagai <code>index.html</code></p>
+                    
+                    <div class="note">
+                        <div class="note-title"><i class="fas fa-lightbulb"></i> Tips</div>
+                        <p>Simpan file ini dengan nama <code>index.html</code> karena ini akan menjadi halaman utama website Anda. Pastikan ekstensi file benar (.html bukan .txt).</p>
+                    </div>
                 </div>
             </div>
         </section>
         
+        <!-- Bagian Beli Domain -->
         <section id="beli-domain" class="section">
             <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Membeli Domain</h2>
             
             <div class="step-card">
                 <div class="step-header">
                     <div class="step-number">2</div>
-                    <h3 class="step-title">Beli Domain di IDWebhost</h3>
+                    <h3 class="step-title">Memilih dan Membeli Domain</h3>
                 </div>
                 <div class="step-content">
-                    <p>Kunjungi <a href="https://beli.idwebhost.com/promo-domainid/" target="_blank">IDWebhost</a> untuk membeli domain.</p>
+                    <p>Langkah pertama adalah membeli domain. Anda bisa menggunakan berbagai penyedia domain seperti:</p>
+                    <ul>
+                        <li><a href="https://beli.idwebhost.com/promo-domainid/" target="_blank">IDWebhost</a> (untuk domain .id)</li>
+                        <li><a href="https://www.namecheap.com/" target="_blank">Namecheap</a></li>
+                        <li><a href="https://domains.google/" target="_blank">Google Domains</a></li>
+                    </ul>
+                    
+                    <p>Proses pembelian domain:</p>
+                    <ol>
+                        <li>Cari nama domain yang Anda inginkan</li>
+                        <li>Pilih ekstensi domain (.com, .id, .xyz, dll)</li>
+                        <li>Lengkapi data registrasi sesuai KTP/SIM</li>
+                        <li>Lakukan pembayaran</li>
+                        <li>Verifikasi email yang dikirim penyedia domain</li>
+                    </ol>
+                    
                     <div class="note">
-                        <div class="note-title"><i class="fas fa-exclamation-circle"></i> Catatan</div>
-                        <p>Tunggu hingga domain aktif (1-24 jam).</p>
+                        <div class="note-title"><i class="fas fa-exclamation-circle"></i> Penting</div>
+                        <p>Untuk domain .id, Anda memerlukan KTP/SIM yang valid. Proses aktivasi mungkin memakan waktu 1-24 jam setelah pembayaran.</p>
                     </div>
+                    
+                    <a href="https://beli.idwebhost.com/promo-domainid/" target="_blank" class="btn">Beli Domain Sekarang <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
         </section>
         
-        <section id="github" class="section">
+        <!-- Bagian GitHub Setup -->
+        <section id="github-setup" class="section">
             <h2 class="section-title"><i class="fab fa-github"></i> Setup GitHub</h2>
             
             <div class="step-card">
                 <div class="step-header">
                     <div class="step-number">3</div>
-                    <h3 class="step-title">Buat Repository</h3>
+                    <h3 class="step-title">Membuat Akun GitHub</h3>
                 </div>
                 <div class="step-content">
-                    <p>Buat repository baru dengan format: <code>username-github-io</code></p>
-                    <a href="https://github.com/new" target="_blank" class="btn">Buat Repository <i class="fas fa-external-link-alt"></i></a>
+                    <p>GitHub adalah platform untuk menyimpan dan mengelola kode. Kita akan menggunakannya untuk menghosting website kita.</p>
+                    
+                    <p>Langkah membuat akun GitHub:</p>
+                    <ol>
+                        <li>Kunjungi <a href="https://github.com/signup" target="_blank">halaman signup GitHub</a></li>
+                        <li>Isi data yang diperlukan (email, password)</li>
+                        <li><strong>Penting:</strong> Gunakan username dengan huruf kecil semua, tanpa spasi</li>
+                        <li>Verifikasi alamat email Anda</li>
+                    </ol>
+                    
+                    <div class="note">
+                        <div class="note-title"><i class="fas fa-info-circle"></i> Contoh Username</div>
+                        <p>Gunakan format seperti: <code>namaanda-github</code> atau <code>namaanda123</code>. Hindari username seperti <code>NamaAnda-GitHub</code> karena huruf besar bisa menyebabkan masalah.</p>
+                    </div>
                 </div>
             </div>
-        </section>
-        
-        <section id="cloudflare" class="section">
-            <h2 class="section-title"><i class="fas fa-cloud"></i> Cloudflare Setup</h2>
             
             <div class="step-card">
                 <div class="step-header">
                     <div class="step-number">4</div>
-                    <h3 class="step-title">Hubungkan Domain</h3>
+                    <h3 class="step-title">Membuat Repository</h3>
                 </div>
                 <div class="step-content">
-                    <p>Tambahkan domain Anda di Cloudflare dan ganti nameserver di IDWebhost.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="troubleshooting" class="section">
-            <h2 class="section-title"><i class="fas fa-question-circle"></i> Troubleshooting</h2>
-            
-            <div class="step-card">
-                <h3 class="step-title">Solusi Masalah Umum</h3>
-                <div class="step-content">
-                    <ul>
-                        <li>Domain tidak aktif? Tunggu 24 jam</li>
-                        <li>Error GitHub? Periksa nama repository</li>
-                        <li>Website tidak update? Cek deployment</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <h3>Cloudflare Domain Tutorial</h3>
-            <div class="footer-links">
-                <a href="https://www.cloudflare.com" target="_blank"><i class="fas fa-cloud"></i> Cloudflare</a>
-                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://idwebhost.com" target="_blank"><i class="fas fa-globe"></i> IDWebhost</a>
-            </div>
-            <p class="copyright">© 2023 Tutorial Cloudflare Domain</p>
-        </div>
-    </footer>
-
-    <script>
-        // Hamburger Menu Functionality
-        const hamburger = document.getElementById('hamburger');
-        const nav = document.getElementById('nav');
-        
-        hamburger.addEventListener('click', () => {
-            nav.classList.toggle('active');
-            hamburger.innerHTML = nav.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Close menu when clicking on links
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('active');
-                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+                    <p>Repository (repo) adalah tempat menyimpan semua file proyek Anda di GitHub.</p>
+                    
+                    <p>Cara membuat repository baru:</p>
+                    <
