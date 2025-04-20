@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Membuat Domain dengan Cloudflare</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        h2 {
+            color: #4a6fa5;
+            border-bottom: 2px solid #4a6fa5;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        .step {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .step-number {
+            display: inline-block;
+            background-color: #4a6fa5;
+            color: white;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid #ffd600;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note strong {
+            color: #ff6f00;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tutorial Lengkap Membuat Domain Sendiri dengan Cloudflare</h1>
+        <p>Panduan step-by-step dari pembelian domain hingga deployment website</p>
+    </header>
+
+    <section>
+        <h2>Persiapan Awal</h2>
+        
+        <div class="step">
+            <div><span class="step-number">1</span> <strong>Membuat Kode HTML untuk Website</strong></div>
+            <p>Sebelum memulai, siapkan terlebih dahulu kode HTML untuk website Anda. Anda bisa membuatnya menggunakan DeepSeek Chat atau editor teks lainnya.</p>
+            <p>Contoh kode HTML sederhana:</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Website Saya&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Selamat datang di website saya!&lt;/h1&gt;
+    &lt;p&gt;Ini adalah website pertama saya menggunakan domain sendiri.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            <p>Simpan kode ini dengan nama <code>index.html</code> di komputer Anda.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Membeli Domain</h2>
+        
+        <div class="step">
+            <div><span class="step-number">2</span> <strong>Beli Domain di IDWebhost</strong></div>
+            <p>Kunjungi <a href="https://beli.idwebhost.com/promo-domainid/" target="_blank">halaman promo domain IDWebhost</a> dan pilih domain yang Anda inginkan.</p>
+            <p>Ikuti proses pembelian hingga selesai dan tunggu hingga domain aktif (biasanya membutuhkan waktu beberapa jam hingga 1x24 jam).</p>
+            
+            <div class="note">
+                <strong>NB:</strong> Pastikan memilih ekstensi domain yang sesuai kebutuhan (.com, .id, .xyz, dll) dan perhatikan promo yang tersedia.
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Mempersiapkan GitHub</h2>
+        
+        <div class="step">
+            <div><span class="step-number">3</span> <strong>Buat Akun GitHub</strong></div>
+            <p>Buka <a href="https://github.com" target="_blank">GitHub.com</a> dan buat akun baru.</p>
+            <p><strong>Penting:</strong> Saat membuat user ID, gunakan huruf kecil semua (tidak boleh ada huruf besar). Contoh: <code>usernamegithub</code> bukan <code>UserNameGitHub</code>.</p>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">4</span> <strong>Buat Repository Baru</strong></div>
+            <p>Setelah login, buat repository baru dengan:</p>
+            <ol>
+                <li>Klik tombol "+" di pojok kanan atas dan pilih "New repository"</li>
+                <li>Beri nama repository dengan format: <code>username-github-io</code> (gunakan huruf kecil semua)</li>
+                <li>Contoh: Jika user ID Anda <code>dery</code>, maka nama repository: <code>dery-github-io</code></li>
+                <li>Pilih "Public"</li>
+                <li>Anda bisa skip bagian "Initialize this repository with a README"</li>
+                <li>Klik "Create repository"</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">5</span> <strong>Upload File HTML</strong></div>
+            <p>Di repository yang baru dibuat:</p>
+            <ol>
+                <li>Klik "Add file" > "Create new file"</li>
+                <li>Beri nama file: <code>index.html</code></li>
+                <li>Copy-paste kode HTML yang sudah Anda siapkan sebelumnya</li>
+                <li>Scroll ke bawah dan klik "Commit new file"</li>
+            </ol>
+            
+            <div class="note">
+                <strong>Catatan:</strong> File <code>index.html</code> akan menjadi halaman utama website Anda.
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Konfigurasi Cloudflare</h2>
+        
+        <div class="step">
+            <div><span class="step-number">6</span> <strong>Login ke Cloudflare</strong></div>
+            <p>Buka <a href="https://www.cloudflare.com" target="_blank">Cloudflare.com</a> dan login menggunakan akun Google Anda.</p>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">7</span> <strong>Tambahkan Domain ke Cloudflare</strong></div>
+            <p>Setelah login:</p>
+            <ol>
+                <li>Klik "Add a Site" atau "Enter an existing domain"</li>
+                <li>Masukkan domain yang sudah Anda beli di IDWebhost</li>
+                <li>Klik "Continue"</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">8</span> <strong>Pilih Plan</strong></div>
+            <p>Pilih plan <strong>Free</strong> dan klik "Continue"</p>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">9</span> <strong>Review DNS Records</strong></div>
+            <p>Cloudflare akan menampilkan DNS records yang terdeteksi. Anda bisa biarkan default untuk sekarang dan klik "Continue"</p>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">10</span> <strong>Ganti Nameserver di IDWebhost</strong></div>
+            <p>Cloudflare akan memberikan 2 nameserver (biasanya berbentuk seperti <code>lara.ns.cloudflare.com</code> dan <code>moe.ns.cloudflare.com</code>).</p>
+            <p>Langkah-langkah:</p>
+            <ol>
+                <li>Login ke akun IDWebhost Anda</li>
+                <li>Pilih domain yang Anda beli</li>
+                <li>Cari menu "Nameserver" atau "Pengaturan Nameserver"</li>
+                <li>Hapus nameserver default IDWebhost</li>
+                <li>Ganti dengan 2 nameserver dari Cloudflare</li>
+                <li>Simpan perubahan</li>
+            </ol>
+            
+            <div class="note">
+                <strong>Penting:</strong> Perubahan nameserver bisa memakan waktu 24-48 jam untuk propagasi, meski biasanya lebih cepat.
+            </div>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">11</span> <strong>Selesaikan Setup di Cloudflare</strong></div>
+            <p>Kembali ke Cloudflare:</p>
+            <ol>
+                <li>Klik "Continue" setelah mengganti nameserver</li>
+                <li>Scroll ke bawah dan klik "Check nameserver now"</li>
+                <li>Tunggu hingga status domain berubah menjadi "Active"</li>
+            </ol>
+        </div>
+    </section>
+
+    <section>
+        <h2>Hubungkan GitHub ke Cloudflare Pages</h2>
+        
+        <div class="step">
+            <div><span class="step-number">12</span> <strong>Setup Cloudflare Pages</strong></div>
+            <p>Di dashboard Cloudflare:</p>
+            <ol>
+                <li>Klik "Workers & Pages" di menu sebelah kiri</li>
+                <li>Pilih "Create application" > "Pages"</li>
+                <li>Klik "Connect to Git"</li>
+                <li>Pilih GitHub sebagai provider</li>
+                <li>Izinkan Cloudflare mengakses repository GitHub Anda</li>
+                <li>Pilih repository yang sudah Anda buat sebelumnya</li>
+                <li>Klik "Begin setup"</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">13</span> <strong>Konfigurasi Build Settings</strong></div>
+            <p>Pada halaman setup:</p>
+            <ol>
+                <li>Di bagian "Project name", beri nama yang sesuai</li>
+                <li>Di bagian "Build settings", biarkan preset sebagai "None"</li>
+                <li>Pastikan branch yang digunakan adalah "main"</li>
+                <li>Biarkan build command kosong</li>
+                <li>Di "Build output directory", biarkan kosong</li>
+                <li>Klik "Save and Deploy"</li>
+            </ol>
+        </div>
+        
+        <div class="step">
+            <div><span class="step-number">14</span> <strong>Tambahkan Custom Domain</strong></div>
+            <p>Setelah deployment selesai:</p>
+            <ol>
+                <li>Pilih tab "Custom domains"</li>
+                <li>Klik "Set up a custom domain"</li>
+                <li>Masukkan domain Anda (misalnya: example.com)</li>
+                <li>Klik "Continue"</li>
+                <li>Klik "Activate domain"</li>
+                <li>Tunggu hingga status domain berubah menjadi "Active"</li>
+            </ol>
+            
+            <div class="note">
+                <strong>NB:</strong> Proses aktivasi domain bisa memakan waktu beberapa menit hingga beberapa jam.
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Update Website</h2>
+        
+        <div class="step">
+            <div><span class="step-number">15</span> <strong>Cara Mengupdate Website</strong></div>
+            <p>Untuk mengubah tampilan website Anda:</p>
+            <ol>
+                <li>Edit file <code>index.html</code> di komputer Anda</li>
+                <li>Buka repository GitHub Anda</li>
+                <li>Klik file <code>index.html</code> > "Edit" (ikon pensil)</li>
+                <li>Copy-paste kode HTML baru Anda</li>
+                <li>Scroll ke bawah dan klik "Commit changes"</li>
+            </ol>
+            <p>Perubahan akan otomatis terdeploy ke website Anda dalam beberapa menit.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Troubleshooting</h2>
+        
+        <div class="step">
+            <h3>Masalah Umum dan Solusinya</h3>
+            <p><strong>1. Domain tidak bisa diakses setelah setup</strong></p>
+            <p>Solusi:</p>
+            <ul>
+                <li>Tunggu minimal 24 jam untuk propagasi DNS</li>
+                <li>Pastikan nameserver sudah benar di IDWebhost</li>
+                <li>Cek status domain di Cloudflare</li>
+            </ul>
+            
+            <p><strong>2. Error saat menghubungkan GitHub ke Cloudflare</strong></p>
+            <p>Solusi:</p>
+            <ul>
+                <li>Pastikan nama repository sesuai format (huruf kecil semua)</li>
+                <li>Pastikan file index.html ada di root repository</li>
+                <li>Coba disconnect dan reconnect GitHub di Cloudflare</li>
+            </ul>
+            
+            <p><strong>3. Website tidak update setelah perubahan di GitHub</strong></p>
+            <p>Solusi:</p>
+            <ul>
+                <li>Tunggu beberapa menit (biasanya update otomatis dalam 2-5 menit)</li>
+                <li>Cek tab "Deployments" di Cloudflare Pages untuk melihat status</li>
+                <li>Pastikan Anda mengedit file yang benar di repository</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>Tutorial Membuat Domain dengan Cloudflare &copy; 2023</p>
+        <p>Jika menemui kesulitan, silakan cari solusi di <a href="https://community.cloudflare.com/" target="_blank">Cloudflare Community</a> atau forum GitHub.</p>
+    </footer>
+</body>
+</html>
