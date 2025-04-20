@@ -3,226 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial Lengkap Membuat Domain dengan Cloudflare</title>
+    <title>Tutorial Lengkap - Cloudflare Domain</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Variabel Warna */
         :root {
             --primary: #4a6fa5;
             --secondary: #ff6f00;
             --light: #f8f9fa;
             --dark: #212529;
-            --success: #28a745;
-            --info: #17a2b8;
-            --warning: #ffc107;
-            --danger: #dc3545;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --white: #ffffff;
+            --black: #000000;
         }
-        
+
+        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: var(--dark);
-            background-color: #f5f7fa;
+            background-color: var(--light);
             overflow-x: hidden;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
+
+        /* Header & Navigation */
         header {
             background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
+            color: var(--white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
-        header::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(30deg);
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .subtitle {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* Navigation */
-        .nav-tabs {
+
+        .header-container {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 2rem;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
-        
-        .nav-tab {
-            padding: 0.6rem 1.2rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-tab:hover, .nav-tab.active {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        /* Main Content */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        
-        @media (min-width: 992px) {
-            .main-content {
-                grid-template-columns: 300px 1fr;
-            }
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-        
-        .sidebar-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .sidebar-title i {
-            font-size: 1.1rem;
-        }
-        
-        .step-list {
-            list-style: none;
-        }
-        
-        .step-list li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 1.8rem;
-        }
-        
-        .step-list li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0.4rem;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--primary);
-        }
-        
-        .step-list a {
-            color: var(--dark);
-            transition: color 0.2s;
+            gap: 0.5rem;
+            color: var(--white);
             text-decoration: none;
-            display: block;
-            padding: 0.2rem 0;
         }
-        
-        .step-list a:hover {
-            color: var(--primary);
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            z-index: 1001;
         }
-        
-        /* Tutorial Sections */
-        .tutorial-section {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+
+        /* Navigation */
+        nav {
+            display: flex;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links i {
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 1.5rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
             margin-bottom: 2rem;
         }
-        
-        h2 {
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Tutorial Sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
             color: var(--primary);
             font-size: clamp(1.4rem, 4vw, 1.8rem);
             margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 2px solid #e9ecef;
-            position: relative;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-gray);
         }
-        
-        h2::after {
-            content: "";
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 80px;
-            height: 2px;
-            background: var(--primary);
-        }
-        
+
         /* Step Cards */
         .step-card {
-            background: white;
-            border-radius: 8px;
+            background: var(--white);
+            border-radius: 10px;
             padding: 1.8rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--primary);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
         }
-        
+
         .step-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         .step-header {
             display: flex;
             align-items: center;
             margin-bottom: 1.2rem;
         }
-        
+
         .step-number {
             display: flex;
             align-items: center;
@@ -230,27 +180,23 @@
             width: 36px;
             height: 36px;
             background: var(--primary);
-            color: white;
+            color: var(--white);
             border-radius: 50%;
             font-weight: bold;
             margin-right: 1rem;
             flex-shrink: 0;
         }
-        
+
         .step-title {
             font-size: 1.2rem;
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         .step-content {
             padding-left: 52px;
         }
-        
-        .step-content p {
-            margin-bottom: 1rem;
-        }
-        
+
         /* Code Blocks */
         pre {
             background: #282c34;
@@ -261,10 +207,10 @@
             margin: 1.5rem 0;
             font-size: 0.95rem;
             line-height: 1.5;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
             position: relative;
         }
-        
+
         pre::before {
             content: "";
             position: absolute;
@@ -275,7 +221,7 @@
             background: #1e2227;
             border-radius: 8px 8px 0 0;
         }
-        
+
         pre::after {
             content: "•••";
             position: absolute;
@@ -285,16 +231,16 @@
             letter-spacing: 2px;
             font-size: 1rem;
         }
-        
+
         code {
             font-family: 'Fira Code', 'Consolas', 'Monaco', 'Andale Mono', monospace;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             padding: 0.2em 0.4em;
             border-radius: 3px;
             font-size: 0.9em;
             color: #d63384;
         }
-        
+
         pre code {
             background: transparent;
             padding: 0;
@@ -302,17 +248,17 @@
             color: inherit;
             font-size: inherit;
         }
-        
+
         /* Notes and Alerts */
         .note {
             background: #fff8e6;
-            border-left: 4px solid var(--warning);
+            border-left: 4px solid var(--secondary);
             padding: 1.2rem;
             margin: 1.5rem 0;
             border-radius: 0 4px 4px 0;
             position: relative;
         }
-        
+
         .note::before {
             content: "!";
             position: absolute;
@@ -321,545 +267,363 @@
             transform: translateY(-50%);
             width: 24px;
             height: 24px;
-            background: var(--warning);
-            color: white;
+            background: var(--secondary);
+            color: var(--white);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
         }
-        
+
         .note-title {
             font-weight: 600;
-            color: var(--warning);
+            color: var(--secondary);
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
-        /* Lists */
-        ol, ul {
-            padding-left: 1.5rem;
-            margin: 1rem 0;
-        }
-        
-        li {
-            margin-bottom: 0.5rem;
-        }
-        
+
         /* Buttons */
         .btn {
             display: inline-block;
-            padding: 0.6rem 1.2rem;
+            padding: 0.7rem 1.5rem;
             background: var(--primary);
-            color: white;
-            border-radius: 5px;
+            color: var(--white);
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             font-size: 0.95rem;
+            margin: 0.5rem 0;
         }
-        
+
         .btn:hover {
             background: #3a5a80;
-            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
+
         /* Footer */
         footer {
             background: var(--dark);
-            color: white;
-            padding: 2.5rem 0;
-            margin-top: 3rem;
+            color: var(--white);
+            padding: 2.5rem 1.5rem;
             text-align: center;
         }
-        
+
         .footer-content {
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .footer-links {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 1.5rem;
             margin: 1.5rem 0;
         }
-        
+
         .footer-links a {
-            color: white;
+            color: var(--white);
             opacity: 0.8;
             transition: opacity 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
+
         .footer-links a:hover {
             opacity: 1;
-            text-decoration: none;
         }
-        
+
         .copyright {
             opacity: 0.7;
             font-size: 0.9rem;
+            margin-top: 1rem;
         }
-        
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
+
+        /* Mobile Styles */
+        @media (max-width: 992px) {
+            .hamburger {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 5rem 1.5rem 1.5rem;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                z-index: 999;
+            }
+
+            nav.active {
+                left: 0;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
+            }
+
+            .nav-links a {
+                color: var(--dark);
+                padding: 0.8rem 0;
+                border-bottom: 1px solid var(--light-gray);
+            }
+
             .step-content {
                 padding-left: 0;
             }
-            
-            .step-header {
-                margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
             }
-            
-            .tutorial-section {
-                padding: 1.5rem;
+
+            main {
+                padding: 1.5rem 1rem;
+                margin-top: 70px;
             }
-            
+
+            .hero {
+                padding: 2rem 0;
+            }
+
             pre {
                 padding: 1rem;
                 font-size: 0.85rem;
             }
         }
-        
+
         @media (max-width: 576px) {
             .step-card {
                 padding: 1.3rem;
             }
-            
+
             .step-number {
                 width: 30px;
                 height: 30px;
                 font-size: 0.9rem;
             }
-            
-            .step-title {
-                font-size: 1.1rem;
-            }
-            
+
             pre {
                 padding: 0.8rem;
                 font-size: 0.8rem;
             }
         }
-        
-        /* Animation */
+
+        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .step-card {
             animation: fadeIn 0.5s ease forwards;
         }
-        
-        .step-card:nth-child(1) { animation-delay: 0.1s; }
-        .step-card:nth-child(2) { animation-delay: 0.2s; }
-        .step-card:nth-child(3) { animation-delay: 0.3s; }
-        .step-card:nth-child(4) { animation-delay: 0.4s; }
-        .step-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .step-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .step-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .step-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        .step-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <h1>Tutorial Lengkap Membuat Domain dengan Cloudflare</h1>
-            <p class="subtitle">Panduan step-by-step dari pembelian domain hingga deployment website</p>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-cloud"></i>
+                <span>Cloudflare Guide</span>
+            </a>
+            
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="nav">
+                <ul class="nav-links">
+                    <li><a href="#persiapan"><i class="fas fa-tools"></i> Persiapan</a></li>
+                    <li><a href="#beli-domain"><i class="fas fa-shopping-cart"></i> Beli Domain</a></li>
+                    <li><a href="#github"><i class="fab fa-github"></i> GitHub</a></li>
+                    <li><a href="#cloudflare"><i class="fas fa-cloud"></i> Cloudflare</a></li>
+                    <li><a href="#troubleshooting"><i class="fas fa-question-circle"></i> Bantuan</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <div class="container">
-        <div class="main-content">
-            <aside class="sidebar">
-                <h3 class="sidebar-title"><i class="fas fa-list-ol"></i> Daftar Langkah</h3>
-                <ul class="step-list">
-                    <li><a href="#persiapan">Persiapan Awal</a></li>
-                    <li><a href="#beli-domain">Beli Domain</a></li>
-                    <li><a href="#github-setup">Setup GitHub</a></li>
-                    <li><a href="#cloudflare-setup">Setup Cloudflare</a></li>
-                    <li><a href="#deployment">Deployment Website</a></li>
-                    <li><a href="#troubleshooting">Troubleshooting</a></li>
-                </ul>
-            </aside>
-
-            <main>
-                <section id="persiapan" class="tutorial-section">
-                    <h2><i class="fas fa-tools"></i> Persiapan Awal</h2>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <h3 class="step-title">Membuat Kode HTML untuk Website</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Sebelum memulai, siapkan terlebih dahulu kode HTML untuk website Anda. Anda bisa membuatnya menggunakan DeepSeek Chat atau editor teks lainnya.</p>
-                            <p>Contoh kode HTML sederhana:</p>
-                            <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
+    <main>
+        <section class="hero">
+            <h1>Tutorial Lengkap Membuat Domain dengan Cloudflare</h1>
+            <p>Panduan step-by-step dari pembelian domain hingga deployment website dengan GitHub Pages dan Cloudflare</p>
+        </section>
+        
+        <section id="persiapan" class="section">
+            <h2 class="section-title"><i class="fas fa-tools"></i> Persiapan Awal</h2>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Membuat Kode HTML</h3>
+                </div>
+                <div class="step-content">
+                    <p>Siapkan file HTML untuk website Anda. Contoh kode dasar:</p>
+                    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
     &lt;title&gt;Website Saya&lt;/title&gt;
-    &lt;style&gt;
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background: #4a6fa5;
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-        main {
-            padding: 2rem 0;
-        }
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 2rem;
-        }
-    &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-    &lt;header&gt;
-        &lt;div class="container"&gt;
-            &lt;h1&gt;Selamat Datang di Website Saya&lt;/h1&gt;
-        &lt;/div&gt;
-    &lt;/header&gt;
-    
-    &lt;main class="container"&gt;
-        &lt;p&gt;Ini adalah website pertama saya menggunakan domain sendiri.&lt;/p&gt;
-    &lt;/main&gt;
-    
-    &lt;footer&gt;
-        &lt;div class="container"&gt;
-            &lt;p&gt;&copy; 2023 Website Saya&lt;/p&gt;
-        &lt;/div&gt;
-    &lt;/footer&gt;
+    &lt;h1&gt;Selamat Datang&lt;/h1&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                            <p>Simpan kode ini dengan nama <code>index.html</code> di komputer Anda.</p>
-                        </div>
+                    <p>Simpan sebagai <code>index.html</code></p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="beli-domain" class="section">
+            <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Membeli Domain</h2>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Beli Domain di IDWebhost</h3>
+                </div>
+                <div class="step-content">
+                    <p>Kunjungi <a href="https://beli.idwebhost.com/promo-domainid/" target="_blank">IDWebhost</a> untuk membeli domain.</p>
+                    <div class="note">
+                        <div class="note-title"><i class="fas fa-exclamation-circle"></i> Catatan</div>
+                        <p>Tunggu hingga domain aktif (1-24 jam).</p>
                     </div>
-                </section>
-
-                <section id="beli-domain" class="tutorial-section">
-                    <h2><i class="fas fa-shopping-cart"></i> Membeli Domain</h2>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">2</div>
-                            <h3 class="step-title">Beli Domain di IDWebhost</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Kunjungi <a href="https://beli.idwebhost.com/promo-domainid/" target="_blank">halaman promo domain IDWebhost</a> dan pilih domain yang Anda inginkan.</p>
-                            <p>Ikuti proses pembelian hingga selesai:</p>
-                            <ol>
-                                <li>Cari domain yang tersedia</li>
-                                <li>Pilih ekstensi domain (.com, .id, .xyz, dll)</li>
-                                <li>Lengkapi data registrasi</li>
-                                <li>Selesaikan pembayaran</li>
-                            </ol>
-                            <div class="note">
-                                <div class="note-title"><i class="fas fa-exclamation-circle"></i> Catatan Penting</div>
-                                <p>Tunggu hingga domain aktif (biasanya membutuhkan waktu beberapa jam hingga 1x24 jam). Periksa email Anda untuk konfirmasi aktivasi domain.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="github-setup" class="tutorial-section">
-                    <h2><i class="fab fa-github"></i> Mempersiapkan GitHub</h2>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <h3 class="step-title">Buat Akun GitHub</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Buka <a href="https://github.com" target="_blank">GitHub.com</a> dan buat akun baru.</p>
-                            <p><strong>Penting:</strong> Saat membuat user ID, gunakan huruf kecil semua (tidak boleh ada huruf besar). Contoh: <code>usernamegithub</code> bukan <code>UserNameGitHub</code>.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">4</div>
-                            <h3 class="step-title">Buat Repository Baru</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Setelah login, buat repository baru dengan:</p>
-                            <ol>
-                                <li>Klik tombol "+" di pojok kanan atas dan pilih "New repository"</li>
-                                <li>Beri nama repository dengan format: <code>username-github-io</code> (gunakan huruf kecil semua)</li>
-                                <li>Contoh: Jika user ID Anda <code>dery</code>, maka nama repository: <code>dery-github-io</code></li>
-                                <li>Pilih "Public"</li>
-                                <li>Anda bisa skip bagian "Initialize this repository with a README"</li>
-                                <li>Klik "Create repository"</li>
-                            </ol>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">5</div>
-                            <h3 class="step-title">Upload File HTML</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Di repository yang baru dibuat:</p>
-                            <ol>
-                                <li>Klik "Add file" > "Create new file"</li>
-                                <li>Beri nama file: <code>index.html</code></li>
-                                <li>Copy-paste kode HTML yang sudah Anda siapkan sebelumnya</li>
-                                <li>Scroll ke bawah dan klik "Commit new file"</li>
-                            </ol>
-                            
-                            <div class="note">
-                                <div class="note-title"><i class="fas fa-lightbulb"></i> Tips</div>
-                                <p>File <code>index.html</code> akan menjadi halaman utama website Anda. Pastikan kode HTML Anda valid dan lengkap.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="cloudflare-setup" class="tutorial-section">
-                    <h2><i class="fas fa-cloud"></i> Konfigurasi Cloudflare</h2>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">6</div>
-                            <h3 class="step-title">Login ke Cloudflare</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Buka <a href="https://www.cloudflare.com" target="_blank">Cloudflare.com</a> dan login menggunakan akun Google Anda.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">7</div>
-                            <h3 class="step-title">Tambahkan Domain ke Cloudflare</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Setelah login:</p>
-                            <ol>
-                                <li>Klik "Add a Site" atau "Enter an existing domain"</li>
-                                <li>Masukkan domain yang sudah Anda beli di IDWebhost</li>
-                                <li>Klik "Continue"</li>
-                            </ol>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">8</div>
-                            <h3 class="step-title">Pilih Plan</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Pilih plan <strong>Free</strong> dan klik "Continue"</p>
-                            <p>Plan gratis Cloudflare sudah mencukupi untuk kebutuhan website pribadi atau kecil.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">9</div>
-                            <h3 class="step-title">Review DNS Records</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Cloudflare akan menampilkan DNS records yang terdeteksi. Anda bisa biarkan default untuk sekarang dan klik "Continue"</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">10</div>
-                            <h3 class="step-title">Ganti Nameserver di IDWebhost</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Cloudflare akan memberikan 2 nameserver (biasanya berbentuk seperti <code>lara.ns.cloudflare.com</code> dan <code>moe.ns.cloudflare.com</code>).</p>
-                            <p>Langkah-langkah:</p>
-                            <ol>
-                                <li>Login ke akun IDWebhost Anda</li>
-                                <li>Pilih domain yang Anda beli</li>
-                                <li>Cari menu "Nameserver" atau "Pengaturan Nameserver"</li>
-                                <li>Hapus nameserver default IDWebhost</li>
-                                <li>Ganti dengan 2 nameserver dari Cloudflare</li>
-                                <li>Simpan perubahan</li>
-                            </ol>
-                            
-                            <div class="note">
-                                <div class="note-title"><i class="fas fa-clock"></i> Perhatian</div>
-                                <p>Perubahan nameserver bisa memakan waktu 24-48 jam untuk propagasi, meski biasanya lebih cepat (30 menit - 2 jam).</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">11</div>
-                            <h3 class="step-title">Selesaikan Setup di Cloudflare</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Kembali ke Cloudflare:</p>
-                            <ol>
-                                <li>Klik "Continue" setelah mengganti nameserver</li>
-                                <li>Scroll ke bawah dan klik "Check nameserver now"</li>
-                                <li>Tunggu hingga status domain berubah menjadi "Active"</li>
-                            </ol>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="deployment" class="tutorial-section">
-                    <h2><i class="fas fa-rocket"></i> Deployment Website</h2>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">12</div>
-                            <h3 class="step-title">Setup Cloudflare Pages</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Di dashboard Cloudflare:</p>
-                            <ol>
-                                <li>Klik "Workers & Pages" di menu sebelah kiri</li>
-                                <li>Pilih "Create application" > "Pages"</li>
-                                <li>Klik "Connect to Git"</li>
-                                <li>Pilih GitHub sebagai provider</li>
-                                <li>Izinkan Cloudflare mengakses repository GitHub Anda</li>
-                                <li>Pilih repository yang sudah Anda buat sebelumnya</li>
-                                <li>Klik "Begin setup"</li>
-                            </ol>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">13</div>
-                            <h3 class="step-title">Konfigurasi Build Settings</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Pada halaman setup:</p>
-                            <ol>
-                                <li>Di bagian "Project name", beri nama yang sesuai</li>
-                                <li>Di bagian "Build settings", biarkan preset sebagai "None"</li>
-                                <li>Pastikan branch yang digunakan adalah "main"</li>
-                                <li>Biarkan build command kosong</li>
-                                <li>Di "Build output directory", biarkan kosong</li>
-                                <li>Klik "Save and Deploy"</li>
-                            </ol>
-                        </div>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">14</div>
-                            <h3 class="step-title">Tambahkan Custom Domain</h3>
-                        </div>
-                        <div class="step-content">
-                            <p>Setelah deployment selesai:</p>
-                            <ol>
-                                <li>Pilih tab "Custom domains"</li>
-                                <li>Klik "Set up a custom domain"</li>
-                                <li>Masukkan domain Anda (misalnya: example.com)</li>
-                                <li>Klik "Continue"</li>
-                                <li>Klik "Activate domain"</li>
-                                <li>Tunggu hingga status domain berubah menjadi "Active"</li>
-                            </ol>
-                            
-                            <div class="note">
-                                <div class="note-title"><i class="fas fa-check-circle"></i> Selesai!</div>
-                                <p>Website Anda sekarang sudah online dan bisa diakses melalui domain yang Anda beli. Proses aktivasi domain bisa memakan waktu beberapa menit hingga beberapa jam.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="troubleshooting" class="tutorial-section">
-                    <h2><i class="fas fa-question-circle"></i> Troubleshooting</h2>
-                    
-                    <div class="step-card">
-                        <h3 class="step-title">Masalah Umum dan Solusinya</h3>
-                        <div class="step-content">
-                            <p><strong>1. Domain tidak bisa diakses setelah setup</strong></p>
-                            <p>Solusi:</p>
-                            <ul>
-                                <li>Tunggu minimal 24 jam untuk propagasi DNS</li>
-                                <li>Pastikan nameserver sudah benar di IDWebhost</li>
-                                <li>Cek status domain di Cloudflare</li>
-                                <li>Gunakan tool seperti <a href="https://www.whatsmydns.net/" target="_blank">WhatsMyDNS</a> untuk memeriksa propagasi DNS</li>
-                            </ul>
-                            
-                            <p><strong>2. Error saat menghubungkan GitHub ke Cloudflare</strong></p>
-                            <p>Solusi:</p>
-                            <ul>
-                                <li>Pastikan nama repository sesuai format (huruf kecil semua)</li>
-                                <li>Pastikan file index.html ada di root repository</li>
-                                <li>Coba disconnect dan reconnect GitHub di Cloudflare</li>
-                                <li>Periksa izin akses GitHub di akun Cloudflare</li>
-                            </ul>
-                            
-                            <p><strong>3. Website tidak update setelah perubahan di GitHub</strong></p>
-                            <p>Solusi:</p>
-                            <ul>
-                                <li>Tunggu beberapa menit (biasanya update otomatis dalam 2-5 menit)</li>
-                                <li>Cek tab "Deployments" di Cloudflare Pages untuk melihat status</li>
-                                <li>Pastikan Anda mengedit file yang benar di repository</li>
-                                <li>Coba trigger manual deployment di Cloudflare</li>
-                            </ul>
-                            
-                            <div class="note">
-                                <div class="note-title"><i class="fas fa-life-ring"></i> Bantuan Tambahan</div>
-                                <p>Jika masalah masih berlanjut, Anda bisa mencari solusi di <a href="https://community.cloudflare.com/" target="_blank">Cloudflare Community</a> atau dokumentasi resmi GitHub dan Cloudflare Pages.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
-    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="github" class="section">
+            <h2 class="section-title"><i class="fab fa-github"></i> Setup GitHub</h2>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Buat Repository</h3>
+                </div>
+                <div class="step-content">
+                    <p>Buat repository baru dengan format: <code>username-github-io</code></p>
+                    <a href="https://github.com/new" target="_blank" class="btn">Buat Repository <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cloudflare" class="section">
+            <h2 class="section-title"><i class="fas fa-cloud"></i> Cloudflare Setup</h2>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Hubungkan Domain</h3>
+                </div>
+                <div class="step-content">
+                    <p>Tambahkan domain Anda di Cloudflare dan ganti nameserver di IDWebhost.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="troubleshooting" class="section">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> Troubleshooting</h2>
+            
+            <div class="step-card">
+                <h3 class="step-title">Solusi Masalah Umum</h3>
+                <div class="step-content">
+                    <ul>
+                        <li>Domain tidak aktif? Tunggu 24 jam</li>
+                        <li>Error GitHub? Periksa nama repository</li>
+                        <li>Website tidak update? Cek deployment</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <h3>Tutorial Membuat Domain dengan Cloudflare</h3>
-                <div class="footer-links">
-                    <a href="https://www.cloudflare.com" target="_blank"><i class="fas fa-external-link-alt"></i> Cloudflare</a>
-                    <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                    <a href="https://beli.idwebhost.com" target="_blank"><i class="fas fa-globe"></i> IDWebhost</a>
-                </div>
-                <p class="copyright">© 2023 Tutorial Cloudflare Domain. Semua hak dilindungi.</p>
+        <div class="footer-content">
+            <h3>Cloudflare Domain Tutorial</h3>
+            <div class="footer-links">
+                <a href="https://www.cloudflare.com" target="_blank"><i class="fas fa-cloud"></i> Cloudflare</a>
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://idwebhost.com" target="_blank"><i class="fas fa-globe"></i> IDWebhost</a>
             </div>
+            <p class="copyright">© 2023 Tutorial Cloudflare Domain</p>
         </div>
     </footer>
+
+    <script>
+        // Hamburger Menu Functionality
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            hamburger.innerHTML = nav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
