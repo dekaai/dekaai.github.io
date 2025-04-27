@@ -3,1587 +3,1622 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKA AI GENERATOR - Powerful AI Image Creation</title>
+    <title>DEKA AI - Advanced AI Image Generator</title>
     <style>
         :root {
-            --primary: #6e45e2;
-            --secondary: #88d3ce;
-            --dark: #1a1a2e;
-            --darker: #16213e;
-            --light: #f8f9fa;
-            --accent: #ff7e5f;
-            --cyber-blue: #00f0ff;
-            --cyber-pink: #ff00aa;
-            --cyber-purple: #9d00ff;
+            --primary: #0066ff;
+            --secondary: #00ffcc;
+            --accent: #ff00aa;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f0f0f0;
+            --lighter: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] {
+            --dark: #f0f0f0;
+            --darker: #e0e0e0;
+            --light: #121212;
+            --lighter: #0a0a0a;
+            --glass: rgba(0, 0, 0, 0.1);
+            --glass-border: rgba(0, 0, 0, 0.2);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
-
         body {
-            background-color: var(--dark);
+            background: linear-gradient(135deg, var(--darker), var(--dark));
             color: var(--light);
             min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(110, 69, 226, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(136, 211, 206, 0.15) 0%, transparent 50%);
+            transition: var(--transition);
             overflow-x: hidden;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 2rem;
         }
 
         header {
-            padding: 20px 0;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            position: relative;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1rem;
         }
 
         .logo h1 {
             font-size: 2.5rem;
-            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-pink));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            font-weight: 800;
             letter-spacing: 1px;
-            font-weight: 700;
-            margin: 0;
         }
 
         .logo-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(45deg, var(--primary), var(--accent));
             border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .theme-toggle {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(110, 69, 226, 0.4);
-        }
-
-        .logo-icon i {
-            font-size: 24px;
-            color: white;
-        }
-
-        .language-switcher {
-            display: flex;
-            gap: 10px;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            gap: 0.5rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
 
-        .lang-btn.active {
+        .theme-toggle:hover {
             background: var(--accent);
-            border-color: var(--accent);
-            font-weight: 500;
+            transform: translateY(-2px);
         }
 
-        .main {
-            padding: 30px 0 50px;
+        .theme-icon {
+            width: 20px;
+            height: 20px;
         }
 
-        .generator-container {
+        main {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
-            gap: 30px;
+            gap: 2rem;
         }
 
-        @media (max-width: 992px) {
-            .generator-container {
+        @media (max-width: 1024px) {
+            main {
                 grid-template-columns: 1fr;
             }
         }
 
-        .control-panel {
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        .panel {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
 
-        .control-panel::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(157, 0, 255, 0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .panel:hover {
+            box-shadow: 0 8px 32px rgba(0, 255, 204, 0.2);
         }
 
         .panel-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--cyber-blue);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .panel-title i {
-            font-size: 1.2rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
+            gap: 0.5rem;
             color: var(--secondary);
-            font-size: 0.95rem;
+        }
+
+        .panel-title svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--secondary);
+        }
+
+        .prompt-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         .prompt-textarea {
             width: 100%;
-            min-height: 120px;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(10, 10, 20, 0.7);
-            color: white;
+            min-height: 150px;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
             font-size: 1rem;
             resize: vertical;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .prompt-textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(110, 69, 226, 0.3);
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.3);
         }
 
-        select, input[type="range"], input[type="number"] {
-            width: 100%;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(10, 10, 20, 0.7);
-            color: white;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+        .negative-prompt {
+            margin-top: -1rem;
         }
 
-        select:focus, input[type="range"]:focus, input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(110, 69, 226, 0.3);
+        .settings-group {
+            margin-bottom: 1.5rem;
         }
 
-        .range-container {
+        .settings-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.5rem;
         }
 
-        .range-container input[type="range"] {
-            flex: 1;
+        .select-wrapper {
+            position: relative;
         }
 
-        .range-value {
-            min-width: 50px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 10px;
-            border-radius: 5px;
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
             font-size: 0.9rem;
+            appearance: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.3);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
         }
 
         .checkbox-group {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .checkbox-item {
-            flex: 1 1 calc(33.333% - 10px);
-            min-width: 120px;
-        }
-
-        .checkbox-item label {
-            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 400;
-            font-size: 0.85rem;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
-        .checkbox-item input[type="checkbox"] {
+        .checkbox-label {
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .checkbox-input {
             appearance: none;
             width: 18px;
             height: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-border);
             border-radius: 4px;
-            position: relative;
+            background: rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: all 0.2s ease;
+            position: relative;
+            transition: var(--transition);
         }
 
-        .checkbox-item input[type="checkbox"]:checked {
+        .checkbox-input:checked {
             background: var(--primary);
             border-color: var(--primary);
         }
 
-        .checkbox-item input[type="checkbox"]:checked::after {
+        .checkbox-input:checked::after {
             content: '✓';
             position: absolute;
+            color: white;
+            font-size: 0.8rem;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: white;
-            font-size: 0.8rem;
         }
 
-        .checkbox-item label:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .range-group {
+            margin-top: 1rem;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+        .range-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(110, 69, 226, 0.6);
-        }
-
-        .btn-block {
-            display: block;
+        .range-input {
             width: 100%;
+            height: 8px;
+            appearance: none;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            outline: none;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+        .range-input::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .range-input::-webkit-slider-thumb:hover {
+            background: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
         }
 
-        .results-container {
+        .button-secondary {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+        }
+
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .history-panel {
+            margin-top: 2rem;
+        }
+
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
             display: flex;
             flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .results-header {
+        .history-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
         }
 
-        .results-title {
-            font-size: 1.5rem;
-            color: var(--cyber-blue);
+        .history-item:hover {
+            background: rgba(0, 102, 255, 0.2);
         }
 
-        .history-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
+        .history-delete {
+            color: #ff4d4d;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
         }
 
-        .history-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .image-grid {
+        .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .image-card {
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .image-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .image-wrapper {
+        .image-container {
+            width: 100%;
+            aspect-ratio: 1/1;
             position: relative;
-            padding-top: 100%;
             overflow: hidden;
         }
 
         .generated-image {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .image-card:hover .generated-image {
-            transform: scale(1.03);
+            transition: var(--transition);
         }
 
         .image-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 1rem;
             display: flex;
             justify-content: space-between;
-            padding: 12px 15px;
-            background: rgba(10, 10, 20, 0.7);
+            opacity: 0;
+            transition: var(--transition);
         }
 
-        .action-btn {
-            background: none;
+        .image-card:hover .image-actions {
+            opacity: 1;
+        }
+
+        .action-button {
+            background: rgba(255, 255, 255, 0.2);
             border: none;
-            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
             cursor: pointer;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
         }
 
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .action-button:hover {
+            background: var(--primary);
+            transform: scale(1.1);
         }
 
-        .action-btn i {
+        .action-button svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .image-info {
+            padding: 1rem;
+        }
+
+        .image-prompt {
             font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.8);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-            pointer-events: all;
+            backdrop-filter: blur(10px);
         }
 
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
             border-radius: 50%;
-            border-top-color: var(--cyber-blue);
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            margin-bottom: 2rem;
         }
 
         .loading-text {
-            color: white;
-            font-size: 1.5rem;
-            text-align: center;
-            margin-top: 20px;
-            text-shadow: 0 0 10px var(--cyber-blue);
-            animation: pulse 1.5s infinite alternate;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @keyframes pulse {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
         }
 
-        .history-panel {
-            position: fixed;
+        .language-switcher {
+            position: absolute;
             top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100vh;
-            background: var(--darker);
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            transition: right 0.3s ease;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .history-panel.active {
-            right: 0;
-        }
-
-        .history-header {
+            right: 120px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 0.5rem;
         }
 
-        .history-title {
-            font-size: 1.3rem;
-            color: var(--cyber-blue);
-        }
-
-        .close-history {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
+        .language-button {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
             cursor: pointer;
+            transition: var(--transition);
         }
 
-        .history-items {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
+        .language-button.active {
+            background: var(--primary);
         }
 
-        .history-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .history-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .history-item-content {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            gap: 10px;
-        }
-
-        .history-thumbnail {
-            width: 60px;
-            height: 60px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-
-        .history-prompt {
-            flex: 1;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .social-share {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .social-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .facebook-btn:hover {
-            background: #3b5998;
-        }
-
-        .twitter-btn:hover {
-            background: #1da1f2;
-        }
-
-        .instagram-btn:hover {
-            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-        }
-
-        .pinterest-btn:hover {
-            background: #e60023;
+        .language-button:hover {
+            background: var(--accent);
         }
 
         .advanced-settings {
+            margin-top: 1rem;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            margin-top: 10px;
         }
 
         .advanced-settings.active {
             max-height: 500px;
-            margin-top: 20px;
         }
 
         .toggle-advanced {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: none;
-            border: none;
+            gap: 0.5rem;
             color: var(--secondary);
             cursor: pointer;
+            margin-top: 1rem;
             font-size: 0.9rem;
-            margin-bottom: 10px;
         }
 
-        .toggle-advanced i {
+        .toggle-advanced svg {
             transition: transform 0.3s ease;
         }
 
-        .toggle-advanced.active i {
-            transform: rotate(90deg);
-        }
-
-        .ratio-info {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 5px;
+        .toggle-advanced.active svg {
+            transform: rotate(180deg);
         }
 
         footer {
+            margin-top: 3rem;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.6);
-        }
-
-        .powered-by {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
         }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .logo h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
-            .checkbox-item {
-                flex: 1 1 calc(50% - 10px);
+            .button-group {
+                flex-direction: column;
             }
             
-            .history-panel {
-                width: 100%;
-                right: -100%;
+            .gallery {
+                grid-template-columns: 1fr;
             }
             
-            .history-panel.active {
-                right: 0;
+            .language-switcher {
+                position: static;
+                margin-left: auto;
+                margin-right: 1rem;
             }
         }
 
-        /* Cyberpunk neon effects */
-        .neon-border {
-            position: relative;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .neon-border::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: inherit;
-            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-pink), var(--cyber-purple));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
         }
 
-        .neon-border:hover::after {
-            opacity: 0.7;
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
         }
 
-        /* 3D emboss effect */
-        .emboss {
-            box-shadow: 
-                inset 3px 3px 5px rgba(255, 255, 255, 0.1),
-                inset -3px -3px 5px rgba(0, 0, 0, 0.3),
-                5px 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Error message */
-        .error-message {
-            color: #ff6b6b;
-            background: rgba(255, 0, 0, 0.1);
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon neon-border">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h1>DEKA AI GENERATOR</h1>
-                </div>
-                <div class="language-switcher">
-                    <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="id">ID</button>
-                </div>
+            <div class="logo">
+                <div class="logo-icon">D</div>
+                <h1>DEKA AI</h1>
             </div>
+            <div class="language-switcher">
+                <button class="language-button active" id="lang-en">EN</button>
+                <button class="language-button" id="lang-id">ID</button>
+            </div>
+            <button class="theme-toggle" id="theme-toggle">
+                <svg class="theme-icon" viewBox="0 0 24 24" id="theme-icon">
+                    <path d="M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8M12,4C11.45,4 11,3.55 11,3V1C11,0.45 11.45,0 12,0C12.55,0 13,0.45 13,1V3C13,3.55 12.55,4 12,4M12,20C11.45,20 11,19.55 11,19V17C11,16.45 11.45,16 12,16C12.55,16 13,16.45 13,17V19C13,19.55 12.55,20 12,20M5.64,6.64L4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05C6.03,8.44 6.66,8.44 7.05,8.05C7.44,7.66 7.44,7.03 7.05,6.64L5.64,5.22C5.25,4.83 4.62,4.83 4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05M18.36,17.36L19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95C17.97,15.56 17.34,15.56 16.95,15.95C16.56,16.34 16.56,16.97 16.95,17.36L18.36,18.78C18.75,19.17 19.38,19.17 19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95M1,12C1,11.45 1.45,11 2,11H4C4.55,11 5,11.45 5,12C5,12.55 4.55,13 4,13H2C1.45,13 1,12.55 1,12M21,12C21,11.45 21.45,11 22,11H24C24.55,11 25,11.45 25,12C25,12.55 24.55,13 24,13H22C21.45,13 21,12.55 21,12M5.64,17.36L7.05,18.78C7.44,19.17 7.44,19.8 7.05,20.19C6.66,20.58 6.03,20.58 5.64,20.19L4.22,18.78C3.83,18.39 3.83,17.76 4.22,17.37L5.64,15.95C6.03,15.56 6.66,15.56 7.05,15.95C7.44,16.34 7.44,16.97 7.05,17.36L5.64,18.78M18.36,6.64L16.95,5.22C16.56,4.83 16.56,4.2 16.95,3.81C17.34,3.42 17.97,3.42 18.36,3.81L19.78,5.22C20.17,5.61 20.17,6.24 19.78,6.63L18.36,8.05C17.97,8.44 17.34,8.44 16.95,8.05C16.56,7.66 16.56,7.03 16.95,6.64L18.36,5.22"/>
+                </svg>
+                <span id="theme-text">Dark Mode</span>
+            </button>
         </header>
 
-        <main class="main">
-            <div class="error-message" id="errorMessage"></div>
-            
-            <div class="generator-container">
-                <div class="control-panel emboss">
-                    <h2 class="panel-title"><i class="fas fa-sliders-h"></i> <span data-i18n="control_panel">Control Panel</span></h2>
+        <main>
+            <div class="prompt-container">
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>
+                        </svg>
+                        <span data-i18n="prompt_title">Prompt</span>
+                    </h2>
+                    <textarea class="prompt-textarea" id="prompt-input" placeholder="Describe the image you want to generate..." data-i18n-ph="prompt_placeholder"></textarea>
                     
-                    <div class="form-group">
-                        <label for="prompt" data-i18n="prompt_label">Image Prompt</label>
-                        <textarea id="prompt" class="prompt-textarea" placeholder="Describe the image you want to generate..." data-i18n-ph="prompt_placeholder"></textarea>
+                    <div class="settings-group negative-prompt">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M17,15.59L15.59,17L12,13.41L8.41,17L7,15.59L10.59,12L7,8.41L8.41,7L12,10.59L15.59,7L17,8.41L13.41,12L17,15.59Z"/>
+                            </svg>
+                            <span data-i18n="negative_prompt">Negative Prompt</span>
+                        </h3>
+                        <textarea class="prompt-textarea" id="negative-prompt" placeholder="What you don't want in the image..." data-i18n-ph="negative_placeholder"></textarea>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="model" data-i18n="model_label">AI Model</label>
-                        <select id="model">
-                            <option value="dall-e-3">DALL-E 3</option>
-                            <option value="midjourney">Midjourney</option>
-                            <option value="flux-turbo">Flux Turbo</option>
-                            <option value="stable-diffusion">Stable Diffusion</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="style" data-i18n="style_label">Style</label>
-                        <select id="style">
-                            <option value="" data-i18n="no_style">No Style</option>
-                            <option value="realistic" data-i18n="realistic">Realistic</option>
-                            <option value="anime" data-i18n="anime_style">Anime Style</option>
-                            <option value="digital-art" data-i18n="digital_art">Digital Art</option>
-                            <option value="photography" data-i18n="photography">Photography</option>
-                            <option value="watercolor" data-i18n="watercolor">Watercolor</option>
-                            <option value="3d-render" data-i18n="3d_render">3D Render</option>
-                            <option value="surrealism" data-i18n="surrealism">Surrealism</option>
-                            <option value="3d-disney" data-i18n="3d_disney">3D Disney Character</option>
-                            <option value="studio-ghibli" data-i18n="studio_ghibli">Studio Ghibli</option>
-                            <option value="sketch" data-i18n="drawing_sketch">Drawing Sketch</option>
-                            <option value="lowbrow" data-i18n="lowbrow_art">Lowbrow Art</option>
-                            <option value="minimalism" data-i18n="minimalism">Minimalism</option>
-                            <option value="kinetic" data-i18n="kinetic_art">Kinetic Art</option>
-                            <option value="sumi-e" data-i18n="sumi_e">Sumi-e</option>
-                            <option value="ukiyo-e" data-i18n="ukiyo_e">Ukiyo-e</option>
-                            <option value="claymation" data-i18n="claymation">Claymation</option>
-                            <option value="brutalism" data-i18n="brutalism">Brutalism</option>
-                            <option value="stained-glass" data-i18n="stained_glass">Stained Glass</option>
-                            <option value="grunge" data-i18n="grunge">Grunge</option>
-                            <option value="horror" data-i18n="horror">Horror</option>
-                            <option value="art-deco" data-i18n="art_deco">Art Deco</option>
-                            <option value="fantasy" data-i18n="fantasy_art">Fantasy Art</option>
-                            <option value="graffiti" data-i18n="graffiti_art">Graffiti Art</option>
-                            <option value="pixel" data-i18n="pixel_art">Pixel Art</option>
-                            <option value="steampunk" data-i18n="steampunk">Steampunk</option>
-                            <option value="cyberpunk" data-i18n="cyberpunk">Cyberpunk</option>
-                            <option value="abstract" data-i18n="abstract">Abstract</option>
-                            <option value="cartoon" data-i18n="cartoon">Cartoon</option>
-                            <option value="vintage" data-i18n="vintage">Vintage</option>
-                            <option value="gothic" data-i18n="gothic">Gothic</option>
-                            <option value="low-poly" data-i18n="low_poly">Low Poly</option>
-                            <option value="pop-art" data-i18n="pop_art">Pop Art</option>
-                            <option value="impressionist" data-i18n="impressionist_still">Impressionist Still Life</option>
-                            <option value="post-impressionist" data-i18n="post_impressionist">Post-Impressionist</option>
-                            <option value="landscape" data-i18n="landscape">Landscape</option>
-                            <option value="abstract-expressionist" data-i18n="abstract_expressionist">Abstract Expressionist</option>
-                            <option value="painting" data-i18n="painting">Painting</option>
-                            <option value="pop-surrealist" data-i18n="pop_surrealist">Pop Surrealist Illustration</option>
-                            <option value="lowbrow-cartoon" data-i18n="lowbrow_cartoon">Lowbrow Cartoon</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="quality" data-i18n="quality_label">Quality</label>
-                        <select id="quality">
-                            <option value="standard" data-i18n="standard">Standard</option>
-                            <option value="high" data-i18n="high_res">High Resolution</option>
-                            <option value="ultra" data-i18n="ultra_hd">Ultra HD</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="width" data-i18n="dimensions_label">Dimensions</label>
-                        <div class="range-container">
-                            <input type="range" id="width" min="512" max="2048" step="64" value="512">
-                            <span class="range-value" id="widthValue">512</span>
-                        </div>
-                        <div class="range-container">
-                            <input type="range" id="height" min="512" max="2048" step="64" value="512">
-                            <span class="range-value" id="heightValue">512</span>
-                        </div>
-                        <div class="ratio-info" id="ratioInfo">Aspect Ratio: 1:1 (Square)</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label data-i18n="light_enhance_label">Light Enhancement</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="light" value="hdr">
-                                    <span data-i18n="hdr">HDR</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="light" value="detail-ultra">
-                                    <span data-i18n="detail_ultra">Detail Ultra</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="light" value="cinematic">
-                                    <span data-i18n="cinematic">Cinematic</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="light" value="neon-glow">
-                                    <span data-i18n="neon_glow">Neon Glow</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="light" value="photorealistic">
-                                    <span data-i18n="photorealistic">Photorealistic</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="light" value="drama-light">
-                                    <span data-i18n="drama_light">Drama Light</span>
-                                </label>
-                            </div>
+                    <div class="settings-group">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7C14.1,7.7 15.8,9.4 15.8,11.5C15.8,14.5 12,18 12,18C12,18 8.2,14.5 8.2,11.5C8.2,9.4 9.9,7.7 12,7.7M12,10C11.17,10 10.5,10.67 10.5,11.5A1.5,1.5 0 0,0 12,13A1.5,1.5 0 0,0 13.5,11.5C13.5,10.67 12.83,10 12,10Z"/>
+                            </svg>
+                            <span data-i18n="ai_model">AI Model</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select id="ai-model">
+                                <option value="default" data-i18n="model_default">Default</option>
+                                <option value="dalle3" data-i18n="model_dalle">DALL-E 3 (OpenAI)</option>
+                                <option value="flux" data-i18n="model_flux">Flux Turbo</option>
+                                <option value="midjourney" data-i18n="model_midjourney">Midjourney</option>
+                                <option value="stability" data-i18n="model_stability">Stability AI</option>
+                            </select>
+                            <div class="select-arrow">▼</div>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label data-i18n="additional_features_label">Additional Features</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="features" value="animation">
-                                    <span data-i18n="animation">Animation</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="features" value="transparency">
-                                    <span data-i18n="transparency">Transparency</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="features" value="tilt-shift">
-                                    <span data-i18n="tilt_shift">Tilt-Shift</span>
-                                </label>
-                            </div>
-                            <div class="checkbox-item">
-                                <label>
-                                    <input type="checkbox" name="features" value="hologram">
-                                    <span data-i18n="hologram">Hologram</span>
-                                </label>
-                            </div>
+                    <div class="settings-group">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>
+                            </svg>
+                            <span data-i18n="style">Style</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select id="style">
+                                <option value="default" data-i18n="style_default">Default</option>
+                                <option value="realistic" data-i18n="style_realistic">Realistic</option>
+                                <option value="digital" data-i18n="style_digital">Digital Art</option>
+                                <option value="anime" data-i18n="style_anime">Anime Style</option>
+                                <option value="photography" data-i18n="style_photo">Photography</option>
+                                <option value="watercolor" data-i18n="style_watercolor">Watercolor</option>
+                                <option value="3d" data-i18n="style_3d">3D Render</option>
+                                <option value="surreal" data-i18n="style_surreal">Surrealism</option>
+                                <option value="disney" data-i18n="style_disney">3D Disney Character</option>
+                                <option value="ghibli" data-i18n="style_ghibli">Studio Ghibli</option>
+                                <option value="caricature" data-i18n="style_caricature">Caricature 3D</option>
+                                <option value="cartoon" data-i18n="style_cartoon">Cartoon</option>
+                                <option value="graffiti" data-i18n="style_graffiti">Graffiti Art</option>
+                                <option value="pixel" data-i18n="style_pixel">Pixel Art</option>
+                                <option value="steampunk" data-i18n="style_steampunk">Steampunk</option>
+                                <option value="cyberpunk" data-i18n="style_cyberpunk">Cyberpunk</option>
+                                <option value="psychedelic" data-i18n="style_psychedelic">Psychedelic</option>
+                                <option value="fractal" data-i18n="style_fractal">Fractal Vortex</option>
+                            </select>
+                            <div class="select-arrow">▼</div>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="imageCount" data-i18n="image_count_label">Number of Images</label>
-                        <input type="number" id="imageCount" min="1" max="4" value="1">
+                    <div class="settings-group">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                            </svg>
+                            <span data-i18n="quality">Quality</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select id="quality">
+                                <option value="hd" data-i18n="quality_hd">High Definition</option>
+                                <option value="fhd" selected data-i18n="quality_fhd">Full HD</option>
+                                <option value="4k" data-i18n="quality_4k">4K Ultra</option>
+                            </select>
+                            <div class="select-arrow">▼</div>
+                        </div>
                     </div>
                     
-                    <button id="generateBtn" class="btn btn-primary btn-block neon-border">
-                        <i class="fas fa-magic"></i> <span data-i18n="generate_button">Generate Image</span>
-                    </button>
+                    <div class="settings-group">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,2L4,5V6.09C4,11.36 7.37,16.13 12,17C16.63,16.13 20,11.36 20,6.09V5L12,2M12,19C7.59,19 4,16.41 4,12V8L12,5L20,8V12C20,16.41 16.41,19 12,19M15,13V15H13V17H15V19H17V17H19V15H17V13H15Z"/>
+                            </svg>
+                            <span data-i18n="enhancements">Enhancements</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select id="enhancement">
+                                <option value="none" data-i18n="enhance_none">None</option>
+                                <option value="hdr" data-i18n="enhance_hdr">HDR+</option>
+                                <option value="detail" data-i18n="enhance_detail">Detail Ultra</option>
+                                <option value="cinematic" data-i18n="enhance_cinematic">Cinematic</option>
+                                <option value="neon" data-i18n="enhance_neon">Neon Glow</option>
+                                <option value="photoreal" data-i18n="enhance_photoreal">Photorealistic</option>
+                                <option value="drama" data-i18n="enhance_drama">Drama Light</option>
+                                <option value="night" data-i18n="enhance_night">Night Mode</option>
+                            </select>
+                            <div class="select-arrow">▼</div>
+                        </div>
+                    </div>
                     
-                    <div class="form-group">
-                        <button class="toggle-advanced">
-                            <i class="fas fa-chevron-right"></i> <span data-i18n="advanced_settings">Advanced Settings</span>
-                        </button>
-                        <div class="advanced-settings">
-                            <div class="form-group">
-                                <label for="colorPalette" data-i18n="color_palette_label">Color Palette</label>
-                                <select id="colorPalette">
-                                    <option value="default" data-i18n="default">Default</option>
-                                    <option value="vibrant" data-i18n="vibrant">Vibrant</option>
-                                    <option value="pastel" data-i18n="pastel">Pastel</option>
-                                    <option value="monochrome" data-i18n="monochrome">Monochrome</option>
-                                    <option value="warm" data-i18n="warm_tones">Warm Tones</option>
-                                    <option value="cool" data-i18n="cool_tones">Cool Tones</option>
+                    <div class="settings-group">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                            </svg>
+                            <span data-i18n="aspect_ratio">Aspect Ratio</span>
+                        </h3>
+                        <div class="range-group">
+                            <div class="range-label">
+                                <span data-i18n="width">Width</span>
+                                <span id="width-value">1024</span>
+                            </div>
+                            <input type="range" class="range-input" id="width" min="720" max="3840" value="1024">
+                        </div>
+                        <div class="range-group">
+                            <div class="range-label">
+                                <span data-i18n="height">Height</span>
+                                <span id="height-value">1024</span>
+                            </div>
+                            <input type="range" class="range-input" id="height" min="720" max="3840" value="1024">
+                        </div>
+                        <div class="range-group">
+                            <div class="range-label">
+                                <span data-i18n="steps">Steps</span>
+                                <span id="steps-value">30</span>
+                            </div>
+                            <input type="range" class="range-input" id="steps" min="20" max="100" value="30">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3 class="settings-title">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>
+                            </svg>
+                            <span data-i18n="additional_features">Additional Features</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select id="additional-features">
+                                <option value="none" data-i18n="feature_none">None</option>
+                                <option value="animation" data-i18n="feature_animation">Animation</option>
+                                <option value="transparency" data-i18n="feature_transparency">Transparency</option>
+                                <option value="tilt" data-i18n="feature_tilt">Tilt-Shift</option>
+                                <option value="hologram" data-i18n="feature_hologram">Hologram</option>
+                            </select>
+                            <div class="select-arrow">▼</div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="nsfw" class="checkbox-input">
+                        <label for="nsfw" class="checkbox-label" data-i18n="nsfw_content">NSFW Content</label>
+                    </div>
+                    
+                    <div class="toggle-advanced" id="toggle-advanced">
+                        <svg viewBox="0 0 24 24" width="16" height="16">
+                            <path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/>
+                        </svg>
+                        <span data-i18n="advanced_settings">Advanced Settings</span>
+                    </div>
+                    
+                    <div class="advanced-settings" id="advanced-settings">
+                        <div class="settings-group">
+                            <h3 class="settings-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="currentColor" d="M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M12,19A7,7 0 0,1 5,12A7,7 0 0,1 12,5A7,7 0 0,1 19,12A7,7 0 0,1 12,19Z"/>
+                                </svg>
+                                <span data-i18n="color_palette">Color Palette</span>
+                            </h3>
+                            <div class="select-wrapper">
+                                <select id="color-palette">
+                                    <option value="default" data-i18n="palette_default">Default</option>
+                                    <option value="vibrant" data-i18n="palette_vibrant">Vibrant</option>
+                                    <option value="pastel" data-i18n="palette_pastel">Pastel</option>
+                                    <option value="monochrome" data-i18n="palette_mono">Monochrome</option>
+                                    <option value="warm" data-i18n="palette_warm">Warm Tones</option>
+                                    <option value="cool" data-i18n="palette_cool">Cool Tones</option>
+                                    <option value="rgb" data-i18n="palette_rgb">RGB</option>
                                 </select>
+                                <div class="select-arrow">▼</div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="composition" data-i18n="composition_label">Composition</label>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3 class="settings-title">
+                                <svg viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="currentColor" d="M4,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M4,6V18H20V6H4M12,10.5A1.5,1.5 0 0,1 13.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,12A1.5,1.5 0 0,1 12,10.5M7.5,10.5A1.5,1.5 0 0,1 9,12A1.5,1.5 0 0,1 7.5,13.5A1.5,1.5 0 0,1 6,12A1.5,1.5 0 0,1 7.5,10.5M16.5,10.5A1.5,1.5 0 0,1 18,12A1.5,1.5 0 0,1 16.5,13.5A1.5,1.5 0 0,1 15,12A1.5,1.5 0 0,1 16.5,10.5Z"/>
+                                </svg>
+                                <span data-i18n="composition">Composition</span>
+                            </h3>
+                            <div class="select-wrapper">
                                 <select id="composition">
-                                    <option value="default" data-i18n="default">Default</option>
-                                    <option value="close-up" data-i18n="close_up">Close-up</option>
-                                    <option value="wide-shot" data-i18n="wide_shot">Wide Shot</option>
-                                    <option value="macro" data-i18n="macro">Macro</option>
-                                    <option value="aerial" data-i18n="aerial">Aerial</option>
+                                    <option value="default" data-i18n="comp_default">Default</option>
+                                    <option value="closeup" data-i18n="comp_close">Close-up</option>
+                                    <option value="wide" data-i18n="comp_wide">Wide Shot</option>
+                                    <option value="macro" data-i18n="comp_macro">Macro</option>
+                                    <option value="aerial" data-i18n="comp_aerial">Aerial</option>
+                                    <option value="low" data-i18n="comp_low">Low View Angle</option>
+                                    <option value="birds" data-i18n="comp_birds">Bird's Eye Wide Angle</option>
                                 </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label data-i18n="enhance_label">Enhance</label>
-                                <div class="checkbox-group">
-                                    <div class="checkbox-item">
-                                        <label>
-                                            <input type="checkbox" id="enhance" value="enhance">
-                                            <span data-i18n="ultra_clear">Ultra Clear & Detailed</span>
-                                        </label>
-                                    </div>
-                                </div>
+                                <div class="select-arrow">▼</div>
                             </div>
                         </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="upscale" class="checkbox-input" checked>
+                            <label for="upscale" class="checkbox-label" data-i18n="enable_upscale">Enable Upscaling (Real-ESRGAN)</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="enhance" class="checkbox-input" checked>
+                            <label for="enhance" class="checkbox-label" data-i18n="enable_enhance">Enable Enhancement (Waifu2x)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="button" id="generate-btn">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M14,12L10,8V11H2V13H10V16L14,12M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12Z"/>
+                            </svg>
+                            <span data-i18n="generate">Generate</span>
+                        </button>
+                        <button class="button button-secondary" id="clear-btn">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                            </svg>
+                            <span data-i18n="clear">Clear</span>
+                        </button>
                     </div>
                 </div>
                 
-                <div class="results-container">
-                    <div class="results-header">
-                        <h2 class="results-title"><i class="fas fa-images"></i> <span data-i18n="results">Results</span></h2>
-                        <button class="history-btn" id="historyBtn">
-                            <i class="fas fa-history"></i> <span data-i18n="history">History</span>
-                        </button>
-                    </div>
-                    
-                    <div class="image-grid" id="imageGrid">
-                        <div class="placeholder-message" data-i18n="no_images_yet">
-                            No images generated yet. Enter a prompt and click "Generate Image" to create amazing AI art!
+                <div class="panel history-panel">
+                    <h2 class="panel-title">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3"/>
+                        </svg>
+                        <span data-i18n="prompt_history">Prompt History</span>
+                    </h2>
+                    <div class="history-list" id="history-list"></div>
+                    <button class="button button-secondary" id="clear-history" style="margin-top: 1rem;">
+                        <svg viewBox="0 0 24 24" width="18" height="18">
+                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                        </svg>
+                        <span data-i18n="clear_history">Clear History</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="gallery" id="gallery">
+                <!-- Generated images will appear here -->
+                <div class="image-card placeholder">
+                    <div class="image-container">
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: rgba(255,255,255,0.3);">
+                            <svg viewBox="0 0 24 24" width="64" height="64">
+                                <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"/>
+                            </svg>
                         </div>
                     </div>
-                    
-                    <div class="social-share">
-                        <button class="social-btn facebook-btn" data-i18n-title="share_facebook" title="Share on Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </button>
-                        <button class="social-btn twitter-btn" data-i18n-title="share_twitter" title="Share on Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-                        <button class="social-btn instagram-btn" data-i18n-title="share_instagram" title="Share on Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </button>
-                        <button class="social-btn pinterest-btn" data-i18n-title="share_pinterest" title="Share on Pinterest">
-                            <i class="fab fa-pinterest-p"></i>
-                        </button>
+                    <div class="image-info">
+                        <p class="image-prompt" data-i18n="generated_images">Your generated images will appear here</p>
                     </div>
                 </div>
             </div>
         </main>
         
         <footer>
-            <p data-i18n="copyright">© 2025 DEKA AI GENERATOR. All rights reserved.</p>
-            <div class="powered-by">
-                <span data-i18n="powered_by">Powered by</span>
-                <a href="https://pollinations.ai" target="_blank" style="color: var(--cyber-blue);">Pollinations.ai API</a>
-            </div>
-            <p data-i18n="developed_by">Developed by Dery Lau. Thanks to Github & Cloudflare</p>
+            <p>Copyright &copy; 2025 DEKA AI GENERATOR | Powered by Pollinations API | Developed by Dery Lau | Thanks to Github & Cloudflare</p>
         </footer>
     </div>
     
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
         <div class="loading-spinner"></div>
-        <div class="loading-text" data-i18n="loading">DEKA AI Loading...</div>
-    </div>
-    
-    <div class="history-panel" id="historyPanel">
-        <div class="history-header">
-            <h3 class="history-title"><i class="fas fa-history"></i> <span data-i18n="generation_history">Generation History</span></h3>
-            <button class="close-history" id="closeHistory">&times;</button>
-        </div>
-        <div class="history-items" id="historyItems"></div>
+        <div class="loading-text">DEKA AI Loading</div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const promptTextarea = document.getElementById('prompt');
-            const modelSelect = document.getElementById('model');
-            const styleSelect = document.getElementById('style');
-            const qualitySelect = document.getElementById('quality');
-            const widthSlider = document.getElementById('width');
-            const heightSlider = document.getElementById('height');
-            const widthValue = document.getElementById('widthValue');
-            const heightValue = document.getElementById('heightValue');
-            const ratioInfo = document.getElementById('ratioInfo');
-            const imageCount = document.getElementById('imageCount');
-            const generateBtn = document.getElementById('generateBtn');
-            const imageGrid = document.getElementById('imageGrid');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const historyBtn = document.getElementById('historyBtn');
-            const historyPanel = document.getElementById('historyPanel');
-            const closeHistory = document.getElementById('closeHistory');
-            const historyItems = document.getElementById('historyItems');
-            const errorMessage = document.getElementById('errorMessage');
-            const toggleAdvanced = document.querySelector('.toggle-advanced');
-            const advancedSettings = document.querySelector('.advanced-settings');
-            const colorPalette = document.getElementById('colorPalette');
-            const composition = document.getElementById('composition');
-            const enhanceCheckbox = document.getElementById('enhance');
-            const langButtons = document.querySelectorAll('.lang-btn');
-            const htmlElement = document.getElementById('html');
-            
-            // Language data
-            const translations = {
-                en: {
-                    control_panel: "Control Panel",
-                    prompt_label: "Image Prompt",
-                    prompt_placeholder: "Describe the image you want to generate...",
-                    model_label: "AI Model",
-                    style_label: "Style",
-                    no_style: "No Style",
-                    realistic: "Realistic",
-                    anime_style: "Anime Style",
-                    digital_art: "Digital Art",
-                    photography: "Photography",
-                    watercolor: "Watercolor",
-                    quality_label: "Quality",
-                    standard: "Standard",
-                    high_res: "High Resolution",
-                    ultra_hd: "Ultra HD",
-                    dimensions_label: "Dimensions",
-                    light_enhance_label: "Light Enhancement",
-                    hdr: "HDR",
-                    detail_ultra: "Detail Ultra",
-                    cinematic: "Cinematic",
-                    neon_glow: "Neon Glow",
-                    photorealistic: "Photorealistic",
-                    drama_light: "Drama Light",
-                    additional_features_label: "Additional Features",
-                    animation: "Animation",
-                    transparency: "Transparency",
-                    tilt_shift: "Tilt-Shift",
-                    hologram: "Hologram",
-                    image_count_label: "Number of Images",
-                    generate_button: "Generate Image",
-                    advanced_settings: "Advanced Settings",
-                    color_palette_label: "Color Palette",
-                    default: "Default",
-                    vibrant: "Vibrant",
-                    pastel: "Pastel",
-                    monochrome: "Monochrome",
-                    warm_tones: "Warm Tones",
-                    cool_tones: "Cool Tones",
-                    composition_label: "Composition",
-                    close_up: "Close-up",
-                    wide_shot: "Wide Shot",
-                    macro: "Macro",
-                    aerial: "Aerial",
-                    ultra_clear: "Ultra Clear & Detailed",
-                    enhance_label: "Enhance",
-                    results: "Results",
-                    history: "History",
-                    no_images_yet: "No images generated yet. Enter a prompt and click \"Generate Image\" to create amazing AI art!",
-                    share_facebook: "Share on Facebook",
-                    share_twitter: "Share on Twitter",
-                    share_instagram: "Share on Instagram",
-                    share_pinterest: "Share on Pinterest",
-                    copyright: "© 2025 DEKA AI GENERATOR. All rights reserved.",
-                    powered_by: "Powered by",
-                    developed_by: "Developed by Dery Lau. Thanks to Github & Cloudflare",
-                    loading: "DEKA AI Loading...",
-                    generation_history: "Generation History",
-                    download: "Download",
-                    save: "Save",
-                    share: "Share",
-                    aspect_ratio: "Aspect Ratio",
-                    square: "Square",
-                    portrait: "Portrait",
-                    landscape: "Landscape",
-                    error_empty_prompt: "Please enter a prompt to generate an image.",
-                    error_api_failure: "Failed to generate image. Please try again later."
-                },
-                id: {
-                    control_panel: "Panel Kontrol",
-                    prompt_label: "Deskripsi Gambar",
-                    prompt_placeholder: "Jelaskan gambar yang ingin Anda hasilkan...",
-                    model_label: "Model AI",
-                    style_label: "Gaya",
-                    no_style: "Tanpa Gaya",
-                    realistic: "Realistis",
-                    anime_style: "Gaya Anime",
-                    digital_art: "Seni Digital",
-                    photography: "Fotografi",
-                    watercolor: "Cat Air",
-                    quality_label: "Kualitas",
-                    standard: "Standar",
-                    high_res: "Resolusi Tinggi",
-                    ultra_hd: "Ultra HD",
-                    dimensions_label: "Dimensi",
-                    light_enhance_label: "Peningkatan Cahaya",
-                    hdr: "HDR",
-                    detail_ultra: "Detail Ultra",
-                    cinematic: "Sinematik",
-                    neon_glow: "Cahaya Neon",
-                    photorealistic: "Fotorealistik",
-                    drama_light: "Cahaya Dramatis",
-                    additional_features_label: "Fitur Tambahan",
-                    animation: "Animasi",
-                    transparency: "Transparansi",
-                    tilt_shift: "Tilt-Shift",
-                    hologram: "Hologram",
-                    image_count_label: "Jumlah Gambar",
-                    generate_button: "Hasilkan Gambar",
-                    advanced_settings: "Pengaturan Lanjutan",
-                    color_palette_label: "Palet Warna",
-                    default: "Default",
-                    vibrant: "Vibrant",
-                    pastel: "Pastel",
-                    monochrome: "Monokrom",
-                    warm_tones: "Warna Hangat",
-                    cool_tones: "Warna Dingin",
-                    composition_label: "Komposisi",
-                    close_up: "Close-up",
-                    wide_shot: "Wide Shot",
-                    macro: "Makro",
-                    aerial: "Udara",
-                    ultra_clear: "Jelas & Detail Ultra",
-                    enhance_label: "Tingkatkan",
-                    results: "Hasil",
-                    history: "Riwayat",
-                    no_images_yet: "Belum ada gambar yang dihasilkan. Masukkan deskripsi dan klik \"Hasilkan Gambar\" untuk membuat seni AI yang menakjubkan!",
-                    share_facebook: "Bagikan ke Facebook",
-                    share_twitter: "Bagikan ke Twitter",
-                    share_instagram: "Bagikan ke Instagram",
-                    share_pinterest: "Bagikan ke Pinterest",
-                    copyright: "© 2025 DEKA AI GENERATOR. Hak cipta dilindungi.",
-                    powered_by: "Didukung oleh",
-                    developed_by: "Dikembangkan oleh Dery Lau. Terima kasih kepada Github & Cloudflare",
-                    loading: "DEKA AI Memuat...",
-                    generation_history: "Riwayat Pembuatan",
-                    download: "Unduh",
-                    save: "Simpan",
-                    share: "Bagikan",
-                    aspect_ratio: "Rasio Aspek",
-                    square: "Persegi",
-                    portrait: "Portrait",
-                    landscape: "Landscape",
-                    error_empty_prompt: "Masukkan deskripsi untuk menghasilkan gambar.",
-                    error_api_failure: "Gagal menghasilkan gambar. Silakan coba lagi nanti."
-                }
-            };
-            
-            // Current language
-            let currentLang = 'en';
-            
-            // Set language
-            function setLanguage(lang) {
-                currentLang = lang;
-                htmlElement.lang = lang;
-                
-                // Update active button
-                langButtons.forEach(btn => {
-                    if (btn.dataset.lang === lang) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
-                
-                // Update all translatable elements
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    const key = el.dataset.i18n;
-                    if (translations[lang][key]) {
-                        el.textContent = translations[lang][key];
-                    }
-                });
-                
-                // Update placeholders
-                document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-                    const key = el.dataset.i18nPh;
-                    if (translations[lang][key]) {
-                        el.placeholder = translations[lang][key];
-                    }
-                });
-                
-                // Update title attributes
-                document.querySelectorAll('[data-i18n-title]').forEach(el => {
-                    const key = el.dataset.i18nTitle;
-                    if (translations[lang][key]) {
-                        el.title = translations[lang][key];
-                    }
-                });
-                
-                // Update aspect ratio text
-                updateRatioText();
+        // DOM Elements
+        const promptInput = document.getElementById('prompt-input');
+        const negativePrompt = document.getElementById('negative-prompt');
+        const aiModel = document.getElementById('ai-model');
+        const styleSelect = document.getElementById('style');
+        const qualitySelect = document.getElementById('quality');
+        const enhancementSelect = document.getElementById('enhancement');
+        const widthInput = document.getElementById('width');
+        const heightInput = document.getElementById('height');
+        const stepsInput = document.getElementById('steps');
+        const widthValue = document.getElementById('width-value');
+        const heightValue = document.getElementById('height-value');
+        const stepsValue = document.getElementById('steps-value');
+        const additionalFeatures = document.getElementById('additional-features');
+        const nsfwCheckbox = document.getElementById('nsfw');
+        const generateBtn = document.getElementById('generate-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const gallery = document.getElementById('gallery');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const historyList = document.getElementById('history-list');
+        const clearHistoryBtn = document.getElementById('clear-history');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const html = document.getElementById('html');
+        const langEn = document.getElementById('lang-en');
+        const langId = document.getElementById('lang-id');
+        const toggleAdvanced = document.getElementById('toggle-advanced');
+        const advancedSettings = document.getElementById('advanced-settings');
+        const colorPalette = document.getElementById('color-palette');
+        const composition = document.getElementById('composition');
+        const upscaleCheckbox = document.getElementById('upscale');
+        const enhanceCheckbox = document.getElementById('enhance');
+
+        // Translations
+        const translations = {
+            en: {
+                prompt_title: "Prompt",
+                prompt_placeholder: "Describe the image you want to generate...",
+                negative_prompt: "Negative Prompt",
+                negative_placeholder: "What you don't want in the image...",
+                ai_model: "AI Model",
+                model_default: "Default",
+                model_dalle: "DALL-E 3 (OpenAI)",
+                model_flux: "Flux Turbo",
+                model_midjourney: "Midjourney",
+                model_stability: "Stability AI",
+                style: "Style",
+                style_default: "Default",
+                style_realistic: "Realistic",
+                style_digital: "Digital Art",
+                style_anime: "Anime Style",
+                style_photo: "Photography",
+                style_watercolor: "Watercolor",
+                style_3d: "3D Render",
+                style_surreal: "Surrealism",
+                style_disney: "3D Disney Character",
+                style_ghibli: "Studio Ghibli",
+                style_caricature: "Caricature 3D",
+                style_cartoon: "Cartoon",
+                style_graffiti: "Graffiti Art",
+                style_pixel: "Pixel Art",
+                style_steampunk: "Steampunk",
+                style_cyberpunk: "Cyberpunk",
+                style_psychedelic: "Psychedelic",
+                style_fractal: "Fractal Vortex",
+                quality: "Quality",
+                quality_hd: "High Definition",
+                quality_fhd: "Full HD",
+                quality_4k: "4K Ultra",
+                enhancements: "Enhancements",
+                enhance_none: "None",
+                enhance_hdr: "HDR+",
+                enhance_detail: "Detail Ultra",
+                enhance_cinematic: "Cinematic",
+                enhance_neon: "Neon Glow",
+                enhance_photoreal: "Photorealistic",
+                enhance_drama: "Drama Light",
+                enhance_night: "Night Mode",
+                aspect_ratio: "Aspect Ratio",
+                width: "Width",
+                height: "Height",
+                steps: "Steps",
+                additional_features: "Additional Features",
+                feature_none: "None",
+                feature_animation: "Animation",
+                feature_transparency: "Transparency",
+                feature_tilt: "Tilt-Shift",
+                feature_hologram: "Hologram",
+                nsfw_content: "NSFW Content",
+                advanced_settings: "Advanced Settings",
+                color_palette: "Color Palette",
+                palette_default: "Default",
+                palette_vibrant: "Vibrant",
+                palette_pastel: "Pastel",
+                palette_mono: "Monochrome",
+                palette_warm: "Warm Tones",
+                palette_cool: "Cool Tones",
+                palette_rgb: "RGB",
+                composition: "Composition",
+                comp_default: "Default",
+                comp_close: "Close-up",
+                comp_wide: "Wide Shot",
+                comp_macro: "Macro",
+                comp_aerial: "Aerial",
+                comp_low: "Low View Angle",
+                comp_birds: "Bird's Eye Wide Angle",
+                enable_upscale: "Enable Upscaling (Real-ESRGAN)",
+                enable_enhance: "Enable Enhancement (Waifu2x)",
+                generate: "Generate",
+                clear: "Clear",
+                prompt_history: "Prompt History",
+                clear_history: "Clear History",
+                generated_images: "Your generated images will appear here",
+                theme_dark: "Dark Mode",
+                theme_light: "Light Mode"
+            },
+            id: {
+                prompt_title: "Prompt",
+                prompt_placeholder: "Deskripsikan gambar yang ingin Anda hasilkan...",
+                negative_prompt: "Prompt Negatif",
+                negative_placeholder: "Apa yang tidak Anda inginkan dalam gambar...",
+                ai_model: "Model AI",
+                model_default: "Default",
+                model_dalle: "DALL-E 3 (OpenAI)",
+                model_flux: "Flux Turbo",
+                model_midjourney: "Midjourney",
+                model_stability: "Stability AI",
+                style: "Gaya",
+                style_default: "Default",
+                style_realistic: "Realistis",
+                style_digital: "Seni Digital",
+                style_anime: "Gaya Anime",
+                style_photo: "Fotografi",
+                style_watercolor: "Cat Air",
+                style_3d: "Render 3D",
+                style_surreal: "Surealisme",
+                style_disney: "Karakter Disney 3D",
+                style_ghibli: "Studio Ghibli",
+                style_caricature: "Karikatur 3D",
+                style_cartoon: "Kartun",
+                style_graffiti: "Seni Graffiti",
+                style_pixel: "Seni Pixel",
+                style_steampunk: "Steampunk",
+                style_cyberpunk: "Cyberpunk",
+                style_psychedelic: "Psikedelik",
+                style_fractal: "Vortex Fraktal",
+                quality: "Kualitas",
+                quality_hd: "High Definition",
+                quality_fhd: "Full HD",
+                quality_4k: "4K Ultra",
+                enhancements: "Peningkatan",
+                enhance_none: "Tidak Ada",
+                enhance_hdr: "HDR+",
+                enhance_detail: "Detail Ultra",
+                enhance_cinematic: "Sinematik",
+                enhance_neon: "Neon Glow",
+                enhance_photoreal: "Fotorealistik",
+                enhance_drama: "Cahaya Drama",
+                enhance_night: "Mode Malam",
+                aspect_ratio: "Rasio Aspek",
+                width: "Lebar",
+                height: "Tinggi",
+                steps: "Langkah",
+                additional_features: "Fitur Tambahan",
+                feature_none: "Tidak Ada",
+                feature_animation: "Animasi",
+                feature_transparency: "Transparansi",
+                feature_tilt: "Tilt-Shift",
+                feature_hologram: "Hologram",
+                nsfw_content: "Konten NSFW",
+                advanced_settings: "Pengaturan Lanjutan",
+                color_palette: "Palet Warna",
+                palette_default: "Default",
+                palette_vibrant: "Vibrant",
+                palette_pastel: "Pastel",
+                palette_mono: "Monokrom",
+                palette_warm: "Warna Hangat",
+                palette_cool: "Warna Dingin",
+                palette_rgb: "RGB",
+                composition: "Komposisi",
+                comp_default: "Default",
+                comp_close: "Close-up",
+                comp_wide: "Wide Shot",
+                comp_macro: "Makro",
+                comp_aerial: "Udara",
+                comp_low: "Sudut Pandang Rendah",
+                comp_birds: "Sudut Pandang Lebar Bird's Eye",
+                enable_upscale: "Aktifkan Upscaling (Real-ESRGAN)",
+                enable_enhance: "Aktifkan Peningkatan (Waifu2x)",
+                generate: "Hasilkan",
+                clear: "Bersihkan",
+                prompt_history: "Riwayat Prompt",
+                clear_history: "Hapus Riwayat",
+                generated_images: "Gambar yang dihasilkan akan muncul di sini",
+                theme_dark: "Mode Gelap",
+                theme_light: "Mode Terang"
             }
-            
-            // Language switcher
-            langButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    setLanguage(btn.dataset.lang);
-                });
-            });
-            
-            // Initialize with English
-            setLanguage('en');
-            
-            // Toggle advanced settings
-            toggleAdvanced.addEventListener('click', () => {
-                toggleAdvanced.classList.toggle('active');
-                advancedSettings.classList.toggle('active');
-            });
-            
-            // Update slider values
-            function updateSliderValues() {
-                widthValue.textContent = widthSlider.value;
-                heightValue.textContent = heightSlider.value;
-                updateRatioText();
+        };
+
+        // Current language
+        let currentLang = 'en';
+
+        // Theme state
+        let isDarkMode = true;
+
+        // Advanced settings state
+        let advancedSettingsVisible = false;
+
+        // Initialize the app
+        function init() {
+            // Load saved theme preference
+            const savedTheme = localStorage.getItem('dekai-theme');
+            if (savedTheme === 'light') {
+                toggleTheme();
             }
-            
-            // Calculate and display aspect ratio
-            function updateRatioText() {
-                const width = parseInt(widthSlider.value);
-                const height = parseInt(heightSlider.value);
-                let ratioText = '';
-                
-                if (width === height) {
-                    ratioText = `1:1 (${translations[currentLang].square})`;
-                } else if (width > height) {
-                    const ratio = width / height;
-                    ratioText = `${ratio.toFixed(1)}:1 (${translations[currentLang].landscape})`;
-                } else {
-                    const ratio = height / width;
-                    ratioText = `1:${ratio.toFixed(1)} (${translations[currentLang].portrait})`;
-                }
-                
-                ratioInfo.textContent = `${translations[currentLang].aspect_ratio}: ${ratioText}`;
+
+            // Load saved language preference
+            const savedLang = localStorage.getItem('dekai-lang');
+            if (savedLang === 'id') {
+                toggleLanguage();
             }
-            
-            widthSlider.addEventListener('input', updateSliderValues);
-            heightSlider.addEventListener('input', updateSliderValues);
-            
-            // Initialize slider values
-            updateSliderValues();
-            
-            // History functionality
-            let generationHistory = JSON.parse(localStorage.getItem('dekaiHistory')) || [];
-            
-            function saveToHistory(prompt, imageUrl) {
-                const historyItem = {
-                    prompt,
-                    imageUrl,
-                    timestamp: new Date().toISOString()
-                };
-                
-                generationHistory.unshift(historyItem);
-                if (generationHistory.length > 20) {
-                    generationHistory = generationHistory.slice(0, 20);
-                }
-                
-                localStorage.setItem('dekaiHistory', JSON.stringify(generationHistory));
-                renderHistory();
-            }
-            
-            function renderHistory() {
-                historyItems.innerHTML = '';
-                
-                if (generationHistory.length === 0) {
-                    historyItems.innerHTML = `<p style="color: rgba(255,255,255,0.6); text-align: center;">${translations[currentLang].no_images_yet}</p>`;
-                    return;
-                }
-                
-                generationHistory.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    historyItem.innerHTML = `
-                        <div class="history-item-content">
-                            <img src="${item.imageUrl}" class="history-thumbnail" alt="Generated image">
-                            <div class="history-prompt" title="${item.prompt}">${item.prompt}</div>
-                        </div>
-                    `;
-                    
-                    historyItem.addEventListener('click', () => {
-                        promptTextarea.value = item.prompt;
-                        historyPanel.classList.remove('active');
-                    });
-                    
-                    historyItems.appendChild(historyItem);
-                });
-            }
-            
-            historyBtn.addEventListener('click', () => {
-                historyPanel.classList.add('active');
-                renderHistory();
-            });
-            
-            closeHistory.addEventListener('click', () => {
-                historyPanel.classList.remove('active');
-            });
-            
-            // Generate image function
-            async function generateImage() {
-                const prompt = promptTextarea.value.trim();
-                const model = modelSelect.value;
-                const style = styleSelect.value;
-                const quality = qualitySelect.value;
-                const width = widthSlider.value;
-                const height = heightSlider.value;
-                const count = parseInt(imageCount.value);
-                const color = colorPalette.value;
-                const comp = composition.value;
-                const enhance = enhanceCheckbox.checked;
-                
-                // Validate prompt
-                if (!prompt) {
-                    showError(translations[currentLang].error_empty_prompt);
-                    return;
-                }
-                
-                // Hide any previous error
-                hideError();
-                
-                // Show loading
-                loadingOverlay.classList.add('active');
-                
-                try {
-                    // Clear previous results
-                    imageGrid.innerHTML = '';
-                    
-                    // Build prompt with all parameters
-                    let fullPrompt = prompt;
-                    
-                    // Add model if not DALL-E 3 (default)
-                    if (model !== 'dall-e-3') {
-                        fullPrompt += `, ${model} model`;
-                    }
-                    
-                    // Add style if selected
-                    if (style) {
-                        fullPrompt += `, ${style} style`;
-                    }
-                    
-                    // Add quality if not standard
-                    if (quality !== 'standard') {
-                        fullPrompt += `, ${quality} quality`;
-                    }
-                    
-                    // Add color palette if not default
-                    if (color !== 'default') {
-                        fullPrompt += `, ${color} color palette`;
-                    }
-                    
-                    // Add composition if not default
-                    if (comp !== 'default') {
-                        fullPrompt += `, ${comp} composition`;
-                    }
-                    
-                    // Add enhance if checked
-                    if (enhance) {
-                        fullPrompt += `, ultra detailed, high resolution, 8k`;
-                    }
-                    
-                    // Add light enhancements
-                    const lightEnhancements = Array.from(document.querySelectorAll('input[name="light"]:checked')).map(el => el.value);
-                    if (lightEnhancements.length > 0) {
-                        fullPrompt += `, ${lightEnhancements.join(', ')}`;
-                    }
-                    
-                    // Add additional features
-                    const additionalFeatures = Array.from(document.querySelectorAll('input[name="features"]:checked')).map(el => el.value);
-                    if (additionalFeatures.length > 0) {
-                        fullPrompt += `, ${additionalFeatures.join(', ')}`;
-                    }
-                    
-                    // Generate multiple images if count > 1
-                    for (let i = 0; i < count; i++) {
-                        // Make each image slightly different by adding a variation to the prompt
-                        const variationPrompt = i > 0 ? `${fullPrompt}, variation ${i + 1}` : fullPrompt;
-                        
-                        // Encode prompt for URL
-                        const encodedPrompt = encodeURIComponent(variationPrompt);
-                        
-                        // API URL with parameters
-                        const apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true`;
-                        
-                        // Create image element
-                        const img = document.createElement('img');
-                        img.className = 'generated-image';
-                        img.alt = prompt;
-                        
-                        // Create image card
-                        const card = document.createElement('div');
-                        card.className = 'image-card';
-                        
-                        const imageWrapper = document.createElement('div');
-                        imageWrapper.className = 'image-wrapper';
-                        
-                        const actions = document.createElement('div');
-                        actions.className = 'image-actions';
-                        
-                        const downloadBtn = document.createElement('button');
-                        downloadBtn.className = 'action-btn';
-                        downloadBtn.innerHTML = `<i class="fas fa-download"></i> <span data-i18n="download">${translations[currentLang].download}</span>`;
-                        
-                        const saveBtn = document.createElement('button');
-                        saveBtn.className = 'action-btn';
-                        saveBtn.innerHTML = `<i class="fas fa-save"></i> <span data-i18n="save">${translations[currentLang].save}</span>`;
-                        
-                        const shareBtn = document.createElement('button');
-                        shareBtn.className = 'action-btn';
-                        shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span data-i18n="share">${translations[currentLang].share}</span>`;
-                        
-                        // Set image source and handle load/error
-                        img.onload = function() {
-                            // Save to history
-                            saveToHistory(prompt, apiUrl);
-                            
-                            // Append elements
-                            imageWrapper.appendChild(img);
-                            actions.appendChild(downloadBtn);
-                            actions.appendChild(saveBtn);
-                            actions.appendChild(shareBtn);
-                            
-                            card.appendChild(imageWrapper);
-                            card.appendChild(actions);
-                            imageGrid.appendChild(card);
-                            
-                            // Set up download button
-                            downloadBtn.addEventListener('click', () => {
-                                downloadImage(apiUrl, `deka-ai-${Date.now()}.jpg`);
-                            });
-                            
-                            // Set up save button
-                            saveBtn.addEventListener('click', () => {
-                                saveToHistory(prompt, apiUrl);
-                                alert(translations[currentLang].save);
-                            });
-                            
-                            // Set up share button
-                            shareBtn.addEventListener('click', () => {
-                                shareImage(apiUrl, prompt);
-                            });
-                        };
-                        
-                        img.onerror = function() {
-                            showError(translations[currentLang].error_api_failure);
-                        };
-                        
-                        // Set image source
-                        img.src = apiUrl;
-                    }
-                } catch (error) {
-                    console.error('Error generating image:', error);
-                    showError(translations[currentLang].error_api_failure);
-                } finally {
-                    // Hide loading
-                    setTimeout(() => {
-                        loadingOverlay.classList.remove('active');
-                    }, 1000);
-                }
-            }
-            
-            // Download image
-            function downloadImage(url, filename) {
-                fetch(url)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        const blobUrl = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = blobUrl;
-                        a.download = filename;
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(blobUrl);
-                        document.body.removeChild(a);
-                    })
-                    .catch(error => {
-                        console.error('Download error:', error);
-                        showError('Failed to download image');
-                    });
-            }
-            
-            // Share image
-            function shareImage(url, prompt) {
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'DEKA AI Generated Image',
-                        text: `Check out this AI generated image: ${prompt}`,
-                        url: url
-                    }).catch(error => {
-                        console.error('Error sharing:', error);
-                    });
-                } else {
-                    // Fallback for browsers that don't support Web Share API
-                    promptTextarea.select();
-                    document.execCommand('copy');
-                    alert(translations[currentLang].share);
-                }
-            }
-            
-            // Show error message
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
-                
-                // Hide after 5 seconds
-                setTimeout(hideError, 5000);
-            }
-            
-            // Hide error message
-            function hideError() {
-                errorMessage.style.display = 'none';
-            }
-            
-            // Generate button click event
+
+            // Load history from local storage
+            loadHistory();
+
+            // Event listeners
             generateBtn.addEventListener('click', generateImage);
+            clearBtn.addEventListener('click', clearInputs);
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            themeToggle.addEventListener('click', toggleTheme);
+            langEn.addEventListener('click', () => {
+                if (currentLang !== 'en') toggleLanguage();
+            });
+            langId.addEventListener('click', () => {
+                if (currentLang !== 'id') toggleLanguage();
+            });
+            toggleAdvanced.addEventListener('click', toggleAdvancedSettings);
+
+            // Range input listeners
+            widthInput.addEventListener('input', updateWidthValue);
+            heightInput.addEventListener('input', updateHeightValue);
+            stepsInput.addEventListener('input', updateStepsValue);
+
+            // Initialize values
+            updateWidthValue();
+            updateHeightValue();
+            updateStepsValue();
+        }
+
+        // Toggle between dark and light theme
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            html.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
             
-            // Also allow Enter key in textarea to generate (but don't submit form)
-            promptTextarea.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    generateImage();
-                }
+            // Update theme icon and text
+            if (isDarkMode) {
+                themeIcon.innerHTML = '<path d="M12,2L4.22,4.22L2,12L4.22,19.78L12,22L19.78,19.78L22,12L19.78,4.22L12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>';
+                themeText.textContent = currentLang === 'en' ? 'Dark Mode' : 'Mode Gelap';
+            } else {
+                themeIcon.innerHTML = '<path d="M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8M12,4C11.45,4 11,3.55 11,3V1C11,0.45 11.45,0 12,0C12.55,0 13,0.45 13,1V3C13,3.55 12.55,4 12,4M12,20C11.45,20 11,19.55 11,19V17C11,16.45 11.45,16 12,16C12.55,16 13,16.45 13,17V19C13,19.55 12.55,20 12,20M5.64,6.64L4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05C6.03,8.44 6.66,8.44 7.05,8.05C7.44,7.66 7.44,7.03 7.05,6.64L5.64,5.22C5.25,4.83 4.62,4.83 4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05M18.36,17.36L19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95C17.97,15.56 17.34,15.56 16.95,15.95C16.56,16.34 16.56,16.97 16.95,17.36L18.36,18.78C18.75,19.17 19.38,19.17 19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95M1,12C1,11.45 1.45,11 2,11H4C4.55,11 5,11.45 5,12C5,12.55 4.55,13 4,13H2C1.45,13 1,12.55 1,12M21,12C21,11.45 21.45,11 22,11H24C24.55,11 25,11.45 25,12C25,12.55 24.55,13 24,13H22C21.45,13 21,12.55 21,12M5.64,17.36L7.05,18.78C7.44,19.17 7.44,19.8 7.05,20.19C6.66,20.58 6.03,20.58 5.64,20.19L4.22,18.78C3.83,18.39 3.83,17.76 4.22,17.37L5.64,15.95C6.03,15.56 6.66,15.56 7.05,15.95C7.44,16.34 7.44,16.97 7.05,17.36L5.64,18.78M18.36,6.64L16.95,5.22C16.56,4.83 16.56,4.2 16.95,3.81C17.34,3.42 17.97,3.42 18.36,3.81L19.78,5.22C20.17,5.61 20.17,6.24 19.78,6.63L18.36,8.05C17.97,8.44 17.34,8.44 16.95,8.05C16.56,7.66 16.56,7.03 16.95,6.64L18.36,5.22"/>';
+                themeText.textContent = currentLang === 'en' ? 'Light Mode' : 'Mode Terang';
+            }
+            
+            // Save theme preference
+            localStorage.setItem('dekai-theme', isDarkMode ? 'dark' : 'light');
+        }
+
+        // Toggle between English and Indonesian
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            
+            // Update language buttons
+            if (currentLang === 'en') {
+                langEn.classList.add('active');
+                langId.classList.remove('active');
+            } else {
+                langEn.classList.remove('active');
+                langId.classList.add('active');
+            }
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = translations[currentLang][key];
             });
             
-            // Social share buttons
-            document.querySelectorAll('.social-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const type = this.classList.contains('facebook-btn') ? 'facebook' :
-                                this.classList.contains('twitter-btn') ? 'twitter' :
-                                this.classList.contains('instagram-btn') ? 'instagram' : 'pinterest';
-                    
-                    let url = '';
-                    const text = encodeURIComponent("Check out this amazing AI generated image from DEKA AI Generator!");
-                    
-                    switch (type) {
-                        case 'facebook':
-                            url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-                            break;
-                        case 'twitter':
-                            url = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`;
-                            break;
-                        case 'pinterest':
-                            url = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&description=${text}`;
-                            break;
-                        case 'instagram':
-                            alert(translations[currentLang].share_instagram);
-                            return;
-                    }
-                    
-                    window.open(url, '_blank', 'width=600,height=400');
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                el.setAttribute('placeholder', translations[currentLang][key]);
+            });
+            
+            // Update theme text
+            themeText.textContent = isDarkMode ? 
+                (currentLang === 'en' ? 'Dark Mode' : 'Mode Gelap') : 
+                (currentLang === 'en' ? 'Light Mode' : 'Mode Terang');
+            
+            // Save language preference
+            localStorage.setItem('dekai-lang', currentLang);
+        }
+
+        // Toggle advanced settings visibility
+        function toggleAdvancedSettings() {
+            advancedSettingsVisible = !advancedSettingsVisible;
+            
+            if (advancedSettingsVisible) {
+                advancedSettings.classList.add('active');
+                toggleAdvanced.classList.add('active');
+            } else {
+                advancedSettings.classList.remove('active');
+                toggleAdvanced.classList.remove('active');
+            }
+        }
+
+        // Update width value display
+        function updateWidthValue() {
+            widthValue.textContent = widthInput.value;
+        }
+
+        // Update height value display
+        function updateHeightValue() {
+            heightValue.textContent = heightInput.value;
+        }
+
+        // Update steps value display
+        function updateStepsValue() {
+            stepsValue.textContent = stepsInput.value;
+        }
+
+        // Clear all input fields
+        function clearInputs() {
+            promptInput.value = '';
+            negativePrompt.value = '';
+            aiModel.selectedIndex = 0;
+            styleSelect.selectedIndex = 0;
+            qualitySelect.selectedIndex = 1;
+            enhancementSelect.selectedIndex = 0;
+            widthInput.value = 1024;
+            heightInput.value = 1024;
+            stepsInput.value = 30;
+            additionalFeatures.selectedIndex = 0;
+            nsfwCheckbox.checked = false;
+            colorPalette.selectedIndex = 0;
+            composition.selectedIndex = 0;
+            upscaleCheckbox.checked = true;
+            enhanceCheckbox.checked = true;
+            
+            updateWidthValue();
+            updateHeightValue();
+            updateStepsValue();
+        }
+
+        // Load prompt history from local storage
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('dekai-history')) || [];
+            historyList.innerHTML = '';
+            
+            if (history.length === 0) {
+                const emptyItem = document.createElement('div');
+                emptyItem.textContent = currentLang === 'en' ? 'No history yet' : 'Belum ada riwayat';
+                emptyItem.style.textAlign = 'center';
+                emptyItem.style.padding = '1rem';
+                emptyItem.style.color = 'rgba(255,255,255,0.5)';
+                historyList.appendChild(emptyItem);
+                return;
+            }
+            
+            history.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                const promptText = document.createElement('span');
+                promptText.textContent = item.prompt.length > 50 ? item.prompt.substring(0, 50) + '...' : item.prompt;
+                promptText.title = item.prompt;
+                
+                const deleteBtn = document.createElement('span');
+                deleteBtn.className = 'history-delete';
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteHistoryItem(index);
                 });
+                
+                historyItem.appendChild(promptText);
+                historyItem.appendChild(deleteBtn);
+                
+                historyItem.addEventListener('click', () => {
+                    promptInput.value = item.prompt;
+                    negativePrompt.value = item.negativePrompt || '';
+                    if (item.model) aiModel.value = item.model;
+                    if (item.style) styleSelect.value = item.style;
+                    if (item.width) {
+                        widthInput.value = item.width;
+                        updateWidthValue();
+                    }
+                    if (item.height) {
+                        heightInput.value = item.height;
+                        updateHeightValue();
+                    }
+                    if (item.steps) {
+                        stepsInput.value = item.steps;
+                        updateStepsValue();
+                    }
+                });
+                
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // Delete a history item
+        function deleteHistoryItem(index) {
+            const history = JSON.parse(localStorage.getItem('dekai-history')) || [];
+            history.splice(index, 1);
+            localStorage.setItem('dekai-history', JSON.stringify(history));
+            loadHistory();
+        }
+
+        // Clear all history
+        function clearHistory() {
+            localStorage.removeItem('dekai-history');
+            loadHistory();
+        }
+
+        // Add a prompt to history
+        function addToHistory(prompt, negativePrompt, model, style, width, height, steps) {
+            const history = JSON.parse(localStorage.getItem('dekai-history')) || [];
+            
+            // Check if this prompt already exists in history
+            const existingIndex = history.findIndex(item => item.prompt === prompt);
+            if (existingIndex !== -1) {
+                // Remove the existing one to add it to the top
+                history.splice(existingIndex, 1);
+            }
+            
+            // Add new prompt to the beginning of the array
+            history.unshift({
+                prompt,
+                negativePrompt,
+                model,
+                style,
+                width,
+                height,
+                steps,
+                timestamp: new Date().toISOString()
             });
             
-            // Initial history render
-            renderHistory();
-        });
+            // Keep only the last 20 items
+            if (history.length > 20) {
+                history.pop();
+            }
+            
+            localStorage.setItem('dekai-history', JSON.stringify(history));
+            loadHistory();
+        }
+
+        // Generate image from prompt
+        async function generateImage() {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                alert(currentLang === 'en' ? 'Please enter a prompt' : 'Silakan masukkan prompt');
+                return;
+            }
+            
+            const negativePromptValue = negativePrompt.value.trim();
+            const model = aiModel.value;
+            const style = styleSelect.value;
+            const quality = qualitySelect.value;
+            const enhancement = enhancementSelect.value;
+            const width = widthInput.value;
+            const height = heightInput.value;
+            const steps = stepsInput.value;
+            const additionalFeature = additionalFeatures.value;
+            const nsfw = nsfwCheckbox.checked;
+            const color = colorPalette.value;
+            const comp = composition.value;
+            const upscale = upscaleCheckbox.checked;
+            const enhance = enhanceCheckbox.checked;
+            
+            // Add to history
+            addToHistory(prompt, negativePromptValue, model, style, width, height, steps);
+            
+            // Show loading overlay
+            loadingOverlay.style.display = 'flex';
+            
+            try {
+                // Build the full prompt with all options
+                let fullPrompt = prompt;
+                
+                // Add style if not default
+                if (style !== 'default') {
+                    fullPrompt += `, ${style} style`;
+                }
+                
+                // Add quality if not default
+                if (quality !== 'hd') {
+                    fullPrompt += `, ${quality} quality`;
+                }
+                
+                // Add enhancement if any
+                if (enhancement !== 'none') {
+                    fullPrompt += `, ${enhancement}`;
+                }
+                
+                // Add additional features if any
+                if (additionalFeature !== 'none') {
+                    fullPrompt += `, ${additionalFeature}`;
+                }
+                
+                // Add color palette if not default
+                if (color !== 'default') {
+                    fullPrompt += `, ${color} color palette`;
+                }
+                
+                // Add composition if not default
+                if (comp !== 'default') {
+                    fullPrompt += `, ${comp} composition`;
+                }
+                
+                // Add NSFW if enabled
+                if (nsfw) {
+                    fullPrompt += ', nsfw';
+                }
+                
+                // Add negative prompt if exists
+                if (negativePromptValue) {
+                    fullPrompt += ` | negative: ${negativePromptValue}`;
+                }
+                
+                // Add model if not default
+                if (model !== 'default') {
+                    fullPrompt += ` | model: ${model}`;
+                }
+                
+                // Add upscaling if enabled
+                if (upscale) {
+                    fullPrompt += ' | upscaled';
+                }
+                
+                // Add enhancement if enabled
+                if (enhance) {
+                    fullPrompt += ' | enhanced';
+                }
+                
+                // Encode the prompt for URL
+                const encodedPrompt = encodeURIComponent(fullPrompt);
+                
+                // Build the API URL
+                let apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
+                apiUrl += `?width=${width}&height=${height}&steps=${steps}&nologo=true`;
+                
+                // Call the API
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(currentLang === 'en' ? 'Failed to generate image' : 'Gagal menghasilkan gambar');
+                }
+                
+                // Get the image blob
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                
+                // Create a new image card
+                createImageCard(prompt, imageUrl, width, height);
+                
+            } catch (error) {
+                console.error('Error generating image:', error);
+                alert(`${currentLang === 'en' ? 'Error:' : 'Error:'} ${error.message}`);
+            } finally {
+                // Hide loading overlay
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        // Create a new image card in the gallery
+        function createImageCard(prompt, imageUrl, width, height) {
+            // Remove placeholder if exists
+            const placeholder = document.querySelector('.image-card.placeholder');
+            if (placeholder) {
+                placeholder.remove();
+            }
+            
+            // Create the card element
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            
+            // Create image container
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'image-container';
+            
+            // Create image element
+            const img = document.createElement('img');
+            img.className = 'generated-image';
+            img.src = imageUrl;
+            img.alt = prompt;
+            img.loading = 'lazy';
+            
+            // Create image actions
+            const actions = document.createElement('div');
+            actions.className = 'image-actions';
+            
+            // Download button
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'action-button';
+            downloadBtn.title = currentLang === 'en' ? 'Download' : 'Unduh';
+            downloadBtn.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>';
+            downloadBtn.addEventListener('click', () => downloadImage(imageUrl, prompt));
+            
+            // Share button
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'action-button';
+            shareBtn.title = currentLang === 'en' ? 'Share' : 'Bagikan';
+            shareBtn.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z"/></svg>';
+            shareBtn.addEventListener('click', () => shareImage(imageUrl, prompt));
+            
+            // Save button
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'action-button';
+            saveBtn.title = currentLang === 'en' ? 'Save' : 'Simpan';
+            saveBtn.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/></svg>';
+            saveBtn.addEventListener('click', () => saveImageToLocalStorage(imageUrl, prompt));
+            
+            // Assemble actions
+            actions.appendChild(downloadBtn);
+            actions.appendChild(shareBtn);
+            actions.appendChild(saveBtn);
+            
+            // Assemble image container
+            imageContainer.appendChild(img);
+            imageContainer.appendChild(actions);
+            
+            // Create image info
+            const info = document.createElement('div');
+            info.className = 'image-info';
+            
+            const promptText = document.createElement('p');
+            promptText.className = 'image-prompt';
+            promptText.textContent = prompt;
+            
+            const dimensions = document.createElement('p');
+            dimensions.className = 'image-dimensions';
+            dimensions.textContent = `${width}×${height}px`;
+            dimensions.style.fontSize = '0.8rem';
+            dimensions.style.color = 'rgba(255,255,255,0.6)';
+            dimensions.style.marginTop = '0.5rem';
+            
+            info.appendChild(promptText);
+            info.appendChild(dimensions);
+            
+            // Assemble card
+            card.appendChild(imageContainer);
+            card.appendChild(info);
+            
+            // Add to gallery (at the beginning)
+            gallery.insertBefore(card, gallery.firstChild);
+        }
+
+        // Download generated image
+        function downloadImage(url, prompt) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `deka-ai-${prompt.substring(0, 20).replace(/\s+/g, '-').toLowerCase()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Share image
+        function shareImage(url, prompt) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'DEKA AI Generated Image',
+                    text: `Check out this image I generated with DEKA AI: ${prompt}`,
+                    url: url
+                }).catch(err => {
+                    console.error('Error sharing:', err);
+                    fallbackShare(url, prompt);
+                });
+            } else {
+                fallbackShare(url, prompt);
+            }
+        }
+
+        // Fallback for browsers that don't support Web Share API
+        function fallbackShare(url, prompt) {
+            const shareText = `${currentLang === 'en' ? 'Check out this image I generated with DEKA AI:' : 'Lihat gambar yang saya hasilkan dengan DEKA AI:'} ${prompt}\n${url}`;
+            
+            // Try to copy to clipboard
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert(currentLang === 'en' ? 'Link copied to clipboard!' : 'Tautan disalin ke clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                    prompt(currentLang === 'en' ? 'Share this link:' : 'Bagikan tautan ini:', shareText);
+                });
+            } else {
+                prompt(currentLang === 'en' ? 'Share this link:' : 'Bagikan tautan ini:', shareText);
+            }
+        }
+
+        // Save image to local storage
+        function saveImageToLocalStorage(url, prompt) {
+            // In a real app, you would save the image data to IndexedDB
+            // For this demo, we'll just show an alert
+            alert(currentLang === 'en' 
+                ? 'Image saved to your gallery (in a real app, this would save to local storage)' 
+                : 'Gambar disimpan ke galeri Anda (di aplikasi nyata, ini akan disimpan di penyimpanan lokal)');
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
