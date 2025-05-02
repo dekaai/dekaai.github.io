@@ -3,29 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKA AI - Advanced AI Image Generator</title>
+    <title>DEKA AI - Powerful AI Image Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #0066ff;
             --secondary: #00ffcc;
             --accent: #ff00aa;
-            --dark: #121212;
-            --darker: #0a0a0a;
+            --dark: #0a0a1a;
+            --darker: #050510;
             --light: #f0f0f0;
             --lighter: #ffffff;
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --transition: all 0.3s ease;
+            --text: #e0e0e0;
+            --text-dark: #333333;
+            --success: #00cc66;
+            --warning: #ffcc00;
+            --danger: #ff3333;
+            --info: #0099ff;
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff00ff;
+            --neon-yellow: #fff000;
+            --gold: #ffd700;
+            --gold-dark: #c4a000;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
+            --shadow-neon-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            --shadow-neon-pink: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            --shadow-gold: 0 0 10px var(--gold), 0 0 20px rgba(255, 215, 0, 0.5);
+            --gradient-tech: linear-gradient(135deg, var(--dark) 0%, #1a1a3a 50%, var(--darker) 100%);
+            --gradient-gold: linear-gradient(135deg, #ffd700 0%, #f9d423 50%, #e2a312 100%);
+            --gradient-cyber: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-pink) 50%, var(--neon-yellow) 100%);
         }
 
         [data-theme="light"] {
             --dark: #f0f0f0;
             --darker: #e0e0e0;
-            --light: #121212;
-            --lighter: #0a0a0a;
-            --glass: rgba(0, 0, 0, 0.1);
-            --glass-border: rgba(0, 0, 0, 0.2);
+            --light: #0a0a1a;
+            --lighter: #050510;
+            --text: #333333;
+            --text-dark: #e0e0e0;
         }
 
         * {
@@ -33,354 +49,455 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            color: var(--light);
+            background: var(--gradient-tech);
+            color: var(--text);
             min-height: 100vh;
-            transition: var(--transition);
             overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), 
+                        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 20px;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            position: relative;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 15px;
         }
 
         .logo h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-shadow: var(--shadow-gold);
             font-weight: 800;
             letter-spacing: 1px;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            border-radius: 12px;
-            display: grid;
-            place-items: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 0 20px var(--primary);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--gold);
+            text-shadow: var(--shadow-gold);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .theme-toggle {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 5px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
             cursor: pointer;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
+            position: relative;
+            width: 60px;
+            height: 30px;
+            flex-shrink: 0;
         }
 
-        .theme-toggle:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
+        .theme-toggle i {
+            position: absolute;
+            font-size: 1rem;
+            transition: transform 0.3s;
+            color: var(--gold);
         }
 
-        .theme-icon {
-            width: 20px;
-            height: 20px;
+        .theme-toggle .fa-sun {
+            left: 5px;
+            opacity: 1;
         }
 
-        main {
+        .theme-toggle .fa-moon {
+            right: 5px;
+            opacity: 0;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-sun {
+            opacity: 0;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-moon {
+            opacity: 1;
+        }
+
+        .toggle-ball {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            left: 4px;
+            transition: transform 0.3s;
+        }
+
+        [data-theme="light"] .toggle-ball {
+            transform: translateX(30px);
+        }
+
+        .main-content {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
-            gap: 2rem;
+            gap: 20px;
         }
 
-        @media (max-width: 1024px) {
-            main {
+        @media (max-width: 992px) {
+            .main-content {
                 grid-template-columns: 1fr;
             }
         }
 
-        .panel {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 1.5rem;
+        .settings-panel {
+            background: rgba(10, 10, 26, 0.7);
+            border-radius: 15px;
+            padding: 20px;
             backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .panel:hover {
-            box-shadow: 0 8px 32px rgba(0, 255, 204, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 240, 255, 0.1);
         }
 
         .panel-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            margin-bottom: 15px;
+            color: var(--gold);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
+        }
+
+        .panel-title i {
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
             color: var(--secondary);
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
-        .panel-title svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--secondary);
-        }
-
-        .prompt-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .prompt-textarea {
+        .prompt-area {
             width: 100%;
-            min-height: 150px;
-            padding: 1rem;
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            color: var(--light);
+            min-height: 120px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text);
             font-size: 1rem;
             resize: vertical;
-            transition: var(--transition);
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .prompt-textarea:focus {
+        .prompt-area:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.3);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
         }
 
-        .negative-prompt {
-            margin-top: -1rem;
-        }
-
-        .settings-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .settings-title {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .select-wrapper {
-            position: relative;
-        }
-
-        select {
+        .negative-prompt-area {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            color: var(--light);
-            font-size: 0.9rem;
-            appearance: none;
-            cursor: pointer;
-            transition: var(--transition);
+            min-height: 80px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text);
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        select:focus {
+        .negative-prompt-area:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.3);
+            border-color: var(--danger);
+            box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
         }
 
-        .select-arrow {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
+        .select-box, .input-range {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text);
+            font-size: 1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffd700'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+        }
+
+        .select-box:focus, .input-range:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        .input-range {
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 0;
+            margin-top: 5px;
+        }
+
+        .input-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .range-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .range-value {
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            margin-bottom: 10px;
         }
 
-        .checkbox-label {
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .checkbox-input {
-            appearance: none;
+        .checkbox-group input {
+            margin-right: 10px;
+            accent-color: var(--gold);
             width: 18px;
             height: 18px;
-            border: 1px solid var(--glass-border);
-            border-radius: 4px;
-            background: rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            position: relative;
-            transition: var(--transition);
+            flex-shrink: 0;
         }
 
-        .checkbox-input:checked {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .checkbox-input:checked::after {
-            content: '✓';
-            position: absolute;
-            color: white;
-            font-size: 0.8rem;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .range-group {
-            margin-top: 1rem;
-        }
-
-        .range-label {
+        .radio-group {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
         }
 
-        .range-input {
-            width: 100%;
-            height: 8px;
-            appearance: none;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
-            outline: none;
+        .radio-option {
+            display: none;
         }
 
-        .range-input::-webkit-slider-thumb {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary);
+        .radio-option + label {
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
-        .range-input::-webkit-slider-thumb:hover {
-            background: var(--secondary);
-            transform: scale(1.2);
+        .radio-option:checked + label {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: bold;
+            border-color: var(--gold);
         }
 
-        .button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            color: white;
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
             border: none;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
-            display: flex;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
-        .button:hover {
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
         }
 
-        .button-secondary {
-            background: transparent;
-            border: 1px solid var(--glass-border);
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            border: 1px solid var(--gold);
         }
 
-        .button-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.1);
         }
 
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+        .btn-block {
+            display: block;
+            width: 100%;
         }
 
-        .history-panel {
-            margin-top: 2rem;
+        .mt-3 {
+            margin-top: 15px;
         }
 
-        .history-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .mb-3 {
+            margin-bottom: 15px;
         }
 
-        .history-item {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
+        .flex-between {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .history-item:hover {
-            background: rgba(0, 102, 255, 0.2);
+        .history-panel {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
-        .history-delete {
-            color: #ff4d4d;
+        .history-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--gold);
             cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .gallery {
+        .history-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .history-item p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.9rem;
+        }
+
+        .history-item small {
+            color: var(--secondary);
+            font-size: 0.8rem;
+        }
+
+        .clear-history {
+            color: var(--danger);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .clear-history:hover {
+            text-decoration: underline;
+        }
+
+        .results-panel {
+            background: rgba(10, 10, 26, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 240, 255, 0.1);
+            min-height: 100%;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
         }
 
         .image-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: var(--transition);
             position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .image-card:hover {
@@ -388,18 +505,11 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .image-container {
-            width: 100%;
-            aspect-ratio: 1/1;
-            position: relative;
-            overflow: hidden;
-        }
-
         .generated-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: var(--transition);
+            display: block;
         }
 
         .image-actions {
@@ -407,198 +517,331 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            padding: 1rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 8px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 8px;
             opacity: 0;
-            transition: var(--transition);
+            transition: opacity 0.3s;
         }
 
         .image-card:hover .image-actions {
             opacity: 1;
         }
 
-        .action-button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            width: 36px;
-            height: 36px;
+        .action-btn {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
-        }
-
-        .action-button:hover {
-            background: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .action-button svg {
-            width: 16px;
-            height: 16px;
-            fill: white;
-        }
-
-        .image-info {
-            padding: 1rem;
-        }
-
-        .image-prompt {
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
             font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        }
+
+        .action-btn:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: scale(1.1);
         }
 
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
         }
 
         .loading-spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--primary);
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 215, 0, 0.3);
+            border-top-color: var(--gold);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 2rem;
+            margin-bottom: 15px;
+            position: relative;
         }
 
-        .loading-text {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: pulse 2s infinite;
+        .loading-spinner::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 6px solid transparent;
+            border-top-color: var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border: 6px solid transparent;
+            border-top-color: var(--neon-pink);
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
+        .loading-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse 2s infinite;
+        }
+
         @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            0% { opacity: 0.7; }
+            50% { opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            100% { opacity: 0.7; }
         }
 
-        .language-switcher {
-            position: absolute;
-            top: 0;
-            right: 120px;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .language-button {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .language-button.active {
-            background: var(--primary);
-        }
-
-        .language-button:hover {
-            background: var(--accent);
-        }
-
-        .advanced-settings {
-            margin-top: 1rem;
+        .advance-settings {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.5s ease-out;
         }
 
-        .advanced-settings.active {
-            max-height: 500px;
+        .advance-settings.show {
+            max-height: 1000px;
         }
 
-        .toggle-advanced {
+        .toggle-advance {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
             color: var(--secondary);
             cursor: pointer;
-            margin-top: 1rem;
-            font-size: 0.9rem;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
 
-        .toggle-advanced svg {
-            transition: transform 0.3s ease;
+        .toggle-advance i {
+            transition: transform 0.3s;
         }
 
-        .toggle-advanced.active svg {
+        .toggle-advance.active i {
             transform: rotate(180deg);
         }
 
-        footer {
-            margin-top: 3rem;
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 1.5rem;
+            padding: 30px 15px;
+            color: var(--secondary);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+
+        .empty-state p {
+            max-width: 350px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            transition: transform 0.3s;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .facebook {
+            background: #3b5998;
+        }
+
+        .twitter {
+            background: #1da1f2;
+        }
+
+        .whatsapp {
+            background: #25d366;
+        }
+
+        .tiktok {
+            background: #000000;
+        }
+
+        .error-message {
+            color: var(--danger);
+            background: rgba(255, 0, 0, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--text);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--gold);
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 180px;
+            background-color: var(--dark);
+            color: var(--text);
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            border: 1px solid var(--gold);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .logo h1 {
-                font-size: 1.8rem;
+            .container {
+                padding: 15px;
             }
             
-            .button-group {
+            header {
                 flex-direction: column;
+                align-items: flex-start;
             }
             
-            .gallery {
-                grid-template-columns: 1fr;
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
             }
             
-            .language-switcher {
-                position: static;
-                margin-left: auto;
-                margin-right: 1rem;
+            .settings-panel, .results-panel {
+                padding: 15px;
+            }
+            
+            .prompt-area, .negative-prompt-area {
+                min-height: 100px;
+            }
+            
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .image-actions {
+                opacity: 1;
+                padding: 6px;
+            }
+            
+            .action-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
             }
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
+        @media (max-width: 480px) {
+            .radio-group {
+                gap: 5px;
+            }
+            
+            .radio-option + label {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -606,752 +849,570 @@
     <div class="container">
         <header>
             <div class="logo">
-                <div class="logo-icon">D</div>
-                <h1>DEKA AI</h1>
+                <i class="fas fa-robot logo-icon"></i>
+                <h1 data-i18n="title">DEKA AI</h1>
             </div>
-            <div class="language-switcher">
-                <button class="language-button active" id="lang-en">EN</button>
-                <button class="language-button" id="lang-id">ID</button>
+            <div class="header-controls">
+                <div class="language-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="id">ID</button>
+                </div>
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                    <span class="toggle-ball"></span>
+                </div>
             </div>
-            <button class="theme-toggle" id="theme-toggle">
-                <svg class="theme-icon" viewBox="0 0 24 24" id="theme-icon">
-                    <path d="M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8M12,4C11.45,4 11,3.55 11,3V1C11,0.45 11.45,0 12,0C12.55,0 13,0.45 13,1V3C13,3.55 12.55,4 12,4M12,20C11.45,20 11,19.55 11,19V17C11,16.45 11.45,16 12,16C12.55,16 13,16.45 13,17V19C13,19.55 12.55,20 12,20M5.64,6.64L4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05C6.03,8.44 6.66,8.44 7.05,8.05C7.44,7.66 7.44,7.03 7.05,6.64L5.64,5.22C5.25,4.83 4.62,4.83 4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05M18.36,17.36L19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95C17.97,15.56 17.34,15.56 16.95,15.95C16.56,16.34 16.56,16.97 16.95,17.36L18.36,18.78C18.75,19.17 19.38,19.17 19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95M1,12C1,11.45 1.45,11 2,11H4C4.55,11 5,11.45 5,12C5,12.55 4.55,13 4,13H2C1.45,13 1,12.55 1,12M21,12C21,11.45 21.45,11 22,11H24C24.55,11 25,11.45 25,12C25,12.55 24.55,13 24,13H22C21.45,13 21,12.55 21,12M5.64,17.36L7.05,18.78C7.44,19.17 7.44,19.8 7.05,20.19C6.66,20.58 6.03,20.58 5.64,20.19L4.22,18.78C3.83,18.39 3.83,17.76 4.22,17.37L5.64,15.95C6.03,15.56 6.66,15.56 7.05,15.95C7.44,16.34 7.44,16.97 7.05,17.36L5.64,18.78M18.36,6.64L16.95,5.22C16.56,4.83 16.56,4.2 16.95,3.81C17.34,3.42 17.97,3.42 18.36,3.81L19.78,5.22C20.17,5.61 20.17,6.24 19.78,6.63L18.36,8.05C17.97,8.44 17.34,8.44 16.95,8.05C16.56,7.66 16.56,7.03 16.95,6.64L18.36,5.22"/>
-                </svg>
-                <span id="theme-text">Dark Mode</span>
-            </button>
         </header>
 
-        <main>
-            <div class="prompt-container">
-                <div class="panel">
-                    <h2 class="panel-title">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>
-                        </svg>
-                        <span data-i18n="prompt_title">Prompt</span>
-                    </h2>
-                    <textarea class="prompt-textarea" id="prompt-input" placeholder="Describe the image you want to generate..." data-i18n-ph="prompt_placeholder"></textarea>
-                    
-                    <div class="settings-group negative-prompt">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M17,15.59L15.59,17L12,13.41L8.41,17L7,15.59L10.59,12L7,8.41L8.41,7L12,10.59L15.59,7L17,8.41L13.41,12L17,15.59Z"/>
-                            </svg>
-                            <span data-i18n="negative_prompt">Negative Prompt</span>
-                        </h3>
-                        <textarea class="prompt-textarea" id="negative-prompt" placeholder="What you don't want in the image..." data-i18n-ph="negative_placeholder"></textarea>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7C14.1,7.7 15.8,9.4 15.8,11.5C15.8,14.5 12,18 12,18C12,18 8.2,14.5 8.2,11.5C8.2,9.4 9.9,7.7 12,7.7M12,10C11.17,10 10.5,10.67 10.5,11.5A1.5,1.5 0 0,0 12,13A1.5,1.5 0 0,0 13.5,11.5C13.5,10.67 12.83,10 12,10Z"/>
-                            </svg>
-                            <span data-i18n="ai_model">AI Model</span>
-                        </h3>
-                        <div class="select-wrapper">
-                            <select id="ai-model">
-                                <option value="default" data-i18n="model_default">Default</option>
-                                <option value="dalle3" data-i18n="model_dalle">DALL-E 3 (OpenAI)</option>
-                                <option value="flux" data-i18n="model_flux">Flux Turbo</option>
-                                <option value="midjourney" data-i18n="model_midjourney">Midjourney</option>
-                                <option value="stability" data-i18n="model_stability">Stability AI</option>
-                            </select>
-                            <div class="select-arrow">▼</div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>
-                            </svg>
-                            <span data-i18n="style">Style</span>
-                        </h3>
-                        <div class="select-wrapper">
-                            <select id="style">
-                                <option value="default" data-i18n="style_default">Default</option>
-                                <option value="realistic" data-i18n="style_realistic">Realistic</option>
-                                <option value="digital" data-i18n="style_digital">Digital Art</option>
-                                <option value="anime" data-i18n="style_anime">Anime Style</option>
-                                <option value="photography" data-i18n="style_photo">Photography</option>
-                                <option value="watercolor" data-i18n="style_watercolor">Watercolor</option>
-                                <option value="3d" data-i18n="style_3d">3D Render</option>
-                                <option value="surreal" data-i18n="style_surreal">Surrealism</option>
-                                <option value="disney" data-i18n="style_disney">3D Disney Character</option>
-                                <option value="ghibli" data-i18n="style_ghibli">Studio Ghibli</option>
-                                <option value="caricature" data-i18n="style_caricature">Caricature 3D</option>
-                                <option value="cartoon" data-i18n="style_cartoon">Cartoon</option>
-                                <option value="graffiti" data-i18n="style_graffiti">Graffiti Art</option>
-                                <option value="pixel" data-i18n="style_pixel">Pixel Art</option>
-                                <option value="steampunk" data-i18n="style_steampunk">Steampunk</option>
-                                <option value="cyberpunk" data-i18n="style_cyberpunk">Cyberpunk</option>
-                                <option value="psychedelic" data-i18n="style_psychedelic">Psychedelic</option>
-                                <option value="fractal" data-i18n="style_fractal">Fractal Vortex</option>
-                            </select>
-                            <div class="select-arrow">▼</div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
-                            </svg>
-                            <span data-i18n="quality">Quality</span>
-                        </h3>
-                        <div class="select-wrapper">
-                            <select id="quality">
-                                <option value="hd" data-i18n="quality_hd">High Definition</option>
-                                <option value="fhd" selected data-i18n="quality_fhd">Full HD</option>
-                                <option value="4k" data-i18n="quality_4k">4K Ultra</option>
-                            </select>
-                            <div class="select-arrow">▼</div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,2L4,5V6.09C4,11.36 7.37,16.13 12,17C16.63,16.13 20,11.36 20,6.09V5L12,2M12,19C7.59,19 4,16.41 4,12V8L12,5L20,8V12C20,16.41 16.41,19 12,19M15,13V15H13V17H15V19H17V17H19V15H17V13H15Z"/>
-                            </svg>
-                            <span data-i18n="enhancements">Enhancements</span>
-                        </h3>
-                        <div class="select-wrapper">
-                            <select id="enhancement">
-                                <option value="none" data-i18n="enhance_none">None</option>
-                                <option value="hdr" data-i18n="enhance_hdr">HDR+</option>
-                                <option value="detail" data-i18n="enhance_detail">Detail Ultra</option>
-                                <option value="cinematic" data-i18n="enhance_cinematic">Cinematic</option>
-                                <option value="neon" data-i18n="enhance_neon">Neon Glow</option>
-                                <option value="photoreal" data-i18n="enhance_photoreal">Photorealistic</option>
-                                <option value="drama" data-i18n="enhance_drama">Drama Light</option>
-                                <option value="night" data-i18n="enhance_night">Night Mode</option>
-                            </select>
-                            <div class="select-arrow">▼</div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
-                            </svg>
-                            <span data-i18n="aspect_ratio">Aspect Ratio</span>
-                        </h3>
-                        <div class="range-group">
-                            <div class="range-label">
-                                <span data-i18n="width">Width</span>
-                                <span id="width-value">1024</span>
-                            </div>
-                            <input type="range" class="range-input" id="width" min="720" max="3840" value="1024">
-                        </div>
-                        <div class="range-group">
-                            <div class="range-label">
-                                <span data-i18n="height">Height</span>
-                                <span id="height-value">1024</span>
-                            </div>
-                            <input type="range" class="range-input" id="height" min="720" max="3840" value="1024">
-                        </div>
-                        <div class="range-group">
-                            <div class="range-label">
-                                <span data-i18n="steps">Steps</span>
-                                <span id="steps-value">30</span>
-                            </div>
-                            <input type="range" class="range-input" id="steps" min="20" max="100" value="30">
-                        </div>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <h3 class="settings-title">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>
-                            </svg>
-                            <span data-i18n="additional_features">Additional Features</span>
-                        </h3>
-                        <div class="select-wrapper">
-                            <select id="additional-features">
-                                <option value="none" data-i18n="feature_none">None</option>
-                                <option value="animation" data-i18n="feature_animation">Animation</option>
-                                <option value="transparency" data-i18n="feature_transparency">Transparency</option>
-                                <option value="tilt" data-i18n="feature_tilt">Tilt-Shift</option>
-                                <option value="hologram" data-i18n="feature_hologram">Hologram</option>
-                            </select>
-                            <div class="select-arrow">▼</div>
-                        </div>
-                    </div>
-                    
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="nsfw" class="checkbox-input">
-                        <label for="nsfw" class="checkbox-label" data-i18n="nsfw_content">NSFW Content</label>
-                    </div>
-                    
-                    <div class="toggle-advanced" id="toggle-advanced">
-                        <svg viewBox="0 0 24 24" width="16" height="16">
-                            <path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/>
-                        </svg>
-                        <span data-i18n="advanced_settings">Advanced Settings</span>
-                    </div>
-                    
-                    <div class="advanced-settings" id="advanced-settings">
-                        <div class="settings-group">
-                            <h3 class="settings-title">
-                                <svg viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="currentColor" d="M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M12,19A7,7 0 0,1 5,12A7,7 0 0,1 12,5A7,7 0 0,1 19,12A7,7 0 0,1 12,19Z"/>
-                                </svg>
-                                <span data-i18n="color_palette">Color Palette</span>
-                            </h3>
-                            <div class="select-wrapper">
-                                <select id="color-palette">
-                                    <option value="default" data-i18n="palette_default">Default</option>
-                                    <option value="vibrant" data-i18n="palette_vibrant">Vibrant</option>
-                                    <option value="pastel" data-i18n="palette_pastel">Pastel</option>
-                                    <option value="monochrome" data-i18n="palette_mono">Monochrome</option>
-                                    <option value="warm" data-i18n="palette_warm">Warm Tones</option>
-                                    <option value="cool" data-i18n="palette_cool">Cool Tones</option>
-                                    <option value="rgb" data-i18n="palette_rgb">RGB</option>
-                                </select>
-                                <div class="select-arrow">▼</div>
-                            </div>
-                        </div>
+        <main class="main-content">
+            <div class="settings-panel">
+                <h2 class="panel-title"><i class="fas fa-cog"></i> <span data-i18n="settings">Settings</span></h2>
+                
+                <div class="form-group">
+                    <label for="prompt" data-i18n="promptLabel">Prompt</label>
+                    <textarea id="prompt" class="prompt-area" placeholder="Describe the image you want to generate..." data-i18n-ph="promptPlaceholder"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="negativePrompt" data-i18n="negativePromptLabel">Negative Prompt <small>(optional)</small></label>
+                    <textarea id="negativePrompt" class="negative-prompt-area" placeholder="What you don't want in the image..." data-i18n-ph="negativePromptPlaceholder"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="aiModel" data-i18n="modelLabel">AI Model</label>
+                    <select id="aiModel" class="select-box">
+                        <option value="default" data-i18n="defaultModel">Default</option>
+                        <option value="dalle3" data-i18n="dalleModel">DALL-E 3</option>
+                        <option value="fluxturbo" data-i18n="fluxModel">Flux Turbo</option>
+                        <option value="midjourney" data-i18n="midjourneyModel">Midjourney</option>
+                        <option value="stablediffusion" data-i18n="stableModel">Stable Diffusion</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="styleLabel">Style</label>
+                    <select id="style" class="select-box">
+                        <option value="default" data-i18n="defaultStyle">Default</option>
+                        <option value="realistic" data-i18n="realisticStyle">Realistic</option>
+                        <option value="digitalart" data-i18n="digitalArtStyle">Digital Art</option>
+                        <option value="anime" data-i18n="animeStyle">Anime Style</option>
+                        <option value="photography" data-i18n="photographyStyle">Photography</option>
+                        <option value="watercolor" data-i18n="watercolorStyle">Watercolor</option>
+                        <option value="airbrush" data-i18n="airbrushStyle">Air Brush</option>
+                        <option value="3drender" data-i18n="render3dStyle">3D Render</option>
+                        <option value="surrealism" data-i18n="surrealismStyle">Surrealism</option>
+                        <option value="3ddisney" data-i18n="disney3dStyle">3D Disney Character</option>
+                        <option value="studioghibli" data-i18n="ghibliStyle">Studio Ghibli</option>
+                        <option value="caricature3d" data-i18n="caricatureStyle">Caricature 3D</option>
+                        <option value="cartoon" data-i18n="cartoonStyle">Cartoon</option>
+                        <option value="graffiti" data-i18n="graffitiStyle">Graffiti Art</option>
+                        <option value="pixelart" data-i18n="pixelStyle">Pixel Art</option>
+                        <option value="steampunk" data-i18n="steampunkStyle">Steampunk</option>
+                        <option value="cyberpunk" data-i18n="cyberpunkStyle">Cyberpunk</option>
+                        <option value="psychedelic" data-i18n="psychedelicStyle">Psychedelic</option>
+                        <option value="fractal" data-i18n="fractalStyle">Fractal Vortex</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="aspectLabel">Aspect Ratio</label>
+                    <div class="radio-group">
+                        <input type="radio" id="ratio1" name="aspectRatio" value="1:1" class="radio-option" checked>
+                        <label for="ratio1" data-i18n="squareRatio">Square 1:1</label>
                         
-                        <div class="settings-group">
-                            <h3 class="settings-title">
-                                <svg viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="currentColor" d="M4,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M4,6V18H20V6H4M12,10.5A1.5,1.5 0 0,1 13.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,12A1.5,1.5 0 0,1 12,10.5M7.5,10.5A1.5,1.5 0 0,1 9,12A1.5,1.5 0 0,1 7.5,13.5A1.5,1.5 0 0,1 6,12A1.5,1.5 0 0,1 7.5,10.5M16.5,10.5A1.5,1.5 0 0,1 18,12A1.5,1.5 0 0,1 16.5,13.5A1.5,1.5 0 0,1 15,12A1.5,1.5 0 0,1 16.5,10.5Z"/>
-                                </svg>
-                                <span data-i18n="composition">Composition</span>
-                            </h3>
-                            <div class="select-wrapper">
-                                <select id="composition">
-                                    <option value="default" data-i18n="comp_default">Default</option>
-                                    <option value="closeup" data-i18n="comp_close">Close-up</option>
-                                    <option value="wide" data-i18n="comp_wide">Wide Shot</option>
-                                    <option value="macro" data-i18n="comp_macro">Macro</option>
-                                    <option value="aerial" data-i18n="comp_aerial">Aerial</option>
-                                    <option value="low" data-i18n="comp_low">Low View Angle</option>
-                                    <option value="birds" data-i18n="comp_birds">Bird's Eye Wide Angle</option>
-                                </select>
-                                <div class="select-arrow">▼</div>
-                            </div>
-                        </div>
+                        <input type="radio" id="ratio2" name="aspectRatio" value="9:16" class="radio-option">
+                        <label for="ratio2" data-i18n="portraitRatio">Portrait 9:16</label>
                         
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="upscale" class="checkbox-input" checked>
-                            <label for="upscale" class="checkbox-label" data-i18n="enable_upscale">Enable Upscaling (Real-ESRGAN)</label>
-                        </div>
-                        
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="enhance" class="checkbox-input" checked>
-                            <label for="enhance" class="checkbox-label" data-i18n="enable_enhance">Enable Enhancement (Waifu2x)</label>
-                        </div>
-                    </div>
-                    
-                    <div class="button-group">
-                        <button class="button" id="generate-btn">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M14,12L10,8V11H2V13H10V16L14,12M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12Z"/>
-                            </svg>
-                            <span data-i18n="generate">Generate</span>
-                        </button>
-                        <button class="button button-secondary" id="clear-btn">
-                            <svg viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
-                            </svg>
-                            <span data-i18n="clear">Clear</span>
-                        </button>
+                        <input type="radio" id="ratio3" name="aspectRatio" value="16:9" class="radio-option">
+                        <label for="ratio3" data-i18n="landscapeRatio">Landscape 16:9</label>
                     </div>
                 </div>
                 
-                <div class="panel history-panel">
-                    <h2 class="panel-title">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="currentColor" d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3"/>
-                        </svg>
-                        <span data-i18n="prompt_history">Prompt History</span>
-                    </h2>
-                    <div class="history-list" id="history-list"></div>
-                    <button class="button button-secondary" id="clear-history" style="margin-top: 1rem;">
-                        <svg viewBox="0 0 24 24" width="18" height="18">
-                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
-                        </svg>
-                        <span data-i18n="clear_history">Clear History</span>
-                    </button>
+                <div class="form-group">
+                    <div class="range-labels">
+                        <label for="width" data-i18n="widthLabel">Width</label>
+                        <span id="widthValue" class="range-value">1024</span>
+                    </div>
+                    <input type="range" id="width" class="input-range" min="1024" max="3840" value="1024" step="64">
+                </div>
+                
+                <div class="form-group">
+                    <div class="range-labels">
+                        <label for="height" data-i18n="heightLabel">Height</label>
+                        <span id="heightValue" class="range-value">1024</span>
+                    </div>
+                    <input type="range" id="height" class="input-range" min="1024" max="3840" value="1024" step="64">
+                </div>
+                
+                <div class="form-group">
+                    <div class="range-labels">
+                        <label for="steps" data-i18n="stepsLabel">Steps</label>
+                        <span id="stepsValue" class="range-value">50</span>
+                    </div>
+                    <input type="range" id="steps" class="input-range" min="50" max="100" value="50">
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="lightingLabel">Lighting Enhancement</label>
+                    <select id="lighting" class="select-box">
+                        <option value="none" data-i18n="defaultLighting">Default</option>
+                        <option value="hdr" data-i18n="hdrLighting">HDR</option>
+                        <option value="ultradetail" data-i18n="ultraDetailLighting">Ultra Detail</option>
+                        <option value="cinematic" data-i18n="cinematicLighting">Cinematic Lighting</option>
+                        <option value="neon" data-i18n="neonLighting">Neon Glow</option>
+                        <option value="photorealistic" data-i18n="photoLighting">Photorealistic</option>
+                        <option value="dramatic" data-i18n="dramaLighting">Drama Light</option>
+                        <option value="night" data-i18n="nightLighting">Night Mode</option>
+                    </select>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="nsfw" class="checkbox">
+                    <label for="nsfw" data-i18n="nsfwLabel">NSFW Content</label>
+                </div>
+                
+                <div class="toggle-advance" id="toggleAdvance">
+                    <i class="fas fa-chevron-down"></i>
+                    <span data-i18n="advanceSettings">Advanced Settings</span>
+                </div>
+                
+                <div class="advance-settings" id="advanceSettings">
+                    <div class="form-group">
+                        <label data-i18n="colorLabel">Color Palette</label>
+                        <select id="colorPalette" class="select-box">
+                            <option value="default" data-i18n="defaultColor">Default</option>
+                            <option value="vibrant" data-i18n="vibrantColor">Vibrant</option>
+                            <option value="pastel" data-i18n="pastelColor">Pastel</option>
+                            <option value="monochrome" data-i18n="monoColor">Monochrome</option>
+                            <option value="warm" data-i18n="warmColor">Warm Tones</option>
+                            <option value="cool" data-i18n="coolColor">Cool Tones</option>
+                            <option value="rgb" data-i18n="rgbColor">RGB</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="compositionLabel">Composition</label>
+                        <select id="composition" class="select-box">
+                            <option value="default" data-i18n="defaultComposition">Default</option>
+                            <option value="closeup" data-i18n="closeupComposition">Close-up</option>
+                            <option value="wide" data-i18n="wideComposition">Wide Shot</option>
+                            <option value="macro" data-i18n="macroComposition">Macro</option>
+                            <option value="aerial" data-i18n="aerialComposition">Aerial</option>
+                            <option value="lowangle" data-i18n="lowComposition">Low View Angle</option>
+                            <option value="drone" data-i18n="droneComposition">Drone Wide Angle</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="enhanceLabel">Enhancement</label>
+                        <select id="enhancement" class="select-box">
+                            <option value="none" data-i18n="noEnhance">None</option>
+                            <option value="highres" data-i18n="highResEnhance">High Resolution</option>
+                            <option value="ultradetail" data-i18n="ultraEnhance">Ultra Detail</option>
+                            <option value="sharp" data-i18n="sharpEnhance">Sharp Focus</option>
+                            <option value="unreal" data-i18n="unrealEnhance">Unreal Engine 5</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="generateBtn" class="btn btn-primary btn-block mt-3">
+                    <i class="fas fa-magic"></i> <span data-i18n="generateBtn">Generate Image</span>
+                </button>
+                
+                <div class="history-panel" id="historyPanel">
+                    <h3 class="panel-title"><i class="fas fa-history"></i> <span data-i18n="historyTitle">Prompt History</span></h3>
+                    <div id="historyList"></div>
+                    <div class="clear-history" id="clearHistory">
+                        <i class="fas fa-trash"></i> <span data-i18n="clearHistory">Clear History</span>
+                    </div>
                 </div>
             </div>
             
-            <div class="gallery" id="gallery">
-                <!-- Generated images will appear here -->
-                <div class="image-card placeholder">
-                    <div class="image-container">
-                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: rgba(255,255,255,0.3);">
-                            <svg viewBox="0 0 24 24" width="64" height="64">
-                                <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"/>
-                            </svg>
-                        </div>
+            <div class="results-panel">
+                <div class="results-header">
+                    <h2 class="panel-title"><i class="fas fa-images"></i> <span data-i18n="resultsTitle">Generated Images</span></h2>
+                    <div class="tooltip">
+                        <i class="fas fa-info-circle" style="color: var(--gold);"></i>
+                        <span class="tooltiptext" data-i18n="tooltipText">Images are generated using Pollinations API. Click on any image to download or share.</span>
                     </div>
-                    <div class="image-info">
-                        <p class="image-prompt" data-i18n="generated_images">Your generated images will appear here</p>
+                </div>
+                
+                <div class="results-grid" id="resultsGrid">
+                    <div class="empty-state">
+                        <i class="fas fa-image"></i>
+                        <h3 data-i18n="emptyTitle">No Images Generated Yet</h3>
+                        <p data-i18n="emptyText">Enter a prompt and click "Generate Image" to create your first AI artwork.</p>
                     </div>
                 </div>
             </div>
         </main>
         
         <footer>
-            <p>Copyright &copy; 2025 DEKA AI GENERATOR | Powered by Pollinations API | Developed by Dery Lau | Thanks to Github & Cloudflare</p>
+            <p data-i18n="copyright">© 2025 DEKA AI GENERATOR | Powered by Pollinations API</p>
+            <p data-i18n="developed">Developed by Dery Lau | Thanks to Github & Cloudflare</p>
         </footer>
     </div>
     
-    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
         <div class="loading-spinner"></div>
-        <div class="loading-text">DEKA AI Loading</div>
+        <div class="loading-text">DEKA AI LOADING</div>
     </div>
 
     <script>
-        // DOM Elements
-        const promptInput = document.getElementById('prompt-input');
-        const negativePrompt = document.getElementById('negative-prompt');
-        const aiModel = document.getElementById('ai-model');
-        const styleSelect = document.getElementById('style');
-        const qualitySelect = document.getElementById('quality');
-        const enhancementSelect = document.getElementById('enhancement');
-        const widthInput = document.getElementById('width');
-        const heightInput = document.getElementById('height');
-        const stepsInput = document.getElementById('steps');
-        const widthValue = document.getElementById('width-value');
-        const heightValue = document.getElementById('height-value');
-        const stepsValue = document.getElementById('steps-value');
-        const additionalFeatures = document.getElementById('additional-features');
-        const nsfwCheckbox = document.getElementById('nsfw');
-        const generateBtn = document.getElementById('generate-btn');
-        const clearBtn = document.getElementById('clear-btn');
-        const gallery = document.getElementById('gallery');
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const historyList = document.getElementById('history-list');
-        const clearHistoryBtn = document.getElementById('clear-history');
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const themeText = document.getElementById('theme-text');
-        const html = document.getElementById('html');
-        const langEn = document.getElementById('lang-en');
-        const langId = document.getElementById('lang-id');
-        const toggleAdvanced = document.getElementById('toggle-advanced');
-        const advancedSettings = document.getElementById('advanced-settings');
-        const colorPalette = document.getElementById('color-palette');
-        const composition = document.getElementById('composition');
-        const upscaleCheckbox = document.getElementById('upscale');
-        const enhanceCheckbox = document.getElementById('enhance');
-
-        // Translations
+        // Language support
         const translations = {
             en: {
-                prompt_title: "Prompt",
-                prompt_placeholder: "Describe the image you want to generate...",
-                negative_prompt: "Negative Prompt",
-                negative_placeholder: "What you don't want in the image...",
-                ai_model: "AI Model",
-                model_default: "Default",
-                model_dalle: "DALL-E 3 (OpenAI)",
-                model_flux: "Flux Turbo",
-                model_midjourney: "Midjourney",
-                model_stability: "Stability AI",
-                style: "Style",
-                style_default: "Default",
-                style_realistic: "Realistic",
-                style_digital: "Digital Art",
-                style_anime: "Anime Style",
-                style_photo: "Photography",
-                style_watercolor: "Watercolor",
-                style_3d: "3D Render",
-                style_surreal: "Surrealism",
-                style_disney: "3D Disney Character",
-                style_ghibli: "Studio Ghibli",
-                style_caricature: "Caricature 3D",
-                style_cartoon: "Cartoon",
-                style_graffiti: "Graffiti Art",
-                style_pixel: "Pixel Art",
-                style_steampunk: "Steampunk",
-                style_cyberpunk: "Cyberpunk",
-                style_psychedelic: "Psychedelic",
-                style_fractal: "Fractal Vortex",
-                quality: "Quality",
-                quality_hd: "High Definition",
-                quality_fhd: "Full HD",
-                quality_4k: "4K Ultra",
-                enhancements: "Enhancements",
-                enhance_none: "None",
-                enhance_hdr: "HDR+",
-                enhance_detail: "Detail Ultra",
-                enhance_cinematic: "Cinematic",
-                enhance_neon: "Neon Glow",
-                enhance_photoreal: "Photorealistic",
-                enhance_drama: "Drama Light",
-                enhance_night: "Night Mode",
-                aspect_ratio: "Aspect Ratio",
-                width: "Width",
-                height: "Height",
-                steps: "Steps",
-                additional_features: "Additional Features",
-                feature_none: "None",
-                feature_animation: "Animation",
-                feature_transparency: "Transparency",
-                feature_tilt: "Tilt-Shift",
-                feature_hologram: "Hologram",
-                nsfw_content: "NSFW Content",
-                advanced_settings: "Advanced Settings",
-                color_palette: "Color Palette",
-                palette_default: "Default",
-                palette_vibrant: "Vibrant",
-                palette_pastel: "Pastel",
-                palette_mono: "Monochrome",
-                palette_warm: "Warm Tones",
-                palette_cool: "Cool Tones",
-                palette_rgb: "RGB",
-                composition: "Composition",
-                comp_default: "Default",
-                comp_close: "Close-up",
-                comp_wide: "Wide Shot",
-                comp_macro: "Macro",
-                comp_aerial: "Aerial",
-                comp_low: "Low View Angle",
-                comp_birds: "Bird's Eye Wide Angle",
-                enable_upscale: "Enable Upscaling (Real-ESRGAN)",
-                enable_enhance: "Enable Enhancement (Waifu2x)",
-                generate: "Generate",
-                clear: "Clear",
-                prompt_history: "Prompt History",
-                clear_history: "Clear History",
-                generated_images: "Your generated images will appear here",
-                theme_dark: "Dark Mode",
-                theme_light: "Light Mode"
+                title: "DEKA AI",
+                settings: "Settings",
+                promptLabel: "Prompt",
+                promptPlaceholder: "Describe the image you want to generate...",
+                negativePromptLabel: "Negative Prompt",
+                negativePromptPlaceholder: "What you don't want in the image...",
+                modelLabel: "AI Model",
+                defaultModel: "Default",
+                dalleModel: "DALL-E 3",
+                fluxModel: "Flux Turbo",
+                midjourneyModel: "Midjourney",
+                stableModel: "Stable Diffusion",
+                styleLabel: "Style",
+                defaultStyle: "Default",
+                realisticStyle: "Realistic",
+                digitalArtStyle: "Digital Art",
+                animeStyle: "Anime Style",
+                photographyStyle: "Photography",
+                watercolorStyle: "Watercolor",
+                airbrushStyle: "Air Brush",
+                render3dStyle: "3D Render",
+                surrealismStyle: "Surrealism",
+                disney3dStyle: "3D Disney Character",
+                ghibliStyle: "Studio Ghibli",
+                caricatureStyle: "Caricature 3D",
+                cartoonStyle: "Cartoon",
+                graffitiStyle: "Graffiti Art",
+                pixelStyle: "Pixel Art",
+                steampunkStyle: "Steampunk",
+                cyberpunkStyle: "Cyberpunk",
+                psychedelicStyle: "Psychedelic",
+                fractalStyle: "Fractal Vortex",
+                aspectLabel: "Aspect Ratio",
+                squareRatio: "Square 1:1",
+                portraitRatio: "Portrait 9:16",
+                landscapeRatio: "Landscape 16:9",
+                widthLabel: "Width",
+                heightLabel: "Height",
+                stepsLabel: "Steps",
+                lightingLabel: "Lighting Enhancement",
+                defaultLighting: "Default",
+                hdrLighting: "HDR",
+                ultraDetailLighting: "Ultra Detail",
+                cinematicLighting: "Cinematic Lighting",
+                neonLighting: "Neon Glow",
+                photoLighting: "Photorealistic",
+                dramaLighting: "Drama Light",
+                nightLighting: "Night Mode",
+                nsfwLabel: "NSFW Content",
+                advanceSettings: "Advanced Settings",
+                colorLabel: "Color Palette",
+                defaultColor: "Default",
+                vibrantColor: "Vibrant",
+                pastelColor: "Pastel",
+                monoColor: "Monochrome",
+                warmColor: "Warm Tones",
+                coolColor: "Cool Tones",
+                rgbColor: "RGB",
+                compositionLabel: "Composition",
+                defaultComposition: "Default",
+                closeupComposition: "Close-up",
+                wideComposition: "Wide Shot",
+                macroComposition: "Macro",
+                aerialComposition: "Aerial",
+                lowComposition: "Low View Angle",
+                droneComposition: "Drone Wide Angle",
+                enhanceLabel: "Enhancement",
+                noEnhance: "None",
+                highResEnhance: "High Resolution",
+                ultraEnhance: "Ultra Detail",
+                sharpEnhance: "Sharp Focus",
+                unrealEnhance: "Unreal Engine 5",
+                generateBtn: "Generate Image",
+                historyTitle: "Prompt History",
+                clearHistory: "Clear History",
+                resultsTitle: "Generated Images",
+                tooltipText: "Images are generated using Pollinations API. Click on any image to download or share.",
+                emptyTitle: "No Images Generated Yet",
+                emptyText: "Enter a prompt and click \"Generate Image\" to create your first AI artwork.",
+                copyright: "© 2025 DEKA AI GENERATOR | Powered by Pollinations API",
+                developed: "Developed by Dery Lau | Thanks to Github & Cloudflare",
+                download: "Download",
+                share: "Share",
+                copied: "Copied to clipboard!",
+                generating: "Generating your image...",
+                error: "Error generating image. Please try again."
             },
             id: {
-                prompt_title: "Prompt",
-                prompt_placeholder: "Deskripsikan gambar yang ingin Anda hasilkan...",
-                negative_prompt: "Prompt Negatif",
-                negative_placeholder: "Apa yang tidak Anda inginkan dalam gambar...",
-                ai_model: "Model AI",
-                model_default: "Default",
-                model_dalle: "DALL-E 3 (OpenAI)",
-                model_flux: "Flux Turbo",
-                model_midjourney: "Midjourney",
-                model_stability: "Stability AI",
-                style: "Gaya",
-                style_default: "Default",
-                style_realistic: "Realistis",
-                style_digital: "Seni Digital",
-                style_anime: "Gaya Anime",
-                style_photo: "Fotografi",
-                style_watercolor: "Cat Air",
-                style_3d: "Render 3D",
-                style_surreal: "Surealisme",
-                style_disney: "Karakter Disney 3D",
-                style_ghibli: "Studio Ghibli",
-                style_caricature: "Karikatur 3D",
-                style_cartoon: "Kartun",
-                style_graffiti: "Seni Graffiti",
-                style_pixel: "Seni Pixel",
-                style_steampunk: "Steampunk",
-                style_cyberpunk: "Cyberpunk",
-                style_psychedelic: "Psikedelik",
-                style_fractal: "Vortex Fraktal",
-                quality: "Kualitas",
-                quality_hd: "High Definition",
-                quality_fhd: "Full HD",
-                quality_4k: "4K Ultra",
-                enhancements: "Peningkatan",
-                enhance_none: "Tidak Ada",
-                enhance_hdr: "HDR+",
-                enhance_detail: "Detail Ultra",
-                enhance_cinematic: "Sinematik",
-                enhance_neon: "Neon Glow",
-                enhance_photoreal: "Fotorealistik",
-                enhance_drama: "Cahaya Drama",
-                enhance_night: "Mode Malam",
-                aspect_ratio: "Rasio Aspek",
-                width: "Lebar",
-                height: "Tinggi",
-                steps: "Langkah",
-                additional_features: "Fitur Tambahan",
-                feature_none: "Tidak Ada",
-                feature_animation: "Animasi",
-                feature_transparency: "Transparansi",
-                feature_tilt: "Tilt-Shift",
-                feature_hologram: "Hologram",
-                nsfw_content: "Konten NSFW",
-                advanced_settings: "Pengaturan Lanjutan",
-                color_palette: "Palet Warna",
-                palette_default: "Default",
-                palette_vibrant: "Vibrant",
-                palette_pastel: "Pastel",
-                palette_mono: "Monokrom",
-                palette_warm: "Warna Hangat",
-                palette_cool: "Warna Dingin",
-                palette_rgb: "RGB",
-                composition: "Komposisi",
-                comp_default: "Default",
-                comp_close: "Close-up",
-                comp_wide: "Wide Shot",
-                comp_macro: "Makro",
-                comp_aerial: "Udara",
-                comp_low: "Sudut Pandang Rendah",
-                comp_birds: "Sudut Pandang Lebar Bird's Eye",
-                enable_upscale: "Aktifkan Upscaling (Real-ESRGAN)",
-                enable_enhance: "Aktifkan Peningkatan (Waifu2x)",
-                generate: "Hasilkan",
-                clear: "Bersihkan",
-                prompt_history: "Riwayat Prompt",
-                clear_history: "Hapus Riwayat",
-                generated_images: "Gambar yang dihasilkan akan muncul di sini",
-                theme_dark: "Mode Gelap",
-                theme_light: "Mode Terang"
+                title: "DEKA AI",
+                settings: "Pengaturan",
+                promptLabel: "Prompt",
+                promptPlaceholder: "Deskripsikan gambar yang ingin Anda buat...",
+                negativePromptLabel: "Prompt Negatif",
+                negativePromptPlaceholder: "Apa yang tidak Anda inginkan dalam gambar...",
+                modelLabel: "Model AI",
+                defaultModel: "Default",
+                dalleModel: "DALL-E 3",
+                fluxModel: "Flux Turbo",
+                midjourneyModel: "Midjourney",
+                stableModel: "Stable Diffusion",
+                styleLabel: "Gaya",
+                defaultStyle: "Default",
+                realisticStyle: "Realistis",
+                digitalArtStyle: "Seni Digital",
+                animeStyle: "Gaya Anime",
+                photographyStyle: "Fotografi",
+                watercolorStyle: "Cat Air",
+                airbrushStyle: "Air Brush",
+                render3dStyle: "Render 3D",
+                surrealismStyle: "Surealisme",
+                disney3dStyle: "Karakter Disney 3D",
+                ghibliStyle: "Studio Ghibli",
+                caricatureStyle: "Karikatur 3D",
+                cartoonStyle: "Kartun",
+                graffitiStyle: "Seni Graffiti",
+                pixelStyle: "Pixel Art",
+                steampunkStyle: "Steampunk",
+                cyberpunkStyle: "Cyberpunk",
+                psychedelicStyle: "Psikedelik",
+                fractalStyle: "Vortex Fraktal",
+                aspectLabel: "Rasio Aspek",
+                squareRatio: "Persegi 1:1",
+                portraitRatio: "Portrait 9:16",
+                landscapeRatio: "Landscape 16:9",
+                widthLabel: "Lebar",
+                heightLabel: "Tinggi",
+                stepsLabel: "Langkah",
+                lightingLabel: "Peningkatan Pencahayaan",
+                defaultLighting: "Default",
+                hdrLighting: "HDR",
+                ultraDetailLighting: "Detail Ultra",
+                cinematicLighting: "Pencahayaan Sinematik",
+                neonLighting: "Cahaya Neon",
+                photoLighting: "Fotorealistik",
+                dramaLighting: "Cahaya Dramatis",
+                nightLighting: "Mode Malam",
+                nsfwLabel: "Konten NSFW",
+                advanceSettings: "Pengaturan Lanjutan",
+                colorLabel: "Palet Warna",
+                defaultColor: "Default",
+                vibrantColor: "Vibrant",
+                pastelColor: "Pastel",
+                monoColor: "Monokrom",
+                warmColor: "Warna Hangat",
+                coolColor: "Warna Dingin",
+                rgbColor: "RGB",
+                compositionLabel: "Komposisi",
+                defaultComposition: "Default",
+                closeupComposition: "Close-up",
+                wideComposition: "Wide Shot",
+                macroComposition: "Makro",
+                aerialComposition: "Udara",
+                lowComposition: "Sudut Pandang Rendah",
+                droneComposition: "Sudut Lebar Drone",
+                enhanceLabel: "Peningkatan",
+                noEnhance: "Tidak Ada",
+                highResEnhance: "Resolusi Tinggi",
+                ultraEnhance: "Detail Ultra",
+                sharpEnhance: "Fokus Tajam",
+                unrealEnhance: "Unreal Engine 5",
+                generateBtn: "Buat Gambar",
+                historyTitle: "Riwayat Prompt",
+                clearHistory: "Hapus Riwayat",
+                resultsTitle: "Gambar yang Dihasilkan",
+                tooltipText: "Gambar dibuat menggunakan Pollinations API. Klik pada gambar untuk mengunduh atau berbagi.",
+                emptyTitle: "Belum Ada Gambar yang Dihasilkan",
+                emptyText: "Masukkan prompt dan klik \"Buat Gambar\" untuk membuat karya seni AI pertama Anda.",
+                copyright: "© 2025 DEKA AI GENERATOR | Didukung oleh Pollinations API",
+                developed: "Dikembangkan oleh Dery Lau | Terima kasih kepada Github & Cloudflare",
+                download: "Unduh",
+                share: "Bagikan",
+                copied: "Disalin ke clipboard!",
+                generating: "Membuat gambar Anda...",
+                error: "Gagal membuat gambar. Silakan coba lagi."
             }
         };
 
         // Current language
         let currentLang = 'en';
 
-        // Theme state
-        let isDarkMode = true;
+        // DOM Elements
+        const htmlElement = document.getElementById('html');
+        const themeToggle = document.getElementById('themeToggle');
+        const promptInput = document.getElementById('prompt');
+        const negativePromptInput = document.getElementById('negativePrompt');
+        const aiModelSelect = document.getElementById('aiModel');
+        const styleSelect = document.getElementById('style');
+        const widthInput = document.getElementById('width');
+        const heightInput = document.getElementById('height');
+        const stepsInput = document.getElementById('steps');
+        const widthValue = document.getElementById('widthValue');
+        const heightValue = document.getElementById('heightValue');
+        const stepsValue = document.getElementById('stepsValue');
+        const lightingSelect = document.getElementById('lighting');
+        const nsfwCheckbox = document.getElementById('nsfw');
+        const generateBtn = document.getElementById('generateBtn');
+        const resultsGrid = document.getElementById('resultsGrid');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const historyList = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistory');
+        const toggleAdvance = document.getElementById('toggleAdvance');
+        const advanceSettings = document.getElementById('advanceSettings');
+        const colorPaletteSelect = document.getElementById('colorPalette');
+        const compositionSelect = document.getElementById('composition');
+        const enhancementSelect = document.getElementById('enhancement');
+        const aspectRatioRadios = document.querySelectorAll('input[name="aspectRatio"]');
+        const langButtons = document.querySelectorAll('.lang-btn');
 
-        // Advanced settings state
-        let advancedSettingsVisible = false;
-
-        // Initialize the app
-        function init() {
-            // Load saved theme preference
-            const savedTheme = localStorage.getItem('dekai-theme');
-            if (savedTheme === 'light') {
-                toggleTheme();
-            }
-
-            // Load saved language preference
-            const savedLang = localStorage.getItem('dekai-lang');
-            if (savedLang === 'id') {
-                toggleLanguage();
-            }
-
-            // Load history from local storage
-            loadHistory();
-
-            // Event listeners
-            generateBtn.addEventListener('click', generateImage);
-            clearBtn.addEventListener('click', clearInputs);
-            clearHistoryBtn.addEventListener('click', clearHistory);
-            themeToggle.addEventListener('click', toggleTheme);
-            langEn.addEventListener('click', () => {
-                if (currentLang !== 'en') toggleLanguage();
-            });
-            langId.addEventListener('click', () => {
-                if (currentLang !== 'id') toggleLanguage();
-            });
-            toggleAdvanced.addEventListener('click', toggleAdvancedSettings);
-
-            // Range input listeners
-            widthInput.addEventListener('input', updateWidthValue);
-            heightInput.addEventListener('input', updateHeightValue);
-            stepsInput.addEventListener('input', updateStepsValue);
-
-            // Initialize values
-            updateWidthValue();
-            updateHeightValue();
-            updateStepsValue();
-        }
-
-        // Toggle between dark and light theme
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            html.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-            
-            // Update theme icon and text
-            if (isDarkMode) {
-                themeIcon.innerHTML = '<path d="M12,2L4.22,4.22L2,12L4.22,19.78L12,22L19.78,19.78L22,12L19.78,4.22L12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z"/>';
-                themeText.textContent = currentLang === 'en' ? 'Dark Mode' : 'Mode Gelap';
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                htmlElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
             } else {
-                themeIcon.innerHTML = '<path d="M12,18C8.69,18 6,15.31 6,12C6,8.69 8.69,6 12,6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M12,8C9.79,8 8,9.79 8,12C8,14.21 9.79,16 12,16C14.21,16 16,14.21 16,12C16,9.79 14.21,8 12,8M12,4C11.45,4 11,3.55 11,3V1C11,0.45 11.45,0 12,0C12.55,0 13,0.45 13,1V3C13,3.55 12.55,4 12,4M12,20C11.45,20 11,19.55 11,19V17C11,16.45 11.45,16 12,16C12.55,16 13,16.45 13,17V19C13,19.55 12.55,20 12,20M5.64,6.64L4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05C6.03,8.44 6.66,8.44 7.05,8.05C7.44,7.66 7.44,7.03 7.05,6.64L5.64,5.22C5.25,4.83 4.62,4.83 4.22,5.22C3.83,5.61 3.83,6.24 4.22,6.63L5.64,8.05M18.36,17.36L19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95C17.97,15.56 17.34,15.56 16.95,15.95C16.56,16.34 16.56,16.97 16.95,17.36L18.36,18.78C18.75,19.17 19.38,19.17 19.78,18.78C20.17,18.39 20.17,17.76 19.78,17.37L18.36,15.95M1,12C1,11.45 1.45,11 2,11H4C4.55,11 5,11.45 5,12C5,12.55 4.55,13 4,13H2C1.45,13 1,12.55 1,12M21,12C21,11.45 21.45,11 22,11H24C24.55,11 25,11.45 25,12C25,12.55 24.55,13 24,13H22C21.45,13 21,12.55 21,12M5.64,17.36L7.05,18.78C7.44,19.17 7.44,19.8 7.05,20.19C6.66,20.58 6.03,20.58 5.64,20.19L4.22,18.78C3.83,18.39 3.83,17.76 4.22,17.37L5.64,15.95C6.03,15.56 6.66,15.56 7.05,15.95C7.44,16.34 7.44,16.97 7.05,17.36L5.64,18.78M18.36,6.64L16.95,5.22C16.56,4.83 16.56,4.2 16.95,3.81C17.34,3.42 17.97,3.42 18.36,3.81L19.78,5.22C20.17,5.61 20.17,6.24 19.78,6.63L18.36,8.05C17.97,8.44 17.34,8.44 16.95,8.05C16.56,7.66 16.56,7.03 16.95,6.64L18.36,5.22"/>';
-                themeText.textContent = currentLang === 'en' ? 'Light Mode' : 'Mode Terang';
+                htmlElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
             }
-            
-            // Save theme preference
-            localStorage.setItem('dekai-theme', isDarkMode ? 'dark' : 'light');
+        });
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            htmlElement.setAttribute('data-theme', 'light');
         }
 
-        // Toggle between English and Indonesian
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'id' : 'en';
-            
-            // Update language buttons
-            if (currentLang === 'en') {
-                langEn.classList.add('active');
-                langId.classList.remove('active');
-            } else {
-                langEn.classList.remove('active');
-                langId.classList.add('active');
-            }
-            
-            // Update all translatable elements
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                el.textContent = translations[currentLang][key];
-            });
-            
-            // Update placeholders
-            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-                const key = el.getAttribute('data-i18n-ph');
-                el.setAttribute('placeholder', translations[currentLang][key]);
-            });
-            
-            // Update theme text
-            themeText.textContent = isDarkMode ? 
-                (currentLang === 'en' ? 'Dark Mode' : 'Mode Gelap') : 
-                (currentLang === 'en' ? 'Light Mode' : 'Mode Terang');
-            
-            // Save language preference
-            localStorage.setItem('dekai-lang', currentLang);
-        }
-
-        // Toggle advanced settings visibility
-        function toggleAdvancedSettings() {
-            advancedSettingsVisible = !advancedSettingsVisible;
-            
-            if (advancedSettingsVisible) {
-                advancedSettings.classList.add('active');
-                toggleAdvanced.classList.add('active');
-            } else {
-                advancedSettings.classList.remove('active');
-                toggleAdvanced.classList.remove('active');
-            }
-        }
-
-        // Update width value display
-        function updateWidthValue() {
+        // Range inputs update
+        widthInput.addEventListener('input', () => {
             widthValue.textContent = widthInput.value;
-        }
+            updateAspectRatio();
+        });
 
-        // Update height value display
-        function updateHeightValue() {
+        heightInput.addEventListener('input', () => {
+            heightValue.textContent = heightInput.value;
+            updateAspectRatio();
+        });
+
+        stepsInput.addEventListener('input', () => {
+            stepsValue.textContent = stepsInput.value;
+        });
+
+        // Aspect ratio handling
+        aspectRatioRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.checked) {
+                    setAspectRatio(radio.value);
+                }
+            });
+        });
+
+        function setAspectRatio(ratio) {
+            switch (ratio) {
+                case '1:1':
+                    widthInput.value = 1024;
+                    heightInput.value = 1024;
+                    break;
+                case '9:16':
+                    widthInput.value = 1024;
+                    heightInput.value = 1820;
+                    break;
+                case '16:9':
+                    widthInput.value = 1820;
+                    heightInput.value = 1024;
+                    break;
+            }
+            widthValue.textContent = widthInput.value;
             heightValue.textContent = heightInput.value;
         }
 
-        // Update steps value display
-        function updateStepsValue() {
-            stepsValue.textContent = stepsInput.value;
-        }
-
-        // Clear all input fields
-        function clearInputs() {
-            promptInput.value = '';
-            negativePrompt.value = '';
-            aiModel.selectedIndex = 0;
-            styleSelect.selectedIndex = 0;
-            qualitySelect.selectedIndex = 1;
-            enhancementSelect.selectedIndex = 0;
-            widthInput.value = 1024;
-            heightInput.value = 1024;
-            stepsInput.value = 30;
-            additionalFeatures.selectedIndex = 0;
-            nsfwCheckbox.checked = false;
-            colorPalette.selectedIndex = 0;
-            composition.selectedIndex = 0;
-            upscaleCheckbox.checked = true;
-            enhanceCheckbox.checked = true;
+        function updateAspectRatio() {
+            const width = parseInt(widthInput.value);
+            const height = parseInt(heightInput.value);
             
-            updateWidthValue();
-            updateHeightValue();
-            updateStepsValue();
+            // Check which ratio matches
+            if (width === height) {
+                document.getElementById('ratio1').checked = true;
+            } else if (Math.abs(width/height - 9/16) < 0.1) {
+                document.getElementById('ratio2').checked = true;
+            } else if (Math.abs(width/height - 16/9) < 0.1) {
+                document.getElementById('ratio3').checked = true;
+            } else {
+                // If none match, uncheck all
+                aspectRatioRadios.forEach(radio => radio.checked = false);
+            }
         }
 
-        // Load prompt history from local storage
+        // Toggle advanced settings
+        toggleAdvance.addEventListener('click', () => {
+            advanceSettings.classList.toggle('show');
+            toggleAdvance.classList.toggle('active');
+        });
+
+        // Language switcher
+        langButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentLang = button.getAttribute('data-lang');
+                updateLanguage(currentLang);
+                langButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        function updateLanguage(lang) {
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-ph]').forEach(element => {
+                const key = element.getAttribute('data-i18n-ph');
+                if (translations[lang][key]) {
+                    element.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
+        }
+
+        // History functionality
         function loadHistory() {
-            const history = JSON.parse(localStorage.getItem('dekai-history')) || [];
+            const history = JSON.parse(localStorage.getItem('dekaiHistory')) || [];
             historyList.innerHTML = '';
             
             if (history.length === 0) {
-                const emptyItem = document.createElement('div');
-                emptyItem.textContent = currentLang === 'en' ? 'No history yet' : 'Belum ada riwayat';
-                emptyItem.style.textAlign = 'center';
-                emptyItem.style.padding = '1rem';
-                emptyItem.style.color = 'rgba(255,255,255,0.5)';
-                historyList.appendChild(emptyItem);
+                historyList.innerHTML = `<p style="color: var(--secondary);">${translations[currentLang].emptyTitle}</p>`;
                 return;
             }
             
             history.forEach((item, index) => {
                 const historyItem = document.createElement('div');
                 historyItem.className = 'history-item';
-                
-                const promptText = document.createElement('span');
-                promptText.textContent = item.prompt.length > 50 ? item.prompt.substring(0, 50) + '...' : item.prompt;
-                promptText.title = item.prompt;
-                
-                const deleteBtn = document.createElement('span');
-                deleteBtn.className = 'history-delete';
-                deleteBtn.innerHTML = '&times;';
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteHistoryItem(index);
-                });
-                
-                historyItem.appendChild(promptText);
-                historyItem.appendChild(deleteBtn);
-                
+                historyItem.innerHTML = `
+                    <p>${item.prompt}</p>
+                    <small>${new Date(item.timestamp).toLocaleString()}</small>
+                `;
                 historyItem.addEventListener('click', () => {
                     promptInput.value = item.prompt;
-                    negativePrompt.value = item.negativePrompt || '';
-                    if (item.model) aiModel.value = item.model;
-                    if (item.style) styleSelect.value = item.style;
-                    if (item.width) {
-                        widthInput.value = item.width;
-                        updateWidthValue();
-                    }
-                    if (item.height) {
-                        heightInput.value = item.height;
-                        updateHeightValue();
-                    }
-                    if (item.steps) {
-                        stepsInput.value = item.steps;
-                        updateStepsValue();
-                    }
+                    if (item.negativePrompt) negativePromptInput.value = item.negativePrompt;
                 });
-                
                 historyList.appendChild(historyItem);
             });
         }
 
-        // Delete a history item
-        function deleteHistoryItem(index) {
-            const history = JSON.parse(localStorage.getItem('dekai-history')) || [];
-            history.splice(index, 1);
-            localStorage.setItem('dekai-history', JSON.stringify(history));
-            loadHistory();
-        }
-
-        // Clear all history
-        function clearHistory() {
-            localStorage.removeItem('dekai-history');
-            loadHistory();
-        }
-
-        // Add a prompt to history
-        function addToHistory(prompt, negativePrompt, model, style, width, height, steps) {
-            const history = JSON.parse(localStorage.getItem('dekai-history')) || [];
-            
-            // Check if this prompt already exists in history
-            const existingIndex = history.findIndex(item => item.prompt === prompt);
-            if (existingIndex !== -1) {
-                // Remove the existing one to add it to the top
-                history.splice(existingIndex, 1);
-            }
-            
-            // Add new prompt to the beginning of the array
+        function saveToHistory(prompt, negativePrompt) {
+            const history = JSON.parse(localStorage.getItem('dekaiHistory')) || [];
             history.unshift({
                 prompt,
                 negativePrompt,
-                model,
-                style,
-                width,
-                height,
-                steps,
                 timestamp: new Date().toISOString()
             });
             
@@ -1360,143 +1421,127 @@
                 history.pop();
             }
             
-            localStorage.setItem('dekai-history', JSON.stringify(history));
+            localStorage.setItem('dekaiHistory', JSON.stringify(history));
             loadHistory();
         }
 
-        // Generate image from prompt
-        async function generateImage() {
+        clearHistoryBtn.addEventListener('click', () => {
+            if (confirm(currentLang === 'en' ? 'Are you sure you want to clear all history?' : 'Anda yakin ingin menghapus semua riwayat?')) {
+                localStorage.removeItem('dekaiHistory');
+                loadHistory();
+            }
+        });
+
+        // Generate image
+        generateBtn.addEventListener('click', async () => {
             const prompt = promptInput.value.trim();
             if (!prompt) {
-                alert(currentLang === 'en' ? 'Please enter a prompt' : 'Silakan masukkan prompt');
+                alert(currentLang === 'en' ? 'Please enter a prompt' : 'Masukkan prompt terlebih dahulu');
                 return;
             }
             
-            const negativePromptValue = negativePrompt.value.trim();
-            const model = aiModel.value;
+            const negativePrompt = negativePromptInput.value.trim();
+            const model = aiModelSelect.value;
             const style = styleSelect.value;
-            const quality = qualitySelect.value;
-            const enhancement = enhancementSelect.value;
             const width = widthInput.value;
             const height = heightInput.value;
             const steps = stepsInput.value;
-            const additionalFeature = additionalFeatures.value;
+            const lighting = lightingSelect.value;
             const nsfw = nsfwCheckbox.checked;
-            const color = colorPalette.value;
-            const comp = composition.value;
-            const upscale = upscaleCheckbox.checked;
-            const enhance = enhanceCheckbox.checked;
+            const colorPalette = colorPaletteSelect.value;
+            const composition = compositionSelect.value;
+            const enhancement = enhancementSelect.value;
             
-            // Add to history
-            addToHistory(prompt, negativePromptValue, model, style, width, height, steps);
+            // Save to history
+            saveToHistory(prompt, negativePrompt);
             
-            // Show loading overlay
+            // Show loading
             loadingOverlay.style.display = 'flex';
             
             try {
-                // Build the full prompt with all options
+                // Construct the full prompt with all parameters
                 let fullPrompt = prompt;
+                
+                // Add model if not default
+                if (model !== 'default') {
+                    fullPrompt += `, ${model}`;
+                }
                 
                 // Add style if not default
                 if (style !== 'default') {
                     fullPrompt += `, ${style} style`;
                 }
                 
-                // Add quality if not default
-                if (quality !== 'hd') {
-                    fullPrompt += `, ${quality} quality`;
+                // Add lighting
+                if (lighting !== 'none') {
+                    fullPrompt += `, ${lighting}`;
                 }
                 
-                // Add enhancement if any
+                // Add color palette
+                if (colorPalette !== 'default') {
+                    fullPrompt += `, ${colorPalette} color palette`;
+                }
+                
+                // Add composition
+                if (composition !== 'default') {
+                    fullPrompt += `, ${composition}`;
+                }
+                
+                // Add enhancement
                 if (enhancement !== 'none') {
                     fullPrompt += `, ${enhancement}`;
                 }
                 
-                // Add additional features if any
-                if (additionalFeature !== 'none') {
-                    fullPrompt += `, ${additionalFeature}`;
-                }
-                
-                // Add color palette if not default
-                if (color !== 'default') {
-                    fullPrompt += `, ${color} color palette`;
-                }
-                
-                // Add composition if not default
-                if (comp !== 'default') {
-                    fullPrompt += `, ${comp} composition`;
-                }
-                
-                // Add NSFW if enabled
+                // Add NSFW if needed
                 if (nsfw) {
                     fullPrompt += ', nsfw';
                 }
                 
                 // Add negative prompt if exists
-                if (negativePromptValue) {
-                    fullPrompt += ` | negative: ${negativePromptValue}`;
+                if (negativePrompt) {
+                    fullPrompt += ` | negative: ${negativePrompt}`;
                 }
                 
-                // Add model if not default
-                if (model !== 'default') {
-                    fullPrompt += ` | model: ${model}`;
-                }
+                // Generate the image with proper PNG format
+                const apiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${width}&height=${height}&seed=${Math.floor(Math.random() * 1000000)}&nologo=true`;
                 
-                // Add upscaling if enabled
-                if (upscale) {
-                    fullPrompt += ' | upscaled';
-                }
+                // Create image element
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
                 
-                // Add enhancement if enabled
-                if (enhance) {
-                    fullPrompt += ' | enhanced';
-                }
+                img.onload = () => {
+                    // Hide loading
+                    loadingOverlay.style.display = 'none';
+                    
+                    // Create image card
+                    createImageCard(img.src, prompt, width, height);
+                };
                 
-                // Encode the prompt for URL
-                const encodedPrompt = encodeURIComponent(fullPrompt);
+                img.onerror = () => {
+                    loadingOverlay.style.display = 'none';
+                    showError(translations[currentLang].error);
+                };
                 
-                // Build the API URL
-                let apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
-                apiUrl += `?width=${width}&height=${height}&steps=${steps}&nologo=true`;
-                
-                // Call the API
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(currentLang === 'en' ? 'Failed to generate image' : 'Gagal menghasilkan gambar');
-                }
-                
-                // Get the image blob
-                const blob = await response.blob();
-                const imageUrl = URL.createObjectURL(blob);
-                
-                // Create a new image card
-                createImageCard(prompt, imageUrl, width, height);
+                // Force PNG output by adding a timestamp to prevent caching
+                img.src = apiUrl + '&t=' + Date.now();
                 
             } catch (error) {
                 console.error('Error generating image:', error);
-                alert(`${currentLang === 'en' ? 'Error:' : 'Error:'} ${error.message}`);
-            } finally {
-                // Hide loading overlay
                 loadingOverlay.style.display = 'none';
+                showError(translations[currentLang].error);
             }
-        }
+        });
 
-        // Create a new image card in the gallery
-        function createImageCard(prompt, imageUrl, width, height) {
-            // Remove placeholder if exists
-            const placeholder = document.querySelector('.image-card.placeholder');
-            if (placeholder) {
-                placeholder.remove();
+        function createImageCard(imageUrl, prompt, width, height) {
+            // Remove empty state if it exists
+            const emptyState = resultsGrid.querySelector('.empty-state');
+            if (emptyState) {
+                resultsGrid.removeChild(emptyState);
             }
             
-            // Create the card element
+            // Create card element
             const card = document.createElement('div');
             card.className = 'image-card';
-            
-            // Create image container
-            const imageContainer = document.createElement('div');
-            imageContainer.className = 'image-container';
             
             // Create image element
             const img = document.createElement('img');
@@ -1504,121 +1549,115 @@
             img.src = imageUrl;
             img.alt = prompt;
             img.loading = 'lazy';
+            img.width = width;
+            img.height = height;
             
-            // Create image actions
+            // Create actions container
             const actions = document.createElement('div');
             actions.className = 'image-actions';
             
             // Download button
             const downloadBtn = document.createElement('button');
-            downloadBtn.className = 'action-button';
-            downloadBtn.title = currentLang === 'en' ? 'Download' : 'Unduh';
-            downloadBtn.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>';
+            downloadBtn.className = 'action-btn';
+            downloadBtn.title = translations[currentLang].download;
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
             downloadBtn.addEventListener('click', () => downloadImage(imageUrl, prompt));
             
             // Share button
             const shareBtn = document.createElement('button');
-            shareBtn.className = 'action-button';
-            shareBtn.title = currentLang === 'en' ? 'Share' : 'Bagikan';
-            shareBtn.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z"/></svg>';
+            shareBtn.className = 'action-btn';
+            shareBtn.title = translations[currentLang].share;
+            shareBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
             shareBtn.addEventListener('click', () => shareImage(imageUrl, prompt));
             
-            // Save button
-            const saveBtn = document.createElement('button');
-            saveBtn.className = 'action-button';
-            saveBtn.title = currentLang === 'en' ? 'Save' : 'Simpan';
-            saveBtn.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/></svg>';
-            saveBtn.addEventListener('click', () => saveImageToLocalStorage(imageUrl, prompt));
-            
-            // Assemble actions
+            // Append elements
             actions.appendChild(downloadBtn);
             actions.appendChild(shareBtn);
-            actions.appendChild(saveBtn);
+            card.appendChild(img);
+            card.appendChild(actions);
             
-            // Assemble image container
-            imageContainer.appendChild(img);
-            imageContainer.appendChild(actions);
-            
-            // Create image info
-            const info = document.createElement('div');
-            info.className = 'image-info';
-            
-            const promptText = document.createElement('p');
-            promptText.className = 'image-prompt';
-            promptText.textContent = prompt;
-            
-            const dimensions = document.createElement('p');
-            dimensions.className = 'image-dimensions';
-            dimensions.textContent = `${width}×${height}px`;
-            dimensions.style.fontSize = '0.8rem';
-            dimensions.style.color = 'rgba(255,255,255,0.6)';
-            dimensions.style.marginTop = '0.5rem';
-            
-            info.appendChild(promptText);
-            info.appendChild(dimensions);
-            
-            // Assemble card
-            card.appendChild(imageContainer);
-            card.appendChild(info);
-            
-            // Add to gallery (at the beginning)
-            gallery.insertBefore(card, gallery.firstChild);
+            // Add to grid (at the beginning)
+            resultsGrid.insertBefore(card, resultsGrid.firstChild);
         }
 
-        // Download generated image
-        function downloadImage(url, prompt) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `deka-ai-${prompt.substring(0, 20).replace(/\s+/g, '-').toLowerCase()}.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+        function downloadImage(imageUrl, prompt) {
+            fetch(imageUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `dekai-${prompt.substring(0, 20).toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(err => {
+                    console.error('Error downloading image:', err);
+                    showError(currentLang === 'en' ? 'Error downloading image' : 'Gagal mengunduh gambar');
+                });
         }
 
-        // Share image
-        function shareImage(url, prompt) {
+        function shareImage(imageUrl, prompt) {
             if (navigator.share) {
                 navigator.share({
                     title: 'DEKA AI Generated Image',
-                    text: `Check out this image I generated with DEKA AI: ${prompt}`,
-                    url: url
+                    text: prompt,
+                    url: imageUrl
                 }).catch(err => {
-                    console.error('Error sharing:', err);
-                    fallbackShare(url, prompt);
+                    console.log('Error sharing:', err);
+                    copyToClipboard(imageUrl);
                 });
             } else {
-                fallbackShare(url, prompt);
+                copyToClipboard(imageUrl);
             }
         }
 
-        // Fallback for browsers that don't support Web Share API
-        function fallbackShare(url, prompt) {
-            const shareText = `${currentLang === 'en' ? 'Check out this image I generated with DEKA AI:' : 'Lihat gambar yang saya hasilkan dengan DEKA AI:'} ${prompt}\n${url}`;
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show a temporary notification
+                const notification = document.createElement('div');
+                notification.textContent = translations[currentLang].copied;
+                notification.style.position = 'fixed';
+                notification.style.bottom = '20px';
+                notification.style.left = '50%';
+                notification.style.transform = 'translateX(-50%)';
+                notification.style.backgroundColor = 'var(--success)';
+                notification.style.color = 'white';
+                notification.style.padding = '10px 20px';
+                notification.style.borderRadius = '5px';
+                notification.style.zIndex = '1000';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 2000);
+            });
+        }
+
+        function showError(message) {
+            // Remove any existing error message
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
             
-            // Try to copy to clipboard
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(shareText).then(() => {
-                    alert(currentLang === 'en' ? 'Link copied to clipboard!' : 'Tautan disalin ke clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy:', err);
-                    prompt(currentLang === 'en' ? 'Share this link:' : 'Bagikan tautan ini:', shareText);
-                });
-            } else {
-                prompt(currentLang === 'en' ? 'Share this link:' : 'Bagikan tautan ini:', shareText);
-            }
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            
+            const settingsPanel = document.querySelector('.settings-panel');
+            settingsPanel.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
         }
 
-        // Save image to local storage
-        function saveImageToLocalStorage(url, prompt) {
-            // In a real app, you would save the image data to IndexedDB
-            // For this demo, we'll just show an alert
-            alert(currentLang === 'en' 
-                ? 'Image saved to your gallery (in a real app, this would save to local storage)' 
-                : 'Gambar disimpan ke galeri Anda (di aplikasi nyata, ini akan disimpan di penyimpanan lokal)');
-        }
-
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', init);
+        // Initialize
+        loadHistory();
+        updateLanguage(currentLang);
     </script>
 </body>
 </html>
