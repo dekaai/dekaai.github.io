@@ -1,1598 +1,179 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKA AI - Powerful AI Image Generator</title>
+    <title>DEKA AI Image Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #6e45e2;
-            --primary-dark: #4a2dbf;
-            --secondary: #88d3ce;
-            --accent: #ff7e5f;
-            --text: #f8f9fa;
-            --text-secondary: #adb5bd;
-            --bg: #12141d;
-            --bg-secondary: #1e2130;
-            --card-bg: #252a3a;
-            --border: #343a40;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --info: #17a2b8;
-            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --neon-glow: 0 0 10px rgba(110, 69, 226, 0.8), 0 0 20px rgba(110, 69, 226, 0.6), 0 0 30px rgba(110, 69, 226, 0.4);
-        }
-
-        [data-theme="light"] {
-            --primary: #6e45e2;
-            --primary-dark: #4a2dbf;
-            --secondary: #4db8b0;
-            --accent: #ff5a36;
-            --text: #212529;
-            --text-secondary: #495057;
-            --bg: #f8f9fa;
-            --bg-secondary: #e9ecef;
-            --card-bg: #ffffff;
-            --border: #dee2e6;
-            --neon-glow: 0 0 10px rgba(110, 69, 226, 0.5), 0 0 15px rgba(110, 69, 226, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 10;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .logo i {
-            font-size: 2rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .theme-toggle {
-            background: var(--bg-secondary);
-            border: none;
-            color: var(--text);
-            padding: 8px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .theme-toggle:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .theme-toggle i {
-            font-size: 1.2rem;
-        }
-
-        main {
-            flex: 1;
-            padding: 2rem 0;
-        }
-
-        .generator-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 992px) {
-            .generator-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .prompt-section, .settings-section {
-            background-color: var(--bg-secondary);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            font-size: 1.3rem;
-        }
-
-        .prompt-area {
-            width: 100%;
-            min-height: 150px;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid var(--border);
-            background-color: var(--card-bg);
-            color: var(--text);
-            font-size: 1rem;
-            resize: vertical;
-            margin-bottom: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .prompt-area:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--neon-glow);
-        }
-
-        .prompt-actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            border-radius: 30px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--neon-glow);
-        }
-
-        .btn-secondary {
-            background-color: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--card-bg);
-            transform: translateY(-2px);
-        }
-
-        .btn-accent {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-accent:hover {
-            background-color: #e56a4d;
-            transform: translateY(-2px);
-        }
-
-        .negative-prompt {
-            margin-top: 1rem;
-        }
-
-        .negative-prompt-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .setting-group {
-            margin-bottom: 1rem;
-        }
-
-        .setting-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .select-box, .input-range, .input-number {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: var(--card-bg);
-            color: var(--text);
-            font-size: 0.9rem;
-        }
-
-        .select-box:focus, .input-number:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--neon-glow);
-        }
-
-        .input-range {
-            -webkit-appearance: none;
-            height: 8px;
-            background: var(--card-bg);
-            border-radius: 5px;
-            margin-top: 8px;
-        }
-
-        .input-range::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .input-range::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .range-value {
-            display: inline-block;
-            width: 40px;
-            text-align: center;
-            margin-left: 10px;
-            font-size: 0.9rem;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .checkbox-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .generate-btn-container {
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .generate-btn {
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.4);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(110, 69, 226, 0.6);
-        }
-
-        .generate-btn:active {
-            transform: translateY(1px);
-        }
-
-        .generate-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .generate-btn:hover::before {
-            left: 100%;
-        }
-
-        .results-section {
-            margin-top: 3rem;
-        }
-
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .result-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-        }
-
-        .result-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .result-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .result-actions {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .result-card:hover .result-actions {
-            opacity: 1;
-        }
-
-        .result-action-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .result-action-btn:hover {
-            background-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .history-section {
-            margin-top: 2rem;
-            background-color: var(--bg-secondary);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .history-list {
-            max-height: 200px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .history-item {
-            background-color: var(--card-bg);
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .history-item:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .history-item-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 80%;
-        }
-
-        .history-item-delete {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .history-item:hover .history-item-delete {
-            color: white;
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .loading-spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(110, 69, 226, 0.3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        .loading-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-            text-align: center;
-            text-shadow: 0 0 10px rgba(136, 211, 206, 0.5);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .advance-settings {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .advance-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-bottom: 1rem;
-        }
-
-        .advance-toggle i {
-            transition: transform 0.3s;
-        }
-
-        .advance-toggle.active i {
-            transform: rotate(90deg);
-        }
-
-        .advance-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .advance-content.active {
-            max-height: 500px;
-        }
-
-        .language-switcher {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-        }
-
-        .language-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .language-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        footer {
-            background-color: var(--bg-secondary);
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .social-link {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        .social-link:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .prompt-actions {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .settings-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--card-bg);
-            color: var(--text);
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--success);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger);
-        }
-
-        .toast.warning {
-            border-left: 4px solid var(--warning);
-        }
-
-        .toast-close {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-robot"></i>
-                <span>DEKA AI</span>
+    <div class="cyber-container">
+        <header class="cyber-header">
+            <div class="cyber-logo">
+                <div class="cyber-neon">
+                    <span class="cyber-char" data-char="D">D</span>
+                    <span class="cyber-char" data-char="E">E</span>
+                    <span class="cyber-char" data-char="K">K</span>
+                    <span class="cyber-char" data-char="A">A</span>
+                </div>
+                <h1 class="cyber-title">AI IMAGE GENERATOR</h1>
             </div>
-            <button class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon"></i>
-                <span>Dark Mode</span>
-            </button>
-        </div>
-    </header>
+            <div class="cyber-controls">
+                <button id="language-toggle" class="cyber-btn small"><i class="fas fa-language"></i> <span data-en="EN/ID" data-id="EN/ID">EN/ID</span></button>
+                <button id="theme-toggle" class="cyber-btn small"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
 
-    <main class="container">
-        <div class="generator-container">
-            <section class="prompt-section">
-                <h2 class="section-title">
-                    <i class="fas fa-magic"></i>
-                    <span data-i18n="prompt_title">AI Image Prompt</span>
-                </h2>
-                <textarea id="promptInput" class="prompt-area" placeholder="Describe the image you want to generate..."></textarea>
-                
-                <div class="prompt-actions">
-                    <button id="enhancePromptBtn" class="btn btn-secondary">
-                        <i class="fas fa-wand-magic-sparkles"></i>
-                        <span data-i18n="enhance_prompt">Enhance Prompt</span>
-                    </button>
-                    <button id="randomPromptBtn" class="btn btn-secondary">
-                        <i class="fas fa-dice"></i>
-                        <span data-i18n="random_prompt">Random Prompt</span>
-                    </button>
+        <main class="cyber-main">
+            <section class="cyber-control-panel">
+                <div class="cyber-card prompt-section">
+                    <label for="prompt" data-en="PROMPT:" data-id="PROMPT:">PROMPT:</label>
+                    <textarea id="prompt" rows="3" placeholder="Describe the image you want..." data-en-placeholder="Describe the image you want..." data-id-placeholder="Deskripsikan gambar yang Anda inginkan..."></textarea>
+                    <div class="cyber-btn-group">
+                        <button id="enhance-prompt" class="cyber-btn small accent"><i class="fas fa-magic"></i> <span data-en="ENHANCE" data-id="TINGKATKAN">ENHANCE</span></button>
+                        <button id="random-prompt" class="cyber-btn small"><i class="fas fa-random"></i> <span data-en="RANDOM" data-id="ACAK">RANDOM</span></button>
+                    </div>
                 </div>
 
-                <div class="negative-prompt">
-                    <div class="negative-prompt-label">
-                        <i class="fas fa-ban"></i>
-                        <span data-i18n="negative_prompt">Negative Prompt (things you don't want in the image)</span>
+                <div class="cyber-card negative-prompt-section">
+                    <label for="negative-prompt" data-en="NEGATIVE PROMPT:" data-id="PROMPT NEGATIF:">NEGATIVE PROMPT:</label>
+                    <textarea id="negative-prompt" rows="2" placeholder="What you don't want in the image..." data-en-placeholder="What you don't want in the image..." data-id-placeholder="Apa yang tidak Anda inginkan dalam gambar..."></textarea>
+                </div>
+
+                <div class="cyber-advanced">
+                    <h3 class="cyber-accordion" data-en="ADVANCED SETTINGS ⚙️" data-id="PENGATURAN LANJUTAN ⚙️">ADVANCED SETTINGS ⚙️</h3>
+                    <div class="cyber-accordion-content">
+                        <div class="cyber-grid">
+                            <div class="cyber-card">
+                                <label for="model" data-en="MODEL:" data-id="MODEL:">MODEL:</label>
+                                <select id="model" class="cyber-select">
+                                    <option value="default" data-en="DEFAULT" data-id="DEFAULT">DEFAULT</option>
+                                    <option value="gptimage" data-en="GPT IMAGE" data-id="GPT IMAGE">GPT IMAGE</option>
+                                    <option value="flux" data-en="FLUX" data-id="FLUX">FLUX</option>
+                                    <option value="turbo" data-en="TURBO" data-id="TURBO">TURBO</option>
+                                </select>
+                            </div>
+                            <div class="cyber-card">
+                                <label for="style" data-en="STYLE:" data-id="GAYA:">STYLE:</label>
+                                <select id="style" class="cyber-select">
+                                    <option value="default" data-en="DEFAULT" data-id="DEFAULT">DEFAULT</option>
+                                    <option value="realistic" data-en="REALISTIC" data-id="REALISTIS">REALISTIC</option>
+                                    <option value="digital-art" data-en="DIGITAL ART" data-id="SENI DIGITAL">DIGITAL ART</option>
+                                    <option value="anime" data-en="ANIME" data-id="ANIME">ANIME</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="cyber-grid">
+                            <div class="cyber-card">
+                                <label for="color-palette" data-en="COLOR PALETTE:" data-id="PALET WARNA:">COLOR PALETTE:</label>
+                                <select id="color-palette" class="cyber-select">
+                                    <option value="default" data-en="DEFAULT" data-id="DEFAULT">DEFAULT</option>
+                                    <option value="vibrant" data-en="VIBRANT" data-id="VIBRANT">VIBRANT</option>
+                                    <option value="pastel" data-en="PASTEL" data-id="PASTEL">PASTEL</option>
+                                </select>
+                            </div>
+                            <div class="cyber-card">
+                                <label for="composition" data-en="COMPOSITION:" data-id="KOMPOSISI:">COMPOSITION:</label>
+                                <select id="composition" class="cyber-select">
+                                    <option value="default" data-en="DEFAULT" data-id="DEFAULT">DEFAULT</option>
+                                    <option value="close-up" data-en="CLOSE-UP" data-id="CLOSE-UP">CLOSE-UP</option>
+                                    <option value="wide-shot" data-en="WIDE SHOT" data-id="SUDUT LEBAR">WIDE SHOT</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="cyber-grid">
+                            <div class="cyber-card">
+                                <label for="aspect-ratio" data-en="ASPECT RATIO:" data-id="RASIO ASPEK:">ASPECT RATIO:</label>
+                                <select id="aspect-ratio" class="cyber-select">
+                                    <option value="1024x1024" data-en="SQUARE (1:1)" data-id="PERSEGI (1:1)">SQUARE (1:1)</option>
+                                    <option value="1920x1080" data-en="WIDESCREEN (16:9)" data-id="LAYAR LEBAR (16:9)">WIDESCREEN (16:9)</option>
+                                    <option value="1080x1920" data-en="PORTRAIT (9:16)" data-id="PORTRET (9:16)">PORTRAIT (9:16)</option>
+                                </select>
+                            </div>
+                            <div class="cyber-card">
+                                <label for="seed" data-en="SEED:" data-id="BIBIT:">SEED:</label>
+                                <div class="cyber-input-group">
+                                    <input type="number" id="seed" class="cyber-input" placeholder="Random" data-en-placeholder="Random" data-id-placeholder="Acak">
+                                    <button id="random-seed" class="cyber-btn small"><i class="fas fa-dice"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cyber-checkbox-grid">
+                            <label class="cyber-checkbox">
+                                <input type="checkbox" id="enhance" checked>
+                                <span class="checkmark"></span>
+                                <span data-en="ENHANCE" data-id="TINGKATKAN">ENHANCE</span>
+                            </label>
+                            <label class="cyber-checkbox">
+                                <input type="checkbox" id="hd" checked>
+                                <span class="checkmark"></span>
+                                <span data-en="HD QUALITY" data-id="KUALITAS HD">HD QUALITY</span>
+                            </label>
+                            <label class="cyber-checkbox">
+                                <input type="checkbox" id="nologo" checked>
+                                <span class="checkmark"></span>
+                                <span data-en="NO LOGO" data-id="TANPA LOGO">NO LOGO</span>
+                            </label>
+                        </div>
                     </div>
-                    <textarea id="negativePromptInput" class="prompt-area" placeholder="blurry, low quality, distorted, etc."></textarea>
+                </div>
+
+                <button id="generate-btn" class="cyber-btn primary pulse">
+                    <i class="fas fa-bolt"></i> 
+                    <span data-en="GENERATE IMAGE" data-id="BUAT GAMBAR">GENERATE IMAGE</span>
+                </button>
+
+                <div class="cyber-card history-section">
+                    <div class="cyber-history-header">
+                        <h3 data-en="PROMPT HISTORY" data-id="RIWAYAT PROMPT">PROMPT HISTORY</h3>
+                        <button id="clear-history" class="cyber-btn small danger"><i class="fas fa-trash"></i> <span data-en="CLEAR" data-id="HAPUS">CLEAR</span></button>
+                    </div>
+                    <ul id="history-list" class="cyber-history-list"></ul>
                 </div>
             </section>
 
-            <section class="settings-section">
-                <h2 class="section-title">
-                    <i class="fas fa-sliders-h"></i>
-                    <span data-i18n="settings_title">Generation Settings</span>
-                </h2>
-                
-                <div class="settings-grid">
-                    <div class="setting-group">
-                        <label for="modelSelect" class="setting-label" data-i18n="model_label">AI Model</label>
-                        <select id="modelSelect" class="select-box">
-                            <option value="default" data-i18n="model_default">Default</option>
-                            <option value="dall-e-3" data-i18n="model_dalle">DALL-E 3</option>
-                            <option value="flux" data-i18n="model_flux">Flux</option>
-                            <option value="midjourney" data-i18n="model_midjourney">Midjourney</option>
-                            <option value="stable-diffusion" data-i18n="model_sd">Stable Diffusion</option>
-                            <option value="&model=turbo">Turbo Model</option>
-                        </select>
-                    </div>
-                    
-                    <div class="setting-group">
-                        <label for="styleSelect" class="setting-label" data-i18n="style_label">Style</label>
-                        <select id="styleSelect" class="select-box">
-                            <option value="default" data-i18n="style_default">Default</option>
-                            <option value="realistic" data-i18n="style_realistic">Realistic</option>
-                            <option value="digital-art" data-i18n="style_digital">Digital Art</option>
-                            <option value="anime" data-i18n="style_anime">Anime Style</option>
-                            <option value="photography" data-i18n="style_photo">Photography</option>
-                            <option value="watercolor" data-i18n="style_watercolor">Watercolor</option>
-                            <option value="airbrush" data-i18n="style_airbrush">Air Brush</option>
-                            <option value="3d-render" data-i18n="style_3d">3D Render</option>
-                            <option value="surrealism" data-i18n="style_surreal">Surrealism</option>
-                            <option value="3d-disney" data-i18n="style_disney">3D Disney Character</option>
-                            <option value="studio-ghibli" data-i18n="style_ghibli">Studio Ghibli</option>
-                            <option value="caricature-3d" data-i18n="style_caricature">Caricature 3D</option>
-                            <option value="cartoon" data-i18n="style_cartoon">Cartoon</option>
-                            <option value="graffiti" data-i18n="style_graffiti">Graffiti Art</option>
-                            <option value="pixel-art" data-i18n="style_pixel">Pixel Art</option>
-                            <option value="steampunk" data-i18n="style_steampunk">Steampunk</option>
-                            <option value="cyberpunk" data-i18n="style_cyberpunk">Cyberpunk</option>
-                            <option value="psychedelic" data-i18n="style_psychedelic">Psychedelic</option>
-                        </select>
-                    </div>
-                    
-                    <div class="setting-group">
-                        <label for="aspectRatioSelect" class="setting-label" data-i18n="aspect_label">Aspect Ratio</label>
-                        <select id="aspectRatioSelect" class="select-box">
-                            <option value="1:1" data-i18n="aspect_square">Square (1:1)</option>
-                            <option value="4:3" data-i18n="aspect_standard">Standard (4:3)</option>
-                            <option value="16:9" selected data-i18n="aspect_wide">Widescreen (16:9)</option>
-                            <option value="9:16" data-i18n="aspect_portrait">Portrait (9:16)</option>
-                            <option value="3:2" data-i18n="aspect_classic">Classic (3:2)</option>
-                            <option value="2:3" data-i18n="aspect_tall">Tall (2:3)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="setting-group">
-                        <label for="widthInput" class="setting-label" data-i18n="width_label">Width (px)</label>
-                        <div class="input-group">
-                            <input type="range" id="widthRange" class="input-range" min="1024" max="3840" step="64" value="1920">
-                            <input type="number" id="widthInput" class="input-number" min="1024" max="3840" step="64" value="1920">
+            <section class="cyber-display-panel">
+                <div class="cyber-loading" style="display: none;">
+                    <div class="cyber-spinner">
+                        <div class="spinner-core"></div>
+                        <div class="spinner-orbits">
+                            <div class="orbit"></div>
+                            <div class="orbit"></div>
+                            <div class="orbit"></div>
                         </div>
                     </div>
-                    
-                    <div class="setting-group">
-                        <label for="heightInput" class="setting-label" data-i18n="height_label">Height (px)</label>
-                        <div class="input-group">
-                            <input type="range" id="heightRange" class="input-range" min="1024" max="3840" step="64" value="1080">
-                            <input type="number" id="heightInput" class="input-number" min="1024" max="3840" step="64" value="1080">
-                        </div>
-                    </div>
-                    
-                    <div class="setting-group">
-                        <label for="stepsInput" class="setting-label" data-i18n="steps_label">Steps</label>
-                        <div class="input-group">
-                            <input type="range" id="stepsRange" class="input-range" min="50" max="100" step="5" value="70">
-                            <input type="number" id="stepsInput" class="input-number" min="50" max="100" step="5" value="70">
-                        </div>
+                    <p class="cyber-loading-text">DEKA AI LOADING</p>
+                    <div class="cyber-progress">
+                        <div class="progress-bar"></div>
                     </div>
                 </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="nsfwCheckbox" class="checkbox">
-                    <label for="nsfwCheckbox" class="checkbox-label" data-i18n="nsfw_label">Include NSFW Content</label>
-                </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="ultraDetailCheckbox" class="checkbox" checked>
-                    <label for="ultraDetailCheckbox" class="checkbox-label" data-i18n="ultra_detail">Ultra High Detail</label>
-                </div>
-                
-                <div class="advance-settings">
-                    <div class="advance-toggle" id="advanceToggle">
-                        <i class="fas fa-chevron-right"></i>
-                        <span data-i18n="advance_settings">Advanced Settings</span>
-                    </div>
-                    
-                    <div class="advance-content" id="advanceContent">
-                        <div class="settings-grid">
-                            <div class="setting-group">
-                                <label for="colorPaletteSelect" class="setting-label" data-i18n="color_palette">Color Palette</label>
-                                <select id="colorPaletteSelect" class="select-box">
-                                    <option value="default" data-i18n="color_default">Default</option>
-                                    <option value="vibrant" data-i18n="color_vibrant">Vibrant</option>
-                                    <option value="pastel" data-i18n="color_pastel">Pastel</option>
-                                    <option value="monochrome" data-i18n="color_mono">Monochrome</option>
-                                    <option value="warm" data-i18n="color_warm">Warm Tones</option>
-                                    <option value="cool" data-i18n="color_cool">Cool Tones</option>
-                                    <option value="rgb" data-i18n="color_rgb">RGB</option>
-                                </select>
-                            </div>
-                            
-                            <div class="setting-group">
-                                <label for="compositionSelect" class="setting-label" data-i18n="composition">Composition</label>
-                                <select id="compositionSelect" class="select-box">
-                                    <option value="default" data-i18n="comp_default">Default</option>
-                                    <option value="close-up" data-i18n="comp_close">Close-up</option>
-                                    <option value="wide-shot" data-i18n="comp_wide">Wide Shot</option>
-                                    <option value="macro" data-i18n="comp_macro">Macro</option>
-                                    <option value="aerial" data-i18n="comp_aerial">Aerial</option>
-                                    <option value="low-angle" data-i18n="comp_low">Low View Angle</option>
-                                    <option value="drone" data-i18n="comp_drone">Drone Wide Angle</option>
-                                </select>
-                            </div>
+                <div class="cyber-card image-display">
+                    <img id="generated-image" src="" alt="Generated image will appear here">
+                    <div class="cyber-image-actions">
+                        <button id="download-btn" class="cyber-btn"><i class="fas fa-download"></i> <span data-en="DOWNLOAD" data-id="UNDUH">DOWNLOAD</span></button>
+                        <button id="save-btn" class="cyber-btn"><i class="fas fa-save"></i> <span data-en="SAVE" data-id="SIMPAN">SAVE</span></button>
+                        <div class="cyber-share">
+                            <button class="cyber-btn small social facebook"><i class="fab fa-facebook-f"></i></button>
+                            <button class="cyber-btn small social twitter"><i class="fab fa-twitter"></i></button>
+                            <button class="cyber-btn small social instagram"><i class="fab fa-instagram"></i></button>
                         </div>
                     </div>
                 </div>
             </section>
-        </div>
-        
-        <div class="generate-btn-container">
-            <button id="generateBtn" class="generate-btn">
-                <i class="fas fa-bolt"></i>
-                <span data-i18n="generate_btn">Generate Image</span>
-            </button>
-        </div>
-        
-        <section class="results-section">
-            <div class="results-header">
-                <h2 class="section-title">
-                    <i class="fas fa-images"></i>
-                    <span data-i18n="results_title">Generated Images</span>
-                </h2>
-                <button id="clearResultsBtn" class="btn btn-secondary">
-                    <i class="fas fa-trash"></i>
-                    <span data-i18n="clear_results">Clear All</span>
-                </button>
-            </div>
-            
-            <div class="results-grid" id="resultsGrid">
-                <!-- Generated images will appear here -->
-            </div>
-        </section>
-        
-        <section class="history-section">
-            <div class="history-header">
-                <h2 class="section-title">
-                    <i class="fas fa-history"></i>
-                    <span data-i18n="history_title">Prompt History</span>
-                </h2>
-                <button id="clearHistoryBtn" class="btn btn-secondary">
-                    <i class="fas fa-trash"></i>
-                    <span data-i18n="clear_history">Clear History</span>
-                </button>
-            </div>
-            
-            <div class="history-list" id="historyList">
-                <!-- History items will appear here -->
-            </div>
-        </section>
-    </main>
-    
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">DEKA AI Loading</div>
+        </main>
+
+        <footer class="cyber-footer">
+            <p data-en="COPYRIGHT ©2025 DEKA AI GENERATOR" data-id="HAK CIPTA ©2025 DEKA AI GENERATOR">COPYRIGHT ©2025 DEKA AI GENERATOR</p>
+            <p data-en="POWERED BY POLLINATIONS API" data-id="DIDUKUNG OLEH POLLINATIONS API">POWERED BY POLLINATIONS API</p>
+            <div class="cyber-glitch" data-text="DEVELOPED BY DERY LAU">DEVELOPED BY DERY LAU</div>
+        </footer>
     </div>
-    
-    <div class="toast" id="toastNotification"></div>
-    
-    <div class="language-switcher">
-        <button class="language-btn" id="languageBtn">EN</button>
-    </div>
-    
-    <footer>
-        <div class="container footer-content">
-            <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-            </div>
-            <div data-i18n="copyright">© 2025 DEKA AI GENERATOR | Powered by Pollinations API</div>
-            <div data-i18n="developed_by">Developed by Dery Lau | Thanks to Github & Cloudflare</div>
-        </div>
-    </footer>
 
-    <script>
-        // DOM Elements
-        const themeToggle = document.getElementById('themeToggle');
-        const promptInput = document.getElementById('promptInput');
-        const negativePromptInput = document.getElementById('negativePromptInput');
-        const enhancePromptBtn = document.getElementById('enhancePromptBtn');
-        const randomPromptBtn = document.getElementById('randomPromptBtn');
-        const modelSelect = document.getElementById('modelSelect');
-        const styleSelect = document.getElementById('styleSelect');
-        const aspectRatioSelect = document.getElementById('aspectRatioSelect');
-        const widthRange = document.getElementById('widthRange');
-        const widthInput = document.getElementById('widthInput');
-        const heightRange = document.getElementById('heightRange');
-        const heightInput = document.getElementById('heightInput');
-        const stepsRange = document.getElementById('stepsRange');
-        const stepsInput = document.getElementById('stepsInput');
-        const nsfwCheckbox = document.getElementById('nsfwCheckbox');
-        const ultraDetailCheckbox = document.getElementById('ultraDetailCheckbox');
-        const colorPaletteSelect = document.getElementById('colorPaletteSelect');
-        const compositionSelect = document.getElementById('compositionSelect');
-        const advanceToggle = document.getElementById('advanceToggle');
-        const advanceContent = document.getElementById('advanceContent');
-        const generateBtn = document.getElementById('generateBtn');
-        const resultsGrid = document.getElementById('resultsGrid');
-        const clearResultsBtn = document.getElementById('clearResultsBtn');
-        const historyList = document.getElementById('historyList');
-        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const toastNotification = document.getElementById('toastNotification');
-        const languageBtn = document.getElementById('languageBtn');
-
-        // Theme toggle
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            
-            if (newTheme === 'light') {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i><span data-i18n="dark_mode">Dark Mode</span>';
-            } else {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i><span data-i18n="light_mode">Light Mode</span>';
-            }
-            
-            // Update language text if needed
-            if (currentLanguage === 'en') {
-                updateUIText(enText);
-            } else {
-                updateUIText(idText);
-            }
-            
-            localStorage.setItem('theme', newTheme);
-        });
-
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        
-        if (savedTheme === 'light') {
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i><span data-i18n="dark_mode">Dark Mode</span>';
-        } else {
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span data-i18n="light_mode">Light Mode</span>';
-        }
-
-        // Aspect ratio handling
-        aspectRatioSelect.addEventListener('change', updateDimensionsFromAspectRatio);
-        
-        function updateDimensionsFromAspectRatio() {
-            const ratio = aspectRatioSelect.value;
-            let width, height;
-            
-            switch (ratio) {
-                case '1:1':
-                    width = 1024;
-                    height = 1024;
-                    break;
-                case '4:3':
-                    width = 1366;
-                    height = 1024;
-                    break;
-                case '16:9':
-                    width = 1920;
-                    height = 1080;
-                    break;
-                case '9:16':
-                    width = 1080;
-                    height = 1920;
-                    break;
-                case '3:2':
-                    width = 1536;
-                    height = 1024;
-                    break;
-                case '2:3':
-                    width = 1024;
-                    height = 1536;
-                    break;
-                default:
-                    width = 1920;
-                    height = 1080;
-            }
-            
-            widthRange.value = width;
-            widthInput.value = width;
-            heightRange.value = height;
-            heightInput.value = height;
-        }
-
-        // Sync range and number inputs
-        widthRange.addEventListener('input', () => {
-            widthInput.value = widthRange.value;
-            aspectRatioSelect.value = 'custom';
-        });
-        
-        widthInput.addEventListener('input', () => {
-            widthRange.value = widthInput.value;
-            aspectRatioSelect.value = 'custom';
-        });
-        
-        heightRange.addEventListener('input', () => {
-            heightInput.value = heightRange.value;
-            aspectRatioSelect.value = 'custom';
-        });
-        
-        heightInput.addEventListener('input', () => {
-            heightRange.value = heightInput.value;
-            aspectRatioSelect.value = 'custom';
-        });
-        
-        stepsRange.addEventListener('input', () => {
-            stepsInput.value = stepsRange.value;
-        });
-        
-        stepsInput.addEventListener('input', () => {
-            stepsRange.value = stepsInput.value;
-        });
-
-        // Advanced settings toggle
-        advanceToggle.addEventListener('click', () => {
-            advanceToggle.classList.toggle('active');
-            advanceContent.classList.toggle('active');
-        });
-
-        // Enhance prompt function
-        enhancePromptBtn.addEventListener('click', () => {
-            if (!promptInput.value.trim()) {
-                showToast('Please enter a prompt first', 'warning');
-                return;
-            }
-            
-            // Simulate enhancing the prompt (in a real app, this would call an API)
-            const originalPrompt = promptInput.value;
-            const enhancedPrompt = `highly detailed, 4k, 8k, ultra HD, professional photography, ${originalPrompt}, intricate details, stunning composition, cinematic lighting`;
-            
-            promptInput.value = enhancedPrompt;
-            showToast('Prompt enhanced successfully', 'success');
-        });
-
-        // Random prompt examples
-        const randomPrompts = [
-            "A futuristic cityscape at night with neon lights and flying cars, cyberpunk style",
-            "A majestic dragon perched on a mountain peak at sunset, digital art",
-            "An astronaut exploring an alien jungle with bioluminescent plants, realistic",
-            "A steampunk airship flying over a Victorian-era city, detailed illustration",
-            "A magical forest with giant mushrooms and fairies, fantasy art",
-            "A surreal landscape with floating islands and waterfalls, dreamlike",
-            "A portrait of a cybernetic samurai with glowing eyes, anime style",
-            "An underwater city with coral buildings and mermaids, 3D render",
-            "A post-apocalyptic wasteland with ruined skyscrapers, cinematic",
-            "A cozy cabin in the woods during winter, warm lighting, photorealistic"
-        ];
-        
-        randomPromptBtn.addEventListener('click', () => {
-            const randomIndex = Math.floor(Math.random() * randomPrompts.length);
-            promptInput.value = randomPrompts[randomIndex];
-            showToast('Random prompt generated', 'success');
-        });
-
-        // Generate image function
-        generateBtn.addEventListener('click', generateImage);
-        
-        async function generateImage() {
-            const prompt = promptInput.value.trim();
-            if (!prompt) {
-                showToast('Please enter a prompt', 'error');
-                return;
-            }
-            
-            // Show loading overlay
-            loadingOverlay.classList.add('active');
-            
-            try {
-                // Build the prompt with all selected options
-                let fullPrompt = prompt;
-                
-                // Add style if not default
-                if (styleSelect.value !== 'default') {
-                    fullPrompt += `, ${styleSelect.value} style`;
-                }
-                
-                // Add ultra detail if checked
-                if (ultraDetailCheckbox.checked) {
-                    fullPrompt += ', ultra detailed, 8k, hyper realistic, intricate details';
-                }
-                
-                // Add color palette if not default
-                if (colorPaletteSelect.value !== 'default') {
-                    fullPrompt += `, ${colorPaletteSelect.value} colors`;
-                }
-                
-                // Add composition if not default
-                if (compositionSelect.value !== 'default') {
-                    fullPrompt += `, ${compositionSelect.value} composition`;
-                }
-                
-                // Add negative prompt if exists
-                const negativePrompt = negativePromptInput.value.trim();
-                if (negativePrompt) {
-                    fullPrompt += ` | negative: ${negativePrompt}`;
-                }
-                
-                // Add model if not default
-                if (modelSelect.value !== 'default') {
-                    fullPrompt += ` | model: ${modelSelect.value}`;
-                }
-                
-                // Add NSFW tag if checked
-                if (nsfwCheckbox.checked) {
-                    fullPrompt += ' | nsfw: true';
-                }
-                
-                // Get dimensions and steps
-                const width = widthInput.value;
-                const height = heightInput.value;
-                const steps = stepsInput.value;
-                
-                // Encode the prompt for URL
-                const encodedPrompt = encodeURIComponent(fullPrompt);
-                
-                // Build the API URL
-                let apiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
-                
-                // Add parameters
-                apiUrl += `?width=${width}&height=${height}&steps=${steps}&nologo=true`;
-                
-                // Call the API
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error('Failed to generate image');
-                }
-                
-                // Create blob URL from response
-                const blob = await response.blob();
-                const imageUrl = URL.createObjectURL(blob);
-                
-                // Create result card
-                createResultCard(imageUrl, fullPrompt);
-                
-                // Save to history
-                addToHistory(fullPrompt);
-                
-                showToast('Image generated successfully!', 'success');
-            } catch (error) {
-                console.error('Error generating image:', error);
-                showToast('Failed to generate image. Please try again.', 'error');
-            } finally {
-                loadingOverlay.classList.remove('active');
-            }
-        }
-        
-        function createResultCard(imageUrl, prompt) {
-            const card = document.createElement('div');
-            card.className = 'result-card';
-            
-            const img = document.createElement('img');
-            img.className = 'result-image';
-            img.src = imageUrl;
-            img.alt = prompt;
-            
-            const actions = document.createElement('div');
-            actions.className = 'result-actions';
-            
-            const downloadBtn = document.createElement('button');
-            downloadBtn.className = 'result-action-btn';
-            downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
-            downloadBtn.title = 'Download';
-            downloadBtn.addEventListener('click', () => downloadImage(imageUrl, prompt));
-            
-            const shareBtn = document.createElement('button');
-            shareBtn.className = 'result-action-btn';
-            shareBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
-            shareBtn.title = 'Share';
-            shareBtn.addEventListener('click', () => shareImage(imageUrl, prompt));
-            
-            const saveBtn = document.createElement('button');
-            saveBtn.className = 'result-action-btn';
-            saveBtn.innerHTML = '<i class="fas fa-bookmark"></i>';
-            saveBtn.title = 'Save';
-            saveBtn.addEventListener('click', () => saveImage(imageUrl, prompt));
-            
-            actions.appendChild(downloadBtn);
-            actions.appendChild(shareBtn);
-            actions.appendChild(saveBtn);
-            
-            card.appendChild(img);
-            card.appendChild(actions);
-            
-            resultsGrid.insertBefore(card, resultsGrid.firstChild);
-        }
-        
-        function downloadImage(imageUrl, prompt) {
-            const link = document.createElement('a');
-            link.href = imageUrl;
-            link.download = `deka-ai-${Date.now()}.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast('Download started', 'success');
-        }
-        
-        function shareImage(imageUrl, prompt) {
-            // This would be more comprehensive in a real app with proper social sharing
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Check out this AI generated image',
-                    text: `I created this image with DEKA AI: ${prompt}`,
-                    url: imageUrl
-                }).catch(err => {
-                    console.error('Error sharing:', err);
-                    showToast('Sharing failed', 'error');
-                });
-            } else {
-                // Fallback for browsers that don't support Web Share API
-                promptInput.value = `Check out this AI generated image: ${prompt} ${imageUrl}`;
-                showToast('Share URL copied to prompt', 'info');
-            }
-        }
-        
-        function saveImage(imageUrl, prompt) {
-            // In a real app, this would save to a database or local storage
-            const savedImages = JSON.parse(localStorage.getItem('savedImages') || []);
-            savedImages.push({ imageUrl, prompt, timestamp: Date.now() });
-            localStorage.setItem('savedImages', JSON.stringify(savedImages));
-            showToast('Image saved to favorites', 'success');
-        }
-
-        // History functions
-        function addToHistory(prompt) {
-            const history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
-            
-            // Avoid duplicates
-            if (!history.includes(prompt)) {
-                history.unshift(prompt);
-                
-                // Limit to 50 items
-                if (history.length > 50) {
-                    history.pop();
-                }
-                
-                localStorage.setItem('promptHistory', JSON.stringify(history));
-                renderHistory();
-            }
-        }
-        
-        function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
-            historyList.innerHTML = '';
-            
-            if (history.length === 0) {
-                historyList.innerHTML = '<div class="history-item" style="justify-content: center;">No history yet</div>';
-                return;
-            }
-            
-            history.forEach((prompt, index) => {
-                const item = document.createElement('div');
-                item.className = 'history-item';
-                
-                const text = document.createElement('div');
-                text.className = 'history-item-text';
-                text.textContent = prompt;
-                text.addEventListener('click', () => {
-                    promptInput.value = prompt;
-                    showToast('Prompt loaded', 'success');
-                });
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'history-item-delete';
-                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    removeFromHistory(index);
-                });
-                
-                item.appendChild(text);
-                item.appendChild(deleteBtn);
-                historyList.appendChild(item);
-            });
-        }
-        
-        function removeFromHistory(index) {
-            const history = JSON.parse(localStorage.getItem('promptHistory') || '[]');
-            history.splice(index, 1);
-            localStorage.setItem('promptHistory', JSON.stringify(history));
-            renderHistory();
-            showToast('Prompt removed from history', 'success');
-        }
-        
-        clearHistoryBtn.addEventListener('click', () => {
-            localStorage.removeItem('promptHistory');
-            renderHistory();
-            showToast('History cleared', 'success');
-        });
-
-        // Clear results
-        clearResultsBtn.addEventListener('click', () => {
-            resultsGrid.innerHTML = '';
-            showToast('Results cleared', 'success');
-        });
-
-        // Toast notification
-        function showToast(message, type) {
-            toastNotification.textContent = message;
-            toastNotification.className = `toast ${type}`;
-            toastNotification.innerHTML = `
-                <span>${message}</span>
-                <button class="toast-close">&times;</button>
-            `;
-            
-            toastNotification.classList.add('show');
-            
-            // Close button
-            toastNotification.querySelector('.toast-close').addEventListener('click', () => {
-                toastNotification.classList.remove('show');
-            });
-            
-            // Auto hide after 5 seconds
-            setTimeout(() => {
-                toastNotification.classList.remove('show');
-            }, 5000);
-        }
-
-        // Language switching
-        let currentLanguage = 'en';
-        
-        const enText = {
-            prompt_title: "AI Image Prompt",
-            enhance_prompt: "Enhance Prompt",
-            random_prompt: "Random Prompt",
-            negative_prompt: "Negative Prompt (things you don't want in the image)",
-            settings_title: "Generation Settings",
-            model_label: "AI Model",
-            model_default: "Default",
-            model_dalle: "DALL-E 3",
-            model_flux: "Flux",
-            model_midjourney: "Midjourney",
-            model_sd: "Stable Diffusion",
-            style_label: "Style",
-            style_default: "Default",
-            style_realistic: "Realistic",
-            style_digital: "Digital Art",
-            style_anime: "Anime Style",
-            style_photo: "Photography",
-            style_watercolor: "Watercolor",
-            style_airbrush: "Air Brush",
-            style_3d: "3D Render",
-            style_surreal: "Surrealism",
-            style_disney: "3D Disney Character",
-            style_ghibli: "Studio Ghibli",
-            style_caricature: "Caricature 3D",
-            style_cartoon: "Cartoon",
-            style_graffiti: "Graffiti Art",
-            style_pixel: "Pixel Art",
-            style_steampunk: "Steampunk",
-            style_cyberpunk: "Cyberpunk",
-            style_psychedelic: "Psychedelic",
-            aspect_label: "Aspect Ratio",
-            aspect_square: "Square (1:1)",
-            aspect_standard: "Standard (4:3)",
-            aspect_wide: "Widescreen (16:9)",
-            aspect_portrait: "Portrait (9:16)",
-            aspect_classic: "Classic (3:2)",
-            aspect_tall: "Tall (2:3)",
-            width_label: "Width (px)",
-            height_label: "Height (px)",
-            steps_label: "Steps",
-            nsfw_label: "Include NSFW Content",
-            ultra_detail: "Ultra High Detail",
-            advance_settings: "Advanced Settings",
-            color_palette: "Color Palette",
-            color_default: "Default",
-            color_vibrant: "Vibrant",
-            color_pastel: "Pastel",
-            color_mono: "Monochrome",
-            color_warm: "Warm Tones",
-            color_cool: "Cool Tones",
-            color_rgb: "RGB",
-            composition: "Composition",
-            comp_default: "Default",
-            comp_close: "Close-up",
-            comp_wide: "Wide Shot",
-            comp_macro: "Macro",
-            comp_aerial: "Aerial",
-            comp_low: "Low View Angle",
-            comp_drone: "Drone Wide Angle",
-            generate_btn: "Generate Image",
-            results_title: "Generated Images",
-            clear_results: "Clear All",
-            history_title: "Prompt History",
-            clear_history: "Clear History",
-            dark_mode: "Dark Mode",
-            light_mode: "Light Mode",
-            copyright: "© 2025 DEKA AI GENERATOR | Powered by Pollinations API",
-            developed_by: "Developed by Dery Lau | Thanks to Github & Cloudflare"
-        };
-        
-        const idText = {
-            prompt_title: "Prompt Gambar AI",
-            enhance_prompt: "Tingkatkan Prompt",
-            random_prompt: "Prompt Acak",
-            negative_prompt: "Prompt Negatif (hal yang tidak ingin ada di gambar)",
-            settings_title: "Pengaturan Pembuatan",
-            model_label: "Model AI",
-            model_default: "Default",
-            model_dalle: "DALL-E 3",
-            model_flux: "Flux",
-            model_midjourney: "Midjourney",
-            model_sd: "Stable Diffusion",
-            style_label: "Gaya",
-            style_default: "Default",
-            style_realistic: "Realistis",
-            style_digital: "Seni Digital",
-            style_anime: "Gaya Anime",
-            style_photo: "Fotografi",
-            style_watercolor: "Cat Air",
-            style_airbrush: "Air Brush",
-            style_3d: "Render 3D",
-            style_surreal: "Surealisme",
-            style_disney: "Karakter Disney 3D",
-            style_ghibli: "Studio Ghibli",
-            style_caricature: "Karikatur 3D",
-            style_cartoon: "Kartun",
-            style_graffiti: "Seni Graffiti",
-            style_pixel: "Seni Pixel",
-            style_steampunk: "Steampunk",
-            style_cyberpunk: "Cyberpunk",
-            style_psychedelic: "Psikedelik",
-            aspect_label: "Rasio Aspek",
-            aspect_square: "Persegi (1:1)",
-            aspect_standard: "Standar (4:3)",
-            aspect_wide: "Layar Lebar (16:9)",
-            aspect_portrait: "Portrait (9:16)",
-            aspect_classic: "Klasik (3:2)",
-            aspect_tall: "Tinggi (2:3)",
-            width_label: "Lebar (px)",
-            height_label: "Tinggi (px)",
-            steps_label: "Langkah",
-            nsfw_label: "Sertakan Konten NSFW",
-            ultra_detail: "Detail Ultra Tinggi",
-            advance_settings: "Pengaturan Lanjutan",
-            color_palette: "Palet Warna",
-            color_default: "Default",
-            color_vibrant: "Vibrant",
-            color_pastel: "Pastel",
-            color_mono: "Monokrom",
-            color_warm: "Warna Hangat",
-            color_cool: "Warna Dingin",
-            color_rgb: "RGB",
-            composition: "Komposisi",
-            comp_default: "Default",
-            comp_close: "Close-up",
-            comp_wide: "Wide Shot",
-            comp_macro: "Makro",
-            comp_aerial: "Udara",
-            comp_low: "Sudut Pandang Rendah",
-            comp_drone: "Sudut Lebar Drone",
-            generate_btn: "Buat Gambar",
-            results_title: "Gambar yang Dihasilkan",
-            clear_results: "Hapus Semua",
-            history_title: "Riwayat Prompt",
-            clear_history: "Hapus Riwayat",
-            dark_mode: "Mode Gelap",
-            light_mode: "Mode Terang",
-            copyright: "© 2025 DEKA AI GENERATOR | Didukung oleh Pollinations API",
-            developed_by: "Dikembangkan oleh Dery Lau | Terima kasih kepada Github & Cloudflare"
-        };
-        
-        function updateUIText(texts) {
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (texts[key]) {
-                    element.textContent = texts[key];
-                }
-            });
-        }
-        
-        languageBtn.addEventListener('click', () => {
-            if (currentLanguage === 'en') {
-                currentLanguage = 'id';
-                languageBtn.textContent = 'ID';
-                updateUIText(idText);
-            } else {
-                currentLanguage = 'en';
-                languageBtn.textContent = 'EN';
-                updateUIText(enText);
-            }
-            
-            // Update theme toggle text based on language
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentLanguage === 'en') {
-                if (currentTheme === 'light') {
-                    themeToggle.innerHTML = '<i class="fas fa-moon"></i><span data-i18n="dark_mode">Dark Mode</span>';
-                } else {
-                    themeToggle.innerHTML = '<i class="fas fa-sun"></i><span data-i18n="light_mode">Light Mode</span>';
-                }
-            } else {
-                if (currentTheme === 'light') {
-                    themeToggle.innerHTML = '<i class="fas fa-moon"></i><span data-i18n="dark_mode">Mode Gelap</span>';
-                } else {
-                    themeToggle.innerHTML = '<i class="fas fa-sun"></i><span data-i18n="light_mode">Mode Terang</span>';
-                }
-            }
-            
-            localStorage.setItem('language', currentLanguage);
-        });
-        
-        // Check for saved language preference
-        const savedLanguage = localStorage.getItem('language') || 'en';
-        if (savedLanguage === 'id') {
-            currentLanguage = 'id';
-            languageBtn.textContent = 'ID';
-            updateUIText(idText);
-        } else {
-            currentLanguage = 'en';
-            languageBtn.textContent = 'EN';
-            updateUIText(enText);
-        }
-
-        // Initialize
-        renderHistory();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
