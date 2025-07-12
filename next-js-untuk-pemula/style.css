@@ -1,0 +1,240 @@
+/* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header/Navbar */
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.logo a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-links ul li {
+    margin-left: 25px;
+}
+
+.nav-links ul li a {
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links ul li a:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Main Content */
+.content {
+    background-color: #fff;
+    padding: 40px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.content h2, .content h3, .content h4 {
+    color: #0056b3;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.content h2 {
+    font-size: 2.2em;
+}
+
+.content h3 {
+    font-size: 1.8em;
+}
+
+.content h4 {
+    font-size: 1.4em;
+    color: #444;
+    border-bottom: 1px solid #eee;
+}
+
+.content p {
+    margin-bottom: 15px;
+}
+
+.content ul {
+    list-style: disc;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.content ol {
+    list-style: decimal;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.content pre {
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.content code {
+    background-color: #e0e0e0;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+}
+
+/* Style for the embedded TSX code block */
+.content pre code.language-tsx {
+    display: block;
+    white-space: pre-wrap; /* Allows long lines to wrap */
+    word-wrap: break-word; /* Ensures long words break */
+    background-color: #282c34; /* Dark background similar to code editors */
+    color: #abb2bf; /* Light text color */
+    padding: 1em;
+    border-radius: 8px;
+}
+/* Specific styling for the escaped HTML within the code block */
+.content pre code.language-tsx .amp {
+    color: #e06c75; /* A distinct color for escaped ampersands */
+}
+
+
+/* Footer */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 30px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-wrap: wrap; /* Allow items to wrap */
+    }
+
+    .hamburger-menu {
+        display: block; /* Show hamburger on small screens */
+    }
+
+    .nav-links {
+        width: 100%; /* Full width for mobile menu */
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        background-color: #3e3e3e; /* Slightly darker background when open */
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+
+    .nav-links ul {
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .nav-links ul li {
+        margin: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-links ul li a {
+        display: block;
+        padding: 15px 20px;
+        border-bottom: 1px solid #4a4a4a; /* Separator for menu items */
+    }
+
+    .nav-links ul li:last-child a {
+        border-bottom: none;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .content h2 {
+        font-size: 1.8em;
+    }
+
+    .content h3 {
+        font-size: 1.5em;
+    }
+
+    .content h4 {
+        font-size: 1.2em;
+    }
+}
